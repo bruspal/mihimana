@@ -69,6 +69,8 @@ function form($form = null) {
             } else { // everything is allright, do the work
                 if (createApp($_POST)) { // app successfuly created
                     // do something such as redirection to db designer
+                    echo "<h1>everythings done !</h1>";
+                    echo "go to your app <button onclic=\"document.location.href=''\">GO !</button>";
                 } else { // app creation failed => print the form
                     form($_POST);
                 }
