@@ -1,0 +1,101 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <h1>Aide widget</h1>
+    <div id="inputPopup" class="categorie">
+      <h2>Fenetre de recherche</h2>
+      <div class="description">
+        Ce widget permet d'ouvrir une fenetre popup AJAX vers un formulaire de recherche
+      </div>
+      <div class="parametres">
+        <ul>
+          <li>Largeur : Largeur de la zone de saisie</li>
+          <li>table : Table/vu de la base de donnée dans laquelle faire la recherche</li>
+          <li>cle : liste des champs (séparé par des ,) sur lesquel sont effectué la recherche</li>
+          <li>libelle : libellé des colonnes a afficher dans l'entete du tableau</li>
+          <li>retour : nom du champ dont la valeur renvoyé lors de la selection de la ligne</li>
+          <li>cols : contenu des ligne du tableau (séparé par des ,). La syntaxe '+' permet de faire des contenu complexe en concaténant les valeur de la table avec des chaine de caractere</li>
+        </ul>
+      </div>
+      <div class="exemple">
+        
+      </div>
+      <div class="todo">
+        
+      </div>
+    </div>
+    
+    <div id="recordList" class="categorie">
+      <h2>Liste d'enregistrements</h2>
+      <div class="description">
+        Permet de généré un tableau d'enregistrements a raison d'une ligne par enregistrement.
+      </div>
+      <div class="parametres">
+        <ul>
+          <li>largeur : largeur des colonnes séparé par des ,</li>
+          <li>table : table/vue dans laquelle faire la selection</li>
+          <li>action : action lors d'un click sur la ligne</li>
+          <li>condition : condition de SQL de selection dans la table</li>
+          <li>lines : nombre de lignes affiché. Si il y'a plus de résultat que de ligne des bouton de navigation apparaisse</li>
+          <li>retour : </li>
+          <li>cols : liste des colonnes a affiché séparé par des ,. si la valeur est aaa:bbb aaa correspond au champ a afficher et bbb au libellé de la colonne</li>
+        </ul>
+      </div>
+      <div class="exemple">
+        
+      </div>
+      <div class="todo">
+        
+      </div>
+    </div>
+
+    <div id="selectFic" class="categorie">
+      <h2>Select lié a un fichier</h2>
+      <div class="description">
+        Permet de remplir une combo avec les résultats d'une recherche dans une table
+      </div>
+      <div class="parametres">
+        <ul>
+          <li>table : table de la base de données sur laquelle appliqué la recherche</li>
+          <li>cle : nom de la colonne qui sera utilisé comme valeur de retour</li>
+          <li>Libelle : Libellé afficher dans la combo. Utilise la syntax '+'</li>
+          <li>condition : condition de recherche. La syntaxe est celle d'un where SQL. Pour utiliser les variables de l'ecran c'est la syntaxe $nom_var</li>
+        </ul>
+      </div>
+      <div class="exemple">
+        
+      </div>
+      <div class="todo">
+        
+      </div>
+    </div>
+    
+    
+    <div id="" class="categorie">
+      <h2></h2>
+      <div class="description">
+        
+      </div>
+      <div class="parametres">
+        <ul>
+          <li></li>
+        </ul>
+      </div>
+      <div class="exemple">
+        
+      </div>
+      <div class="todo">
+        
+      </div>
+    </div>
+    
+  </body>
+</html>

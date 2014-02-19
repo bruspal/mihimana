@@ -1,0 +1,51 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php //inclusion de la feuille de style ?>
+<link rel="stylesheet" type="text/css" media="screen" href="css/bases.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />      
+<link rel="stylesheet" type="text/css" media="screen" href="css/menu.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/maides.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/jquery.ui.css" />
+<link rel="stylesheet" href="js/codeMirror/lib/codemirror.css">
+<link rel="stylesheet" href="js/codeMirror/lib/custom.css">
+
+<?php //inclusion du javascript ?>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jqModal.js"></script>
+<script type="text/javascript" src="js/assurances.js"></script>
+<script type="text/javascript" src="js/ckeditor/ckeditor.js"></script>
+<script src="js/codeMirror/lib/codemirror.js"></script>
+<script src="js/codeMirror/mode/javascript/javascript.js"></script>
+<script type="text/javascript" src="js/maides.js"></script>
+<!-- <script type="text/javascript" src="js/jquery.meio.mask.js"></script> -->
+<!-- <script type="text/javascript" src="js/jquery.maskedinput.js"></script> -->
+<link rel="shortcut icon" href="favicon.ico" />
+<script>
+$(function() {    
+//    var tooltips = $(document).tooltip();
+/*
+    var tooltips = $(document).tooltip("option", "position", 
+    { position: 
+        {
+            my: "left top", 
+            at: "left top",
+            using: function(position, feedback){
+                $(this).offset({ top: 10, left: 30 });
+            }
+        } 
+    });
+*/
+        $( ".stddate" ).datepicker({ dateFormat: "dd-mm-yy" });
+});
+
+</script>
+<style>
+/*
+.ui-tooltip {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font: bold 14px "Helvetica Neue", Sans-Serif;
+    box-shadow: 0 0 7px black;
+}
+*/
+</style>

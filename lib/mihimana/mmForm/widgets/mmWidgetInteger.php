@@ -1,0 +1,49 @@
+<?php
+/*------------------------------------------------------------------------------
+-------------------------------------
+Mihimana : the visual PHP framework.
+Copyright (C) 2012-2014  Bruno Maffre
+contact@bmp-studio.com
+-------------------------------------
+
+-------------------------------------
+@package : lib
+@module: mmForm/widgets
+@file : mmWidgetInteger.php
+-------------------------------------
+
+This file is part of Mihimana.
+
+Mihimana is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mihimana is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+------------------------------------------------------------------------------*/
+
+
+class mmWidgetInteger extends mmWidgetText {
+  
+  public function __construct($name, $value = 0, $attributes = array()) {
+    $this->addAttribute('class', 'integer');
+    parent::__construct($name, $value, $attributes);
+    $this->addValidation('integer');
+  }
+  
+  public function clean() {
+    parent::clean();
+    $value = $this->attributes['value'];
+    //est ce un entier ?
+    if ( (int)$value != $value) {
+      $this->addError('La valeur doit etre un entier', 0);
+    }
+  }
+}
+?>

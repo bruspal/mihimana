@@ -1,0 +1,134 @@
+<?php
+/*------------------------------------------------------------------------------
+-------------------------------------
+Mihimana : the visual PHP framework.
+Copyright (C) 2012-2014  Bruno Maffre
+contact@bmp-studio.com
+-------------------------------------
+
+-------------------------------------
+@package : lib
+@module: 
+@file : dispatch.php
+-------------------------------------
+
+This file is part of Mihimana.
+
+Mihimana is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mihimana is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+------------------------------------------------------------------------------*/
+
+
+
+/*
+ * Dispatching
+ */
+try { //On protege contre les erreurs ce qui se trouve dans le try { }
+
+    //Recuperation des parametres fournis en URL et parametrage pour l'execution des modules
+    $dispatch_recuDuClient = new mmRequest();
+
+    $dispatcher_module = $dispatch_recuDuClient->get('module', MODULE_DEFAUT);
+    $dispatcher_action = $dispatch_recuDuClient->get('action', ACTION_DEFAUT);
+
+    //detection d'un appel AJAX. Detection automatique sauf si le parametre _fhr_ est present dans le request et vaut 1
+    //determine si la reponse doit etre du json ou non, par defaut oui si on est en mode ajax. Dans ce cas la on est en mode json sauf si on force explicitement
+    //le mode http via le parametre _fhr_ fournis en parametre
+    if (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        define('AJAX_REQUEST', true);
+        $_fhr_ = $dispatch_recuDuClient->get('_fhr_', false);
+        if ($_fhr_) {
+            define('AJAX_RESPONSE', true);
+        } else {
+            define('AJAX_RESPONSE', false);
+        }
+    } else {
+        define('AJAX_REQUEST', false);
+        define('AJAX_RESPONSE', false);
+    }
+    
+    //verification de l'authentification
+    if (!mmUser::isAuthenticated()) {
+        //Si on est en ajax on affiche le message et un bouton
+        if (AJAX_REQUEST) {
+            echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>');
+            die;
+        }
+        //on est pas identifié on va vers le login
+        $dispatcher_module = 'pLogin';
+        $dispatcher_action = 'login';
+    }
+
+    //detection si c'est un appel en clair ou du https
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
+        define('HTTPS', true);
+    } else {
+        define('HTTPS', false);
+    }
+    //On declare les module et action courant dans des constante pour pouvoir les recuperer facilement dans les modules et scripts.
+    define('MODULE_COURANT', $dispatcher_module);
+    define('ACTION_COURANTE', $dispatcher_action);
+
+
+    //ici deux choix : soit le fichier php existe. On le charge et l'execute. Sinon on charge et execute le programme générique d'extension
+    $dispatcher_fichierProgramme = false;
+    if (file_exists('../' . APPLICATION . '/' . $dispatcher_module . '.php')) {
+        $dispatcher_fichierProgramme = '../' . APPLICATION . '/' . $dispatcher_module . '.php';
+        define('PROGRAMME_STANDARD', false);
+    } else {
+        if (file_exists(MIHIMANA_DIR . '/builtinModule/' . $dispatcher_module . '.php')) {
+            $dispatcher_fichierProgramme = MIHIMANA_DIR . '/builtinModule/' . $dispatcher_module . '.php';
+            define('PROGRAMME_STANDARD', true);
+        }
+    }
+
+    if ($dispatcher_fichierProgramme) {
+        //fichier PHP personnalisé
+        //inclusion du programme en fonction du module
+        ob_start(); //on commence la bufferisation des sortie PHP
+        require $dispatcher_fichierProgramme;
+        if (class_exists($dispatcher_module)) { //est ce que le fichier charger contient une classe du meme nom que module ? dans ce cas la c'est un programme encapsulé dans une classe
+            ob_clean(); //on vide le buffer de sortie pour avoir un buffer de sortie vide avant de commencer l'execution du programme
+            //creation en memoire du programme
+            $dispatcher_programmePhp = new $dispatcher_module();
+            //on execute l'action du programme avec les parametres fournis au script par l'url
+            $dispatcher_programmePhp->execute($dispatcher_action, $dispatch_recuDuClient);
+        } else {
+            //on recupère le buffer PHP car le code contenu dans le module a deja été exécuté lors du require
+            //on affiche ce buffer dans le template en faisant un require du layout
+            $sortieProgramme = ob_get_clean();
+            include APPLICATION_DIR . '/templates/layout.php';
+        }
+    } else {
+        throw new mmExceptionControl("<h1>Module inexistant</h1>");
+    }
+} catch (mmExceptionControl $e) {
+
+    $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
+    include APPLICATION_DIR . '/templates/layout.php';
+} catch (Exception $e) {
+    //Si une erreur non gerée se produit on affiche le message d'erreur detaillé si on est en mode DEBUG, sinon on fais autre chose (genre log, mail, etc)
+    //TODO: voir comment gerer les erreurs critique en production
+    $sortieProgramme = ob_get_clean();
+    if (DEBUG) {
+        //En mode debug ? On affiche les informations détaillées sur l'erreur
+        $sortieProgramme .="<fieldset><legend>Erreur</legend>" . $e->getMessage() . "</fieldset>
+    <fieldset><legend>Trace</legend><pre>" . $e->getTraceAsString() . "</pre>
+    </fieldset>";
+    } else {
+        //En mode production on affiche une erreur generaliste
+        $sortieProgramme = "<h1>Une erreur critique a eu lieu. Veuillez contacter le service informatique.</h1>";
+    }
+    include APPLICATION_DIR . '/templates/layout.php';
+}
+?>

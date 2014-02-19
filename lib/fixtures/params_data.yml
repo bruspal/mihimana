@@ -1,0 +1,107 @@
+Utilisateur:
+  Utilisateur_1:
+    login: admin
+    password: admin
+    salt: ''
+    actif: true
+    super_admin: true
+    nom: admin
+    prenom: istrateur
+    email: bruspal@gmail.com
+    code_compagnie: null
+ChampsEcranUtilisateur:
+  ChampsEcranUtilisateur_1:
+    EcranUtilisateur: EcranUtilisateur_main
+    nom_champ: manageDB
+    type_champ: lbr
+    est_lecture_seule: false
+    est_notnull: false
+    val_def: null
+    val_min: null
+    val_max: null
+    type_widget: buttonGoModule
+    option_type_widget: module=pStructure
+    formule_calcul: null
+    calcul_systematique: false
+    css_attr: null
+    css_class: null
+    libelle: 'Manage database'
+    info_bulle: Manage
+    message_aide: null
+    evenementiel: false
+    contextuel: null
+    numero_ordre: '0'
+    raccourcis: null
+    jsclick: null
+    jsfocus: null
+    jsblur: null
+    jschange: null
+    jsdblclick: null
+    jsrclick: null
+  ChampsEcranUtilisateur_2:
+    EcranUtilisateur: EcranUtilisateur_main
+    nom_champ: managescr
+    type_champ: lbr
+    est_lecture_seule: false
+    est_notnull: false
+    val_def: null
+    val_min: null
+    val_max: null
+    type_widget: buttonGoModule
+    option_type_widget: "module=pEcran\r\naction=editEcran"
+    formule_calcul: null
+    calcul_systematique: false
+    css_attr: null
+    css_class: null
+    libelle: 'Manage screens'
+    info_bulle: 'Design and program screens'
+    message_aide: null
+    evenementiel: false
+    contextuel: null
+    numero_ordre: '0'
+    raccourcis: null
+    jsclick: null
+    jsfocus: null
+    jsblur: null
+    jschange: null
+    jsdblclick: null
+    jsrclick: null
+  ChampsEcranUtilisateur_3:
+    EcranUtilisateur: EcranUtilisateur_main
+    nom_champ: manageuser
+    type_champ: lbr
+    est_lecture_seule: false
+    est_notnull: false
+    val_def: null
+    val_min: null
+    val_max: null
+    type_widget: buttonGoModule
+    option_type_widget: module=pUser
+    formule_calcul: null
+    calcul_systematique: false
+    css_attr: null
+    css_class: null
+    libelle: 'Manage users'
+    info_bulle: 'Manage software users'
+    message_aide: null
+    evenementiel: false
+    contextuel: null
+    numero_ordre: '0'
+    raccourcis: null
+    jsclick: null
+    jsfocus: null
+    jsblur: null
+    jschange: null
+    jsdblclick: null
+    jsrclick: null
+EcranUtilisateur:
+  EcranUtilisateur_main:
+    ChampsEcranUtilisateur: ChampsEcranUtilisateur_main
+    table_liee: null
+    mode_rendu: htm
+    description: null
+    template: "<h1>Welcome to your new brand application</h1>\r\n\r\n<div id=\"mainhelp\">\r\n<h2 style=\"font-style:italic\">What to do now ?</h2>\r\n​\r\n\r\n<div id=\"mainactions\">&nbsp;\r\n<table align=\"center\" border=\"0\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:800px\">\r\n	<tbody>\r\n		<tr>\r\n			<td>&nbsp;</td>\r\n			<td style=\"width:123px\">$manageDB</td>\r\n			<td style=\"width:35px\">&nbsp;</td>\r\n			<td style=\"width:119px\">$managescr</td>\r\n			<td style=\"width:35px\">&nbsp;</td>\r\n			<td style=\"width:427px\">$manageuser</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n</div>\r\n</div>\r\n"
+    script: null
+    declaration: null
+    destination: scr
+    template_name: layout

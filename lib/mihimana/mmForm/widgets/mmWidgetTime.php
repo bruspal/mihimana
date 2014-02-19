@@ -1,0 +1,146 @@
+<?php
+/*------------------------------------------------------------------------------
+-------------------------------------
+Mihimana : the visual PHP framework.
+Copyright (C) 2012-2014  Bruno Maffre
+contact@bmp-studio.com
+-------------------------------------
+
+-------------------------------------
+@package : lib
+@module: mmForm/widgets
+@file : mmWidgetTime.php
+-------------------------------------
+
+This file is part of Mihimana.
+
+Mihimana is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mihimana is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+------------------------------------------------------------------------------*/
+
+
+class mmWidgetTime extends mmWidgetText {
+  
+  protected $withSec = false;
+  
+  /**
+   *
+   * @param type $name
+   * @param type $value
+   * @param type $attributes l'attribut optionel withSec a true pour forcer la saisie/affichage des secondes (pas encore implemente)
+   */
+  public function __construct($name, $value = '', $attributes = array()) {
+    if (isset($attributes['withSec'])) {
+      if ($attributes['withSec'] === true) {
+        $this->withSec = true;
+      }
+      else {
+        $this->withSec = false;
+      }
+      unset ($attributes['withSec']);
+    }
+    $this->addAttribute('size', $this->withSec ? 8 : 6);
+    parent::__construct($name, $value, $attributes);
+    $this->addCssClass('time');
+    $this->addJavascript('checkTime', sprintf("mdJsCheckTime($('#%s'));\n", $this->attributes['id']));
+  }
+  
+  public function clean() {
+    //On check la validite de l'heure
+    parent::clean();
+    
+    $value = $this->attributes['value'];
+    if ($value != '') {
+      if ($this->withSec) {
+        if (strlen($value) == 6) {
+          //saisie de type HHMMSS
+          $value = substr($value, 0, 2).':'.substr($value, 2, 2).':'.substr($value, 4,2);
+        }
+      }
+      else {
+        if (strlen($value) == 4) {
+          //saisie de type HHMM
+          $value = substr($value, 0, 2).':'.substr($value, 2, 2);
+        }
+      }
+      $hms = explode(":", $value);
+      if ($hms == $value) {
+        //De base le format est pas valable
+        $error = 'L\'heure doit etre au format HH:MM ou HHMM';
+        $this->errors[] = $error;
+        $this->dbValue = null;
+        throw new mmExceptionWidget($error);
+      }
+      if ($this->withSec) {
+        list ($hour, $min, $sec) = $hms;
+      }
+      else {
+        list ($hour, $min) = $hms;
+        $sec = '00';
+      }
+      //On verifie maintenant la validiter des intervals
+      if (strlen($hour) != 2 || (int)$hour < 0 || (int)$hour > 24) {
+        $error = 'L\'heure doit etre comprise entre 00 et 24';
+        $this->errors[] = $error;
+        $this->dbValue = null;
+        throw new mmExceptionWidget($error);
+      }
+      if (strlen($min) != 2 || (int)$min < 0 || (int)$min > 60) {
+        $error = 'Les minutes doivent etre comprises entre 00 et 60';
+        $this->errors[] = $error;
+        $this->dbValue = null;
+        throw new mmExceptionWidget($error);
+      }
+      if (strlen($sec) != 2 || (int)$sec < 0 || (int)$sec > 60) {
+        $error = 'Les secondes doivent etre comprises entre 00 et 60';
+        $this->errors[] = $error;
+        $this->dbValue = null;
+        throw new mmExceptionWidget($error);
+      }
+      
+      $this->dbValue = sprintf('%s:%s:%s', $hour, $min, $sec);
+      if ($this->withSec) {
+        $this->attributes['value'] = sprintf('%s:%s:%s', $hour, $min, $sec);
+      }
+      else {
+        $this->attributes['value'] = sprintf('%s:%s', $hour, $min);
+      }
+      
+    }
+    else {
+      $this->dbValue = null;
+    }
+  }
+  
+  public function dbClean() {
+    if ( ! $this->dbValue) {
+      $this->setValue('');
+    }
+    else {
+      if (strlen($this->dbValue == 8)) {
+        list ($hour, $min, $sec) = explode(':', $this->dbValue);
+      }
+      else {
+        list ($hour, $min) = explode(':', $this->dbValue);
+        $sec = '00';
+      }
+      if ($this->withSec) {
+        $this->attributes['value'] = sprintf('%s:%s:%s', $hour, $min, $sec);
+      }
+      else {
+        $this->attributes['value'] = sprintf('%s:%s', $hour, $min);
+      }
+    }
+  }
+}
+?>

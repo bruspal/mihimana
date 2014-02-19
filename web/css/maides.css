@@ -1,0 +1,197 @@
+/*
+ * Style des fenetres modale
+ */
+ 
+#__mdPopup {
+    font-style: italic;
+    top: 17%;
+    left: 50%;
+    width: 400px;
+    margin-left: -200px;
+    padding: 10px;
+    max-height: 400px;
+}
+
+#__mdDialog {
+    top: 2%;
+    left: 50%;
+    width: 1000px;
+    max-height: 700px;
+    margin-left: -500px;
+    padding: 3px;
+}
+
+#__mdDialog .mdModalContent {
+    max-height: 663px;
+}
+
+.mdModalWindow {
+    display: none;
+    position: fixed;
+    background-color: #00F;
+    color: #FF0;
+    border: 1px solid black;
+}
+
+.mdModalWindow .windowBar {
+  background-color: #08F;
+  text-align: center;
+  font-weight: bold;
+  font-size: large;
+}
+
+.mdModalWindow .mdModalContent {
+  background-color: #00A;
+  margin: 0px;
+  border: 1px solid black;
+  padding: 5px 5px 10px 5px;
+  overflow: auto;
+}
+
+.mdModalWindow .mdModalContent fieldset {
+  background-color: #00A;
+  border: 3px ridge yellow;
+  padding: 5px 5px 10px 5px;
+  overflow: auto;
+}
+
+.mdXClose {
+  float: right;
+}
+
+.mdModalOverlay { background-color: #00F; }
+
+.mdWidgetSub {
+  z-index: 5000;
+  background-color: #FFD;
+  padding: 5px;
+  border: 1px solid black;
+  font-size: 10pt;
+  font-weight: normal;
+  border-radius:4px;
+  -moz-border-radius:4px;
+  -webkit-border-radius:4px;
+  box-shadow: 3px 3px 15px #bbb;  
+  -moz-box-shadow: 3px 3px 15px #bbb;
+  -webkit-box-shadow: 3px 3px 15px #bbb;
+}
+
+table.login_table {
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    padding:5px;
+    border:             #aaa solid 1px;
+    background:         #eef;
+    box-shadow: 1px 1px 2px #fff inset;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3em;
+    margin-top: 3em;
+}
+
+table.login_table .titre {
+    font-weight: bold;
+    font-size: 18px;
+    color: #444;
+    padding:5px 10px;
+    border-radius:2px;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border:1px solid #aaa;
+    background-color:   #fff; 
+    -moz-box-shadow:3px 3px 15px #bbb;
+    -webkit-box-shadow:3px 3px 15px #bbb;
+    box-shadow:3px 3px 15px #bbb;
+}
+
+table.login_table th {
+  font-weight: bolder;
+  font-size: 16px;
+  text-align: center;
+  width: 200px;
+}
+
+table.login_table td {
+  text-align: center;
+}
+
+/*
+ * les style pour les interfaces administrateur
+ */
+
+div.adminBox {
+  text-align: left;
+  margin: 0px;
+  padding: 0px;
+/*  height: 0px; 
+  line-height: 0px; */
+  z-index: 1000000;
+  position: absolute;
+}
+
+div.adminBox > span {
+  background-color: #FF8F00;
+  font-size: 8px;
+  border: solid black 1px;
+  padding: 0px 2px 0px 2px;
+  margin: 0px;
+  height: 0px; 
+  line-height: 0px;
+  opacity: 0.4;
+  cursor:pointer;
+}
+
+div.adminBox > div {
+  background-color: #F7EDE1;
+  font-size: 9px;
+  border: solid black 1px;
+  padding: 5px;
+  margin-left: 0px;
+  margin-right: auto;
+  height: auto;
+}
+
+.mdHelpBubble {
+  color: black;
+  position: absolute;
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  border-right-style: dotted;
+  border-left-style: dotted;
+  border-bottom-style: dotted;
+  border-top-style: dotted;
+  border-right-width: 1px;
+  border-left-width: 1px;
+  border-bottom-width: 1px;
+  border-top-width: 1px;
+  border-right-color: #ff0000;
+  border-left-color: #ff0000;
+  border-bottom-color: #ff0000;
+  border-top-color: #ff0000;
+  text-align: center;
+  background-color: #fefedd;
+  z-index: 6000;
+}
+
+.affRO {
+    background-color: white;
+    display: inline-block;
+}
+/* Background iframe styling for IE6. Prevents ActiveX bleed-through (<select> form elements, etc.) */
+/* iframe.jqm {position:absolute;top:0;left:0;z-index:-1;
+	width: expression(this.parentNode.offsetWidth+'px');
+	height: expression(this.parentNode.offsetHeight+'px');
+}
+*/
+/* Fixed posistioning emulation for IE6
+     Star selector used to hide definition from browsers other than IE6
+     For valid CSS, use a conditional include instead */
+/* html .mdModalWindow {
+     position: absolute;
+     top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(17 * (document.documentElement.offsetHeight || document.body.clientHeight) / 100) + 'px');
+}
+*/

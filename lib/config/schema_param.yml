@@ -1,0 +1,379 @@
+## Schema de la base de donnée du moteur de base
+DescriptionMenu:
+  # Table de stockage des parametres de menu
+  #tableName: T100
+  connection: data
+  columns:
+    id:
+      type: string(4)
+      primary: true
+      autoincrement: false
+      default: ''
+    label:
+      type: string(40)
+      notnull: true
+      default: ''
+    script:
+      type: string(40)
+      notnull: true
+      default: ''
+    nom:
+      type: string(30)
+      notnull: true
+      primary: true
+      default: ''
+
+TableUtilisateur:
+  #tableName: T101
+  connection: data
+  columns:
+    nom_table:
+      type: string(20)
+      notnull: true
+      default: ''
+      primary: true
+    emplacement:
+      type: string(20)
+      notnull: true
+      default: ''
+    nom_table_base:
+      type: string(20)
+    description:
+      type: string(2000)
+#  relations:
+#    ChampsTableUtilisateur:
+#      local: nom_table
+#      foreign: nom_table
+#      type: many
+
+###Description des champs des tables editable par les utilisateurs
+ChampsTableUtilisateur:
+  #Description du schema de la base de données
+  #tableName: T102
+  connection: data
+  columns:
+    nom_table:
+      type: string(20)
+      notnull: true
+    nom_champ:
+      type: string(40)
+      notnull: true
+    type_champ:
+      type: string
+      notnull: true
+#      values: [boolean, integer, float, decimal, string, array, object, clob, blob, timestamp, time, date, enum, gzip]
+      default: string
+    option_type_champ:
+      type: string(20)
+    est_autoincrement:
+      type: boolean
+      notnull: true
+      default: false
+    est_primary:
+      type: boolean
+      notnull: true
+      default: false
+    est_notnull:
+      type: boolean
+      notnull: true
+      default: false
+    est_index:
+      type: boolean
+      notnull: true
+      default: false
+    est_recherche:
+      type: boolean
+      notnull: true
+      default: false
+    est_lecture_seule:
+      type: boolean
+      notnull: true
+      default: false
+    val_def:
+      type: clob
+    val_min:
+      type: clob
+    val_max:
+      type: clob
+    type_widget:
+      type: string(100)
+    option_type_widget:
+      type: string(100)
+    formule_calcul:
+      type: clob
+    calcul_systematique: #si a true calcule la valeur du champs a chaque utilisation du champ, sinon calcul seulement a la creation
+      type: boolean
+      notnull: true
+      default: false
+    css_attr:
+      type: string
+    css_class:
+      type: string
+    javascript:
+      type: array(32768)
+    libelle:
+      type: string(100)
+    info_bulle:
+      type: string(255)
+    message_aide:
+      type: clob
+    evenementiel:
+      type: boolean
+      notnull: true
+      default: false
+#  relations:
+#    TableUtilisateur:
+#      local: nom_table
+#      foreign: nom_table
+#      type: one
+
+EcranUtilisateur:
+  connection: data
+  columns:
+    nom_ecran:
+      type: string(30)
+      notnull: true
+      default: ''
+      primary: true
+    table_liee:
+      type: string(30)
+      notnull: false
+    mode_rendu:
+      type: string(3)
+      notnull: true
+      default: 'htm'
+    description:
+      type: string(2000)
+    template:
+      type: clob
+    script:
+      type: clob
+    declaration:
+      type: clob
+    destination:
+      type: string(3)
+      default: 'scr'
+    template_name:
+      type: string(80)
+      default: 'layout'
+      notnull: true
+  relations:
+    ChampsEcranUtilisateur:
+      local: nom_ecran
+      foreign: nom_ecran
+      type: many
+
+ChampsEcranUtilisateur:
+  #Description du schema de la base de données
+  connection: data
+  columns:
+    nom_ecran:
+      type: string(20)
+      notnull: true
+    nom_champ:
+      type: string(40)
+      notnull: true
+    type_champ:
+      # variable lié a la table, champs libre
+      type: string(3)
+      notnull: true
+    est_lecture_seule:
+      type: boolean
+      notnull: true
+      default: false
+    est_notnull:
+      type: boolean
+      notnull: true
+      default: false
+    val_def:
+      type: clob
+    val_min:
+      type: clob
+    val_max:
+      type: clob
+    type_widget:
+      type: string(100)
+    option_type_widget:
+      type: clob
+    formule_calcul:
+      type: clob
+    calcul_systematique: #si a true calcule la valeur du champs a chaque utilisation du champ, sinon calcul seulement a la creation
+      type: boolean
+      notnull: true
+      default: false
+    css_attr:
+      type: string
+    css_class:
+      type: string
+    libelle:
+      type: string(100)
+    info_bulle:
+      type: clob
+    message_aide:
+      type: clob
+    evenementiel:
+      type: boolean
+      notnull: true
+      default: false
+    contextuel:
+      type: string(60)
+    numero_ordre:
+      type: integer(5)
+      notnull: true
+      default: 0
+    raccourcis:
+      type: string(30)
+    jsclick:
+      type: clob
+    jsfocus:
+      type: clob
+    jsfocus:
+      type: clob
+    jsblur:
+      type: clob
+    jschange:
+      type: clob
+    jsdblclick:
+      type: clob
+    jsrclick:
+      type: clob
+  relations:
+    EcranUtilisateur:
+      local: nom_ecran
+      foreign: nom_ecran
+      type: one
+      
+Tables:
+  connection: data
+  columns:
+    id_table:
+      type: string(30)
+      notnull: true
+      default: ''
+    nom: string(30)
+    valeur: string(100)
+    groupe: string(30)
+    libre1: string()
+    libre2: string()
+  indexes:
+    idNom:
+      fields: [id_table, nom]
+      type: unique
+
+EnchainementProgrammes:
+  connection: data
+  columns:
+    nom_enchainement:
+      type: string(50)
+      notnull: true
+    nom_programme:
+      type: string(50)
+      notnull: true
+    type_programme:
+      type: string(3)
+      notnull: true
+    numero_ordre:
+      type: integer(4)
+      notnull: true
+      default: 1
+  indexes:
+    idNom:
+      fields: [nom_enchainement, nom_programme, numero_ordre]
+      type: unique
+
+Ged:
+  connection: data
+  columns:
+    date_creation:
+      type: timestamp
+    titre:
+      type: string(200)
+      default: ''
+    commentaire:
+      type: clob
+    document:
+      type: blob
+    miniature:
+      type: blob
+    type_document:
+      type: string(3)
+      default: ''
+    cle_0:
+      type: string(50)
+      default: ''
+    cle_1:
+      type: string(50)
+      default: ''
+    cle_2:
+      type: string(50)
+      default: ''
+    cle_3:
+      type: string(50)
+      default: ''
+    cle_4:
+      type: string(50)
+      default: ''
+    cle_5:
+      type: string(50)
+      default: ''
+    cle_6:
+      type: string(50)
+      default: ''
+    cle_7:
+      type: string(50)
+      default: ''
+    cle_8:
+      type: string(50)
+      default: ''
+    cle_9:
+      type: string(50)
+      default: ''
+  indexes:
+    idCle:
+      fields: [cle_0, cle_1, cle_2, cle_3, cle_4, cle_5, cle_6, cle_7, cle_8, cle_9]
+    idDate:
+      fields: [date_creation]
+# Table des utilisateurs
+Utilisateur:
+  connection: data
+  columns:
+    login:
+      type: string(20)
+      notnull: true
+      default: ''
+    password:
+      type: string(50)
+      notnull: true
+      default: ''
+    salt:
+      type: string(30)
+      notnull: true
+      default: ''
+    actif:
+      type: boolean
+      notnull: true
+      default: 0
+    super_admin:
+      type: boolean
+      notnull: true
+      default: 0
+    nom:
+      type: string(40)
+    prenom:
+      type: string(30)
+    email:
+      type: string(60)
+    code_compagnie:
+      type: string(15)
+  indexes:
+    idLogin:
+      fields: [login]
+
+##Table permettant de connaitre la version de base de donnée. 1 lors de l'installation initiale
+#DBVersion:
+#  connection: data
+#  columns:
+#    version:
+#      type: integer(11)
+
+  

@@ -1,0 +1,512 @@
+/* --- STYLES DE PERSONNALISE --- */
+/*
+ * jusqu'ici c'est verifié
+ */
+/* Page */
+body {
+    background: none repeat scroll 0 0 whitesmoke;
+    width: 1260px;
+    font-family: monospace;
+    font-size: 14px;
+/*    font-weight: bold; */
+    margin: auto;
+    background-attachment: fixed;
+    background-image: url('../images/wild_oliva.png');
+    background-position-x: center;
+}
+
+body.popup {
+  width: 800px;
+  height: 600px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0px;
+}
+
+body #header {
+    height: 80px;
+    width: 1260px;
+    position: fixed;
+    top: 0px;
+    background-color: whitesmoke;
+    border: 3px outset #AAB;
+    border-bottom-width: 0px; 
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
+    z-index: 1000;
+}
+
+body #header #mainLogo {
+    width: 120px;
+    float: left;
+}
+
+body #header #mainToolsBar {
+    margin-top: 40px;
+    display: block;
+    margin-left: 15px;
+    font-size: 10pt;
+    font-weight: bolder;
+}
+
+
+body #content {
+    margin-top: 70px;
+    background-color: whitesmoke;
+    border: 3px outset #AAB;
+    border-top-width: 0px;
+    padding: 2px;
+    width: 1260px;
+}
+
+body.popup #content {
+  width: 800px;
+  height: 600px;
+  margin: 3px auto;
+  background-color: whitesmoke;
+  border: 3px outset #AAB;
+  padding: 5px;
+}
+
+
+h1 {
+    font-family: sans-serif;
+}
+
+_fieldset{
+  background-color: #EEF;
+  border-width: 1px;
+  border-style: solid;
+  margin: 2px;
+  padding: 5px;
+}
+
+fieldset {
+    margin-top:         1em;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    padding:5px;
+    border:             #aaa solid 1px;
+    padding:            1.5em;
+    background:         #eef;
+    /*text-shadow: 0 1px 0 #fff;
+    -moz-box-shadow: 1px 1px 2px #fff inset;
+    -webkit-box-shadow: 1px 1px 2px #fff inset;*/
+    box-shadow: 1px 1px 2px #fff inset;
+}
+
+fieldset legend, h1 {
+    font-weight:        bold;
+    color:              #444;
+    padding:5px 10px;
+    border-radius:2px;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border:1px solid #aaa;
+    background-color:   #fff; 
+    -moz-box-shadow:3px 3px 15px #bbb;
+    -webkit-box-shadow:3px 3px 15px #bbb;
+    box-shadow:3px 3px 15px #bbb;
+}
+
+#mainFlash {
+    width: 400px;
+/*    float: right; */
+    position: fixed;
+    margin-left: 800px;
+}
+/*
+ * A virer ou confirmer
+ */
+ 
+/* class générique */
+/* tableau */
+table.list {
+  border-collapse: collapse;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  color: black;
+/*  
+   border-width:1px; 
+   border-style:solid;
+   border-color:black;
+   border-collapse: collapse;
+   background-color:lightblue;
+   margin-top: 2px;
+   margin-bottom: 2px;
+*/
+}
+
+table.list td
+{
+   border-width: 0px;
+   border-style: solid;
+   border-color:black;
+   border-collapse: collapse;
+}
+
+table.list th {
+  text-align: center;
+}
+
+table.list a {
+    color : black;
+    text-decoration: none;
+}
+
+table.list thead {
+  background-color: aliceBlue;
+}
+
+table.list tbody tr:nth-child(even) {
+     background-color : gainsboro;
+     cursor : pointer;
+}
+
+table.list tbody tr:nth-child(odd) {
+     background-color : cornsilk;
+}
+
+table.list tbody tr {
+     cursor : pointer;
+}
+
+
+table.list tbody tr:hover {
+     background-color : lightgreen ;
+     cursor : pointer;
+}
+
+/* table verticale */
+table.vert {
+   border-collapse: collapse; /* Colle les bordures entre elles */
+   
+}
+
+table.vert th_ {
+   border-collapse: collapse; /* Colle les bordures entre elles */
+/*   margin: 0px;
+   padding: 0px;
+   font-weight: bold; */
+   width: 25%;
+}
+
+table.vert td {
+   border-collapse: collapse; /* Colle les bordures entre elles */
+   margin: 0px;
+   padding: 0px;
+   vertical-align: top;
+   /* border: solid 1px; */
+}
+
+/* pour les flash */
+.flash_success {
+  width: 100%;
+  background-color: #DDFFAA;
+  border: 1px solid #22AA22;
+  color: #22AA22;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  
+}
+
+.flash_error {
+  width: 100%;
+  background-color: #FFCCFF;
+  border: 1px solid #FF2255;
+  color: #FF2255;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.flash_warning {
+  width: 100%;
+  background-color: #FFCC66;
+  border: 1px solid #F19031;
+  color: #F19031;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.flash_admin {
+  width: 100%;
+  background-color: #F00;
+  border: 1px solid #FF0;
+  color: #FF0;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.flash_info {
+  width: 100%;
+  background-color: #009;
+  border: 1px solid #FF0;
+  color: #FF0;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+/* pour garantie */
+table#garantie th_.libelle{
+  width: 25%;
+}
+
+/* Table generale */
+table {
+/*   margin:  0px; */
+/*   padding: 0px; */
+  
+   width: 100%;
+}
+table td {
+/*   margin: 0px; */
+   padding: 0px 0px 0px 3px;
+   vertical-align: top;
+}
+
+table th {
+   border-collapse: collapse; /* Colle les bordures entre elles */
+  
+   margin: 0px;
+   padding: 0px 5px 0px 0px;
+   vertical-align: top;
+   text-align: left;
+   width: 25%;
+   max-width: 25%;
+/*   min-width: 200px; */
+   white-space: nowrap;
+   overflow: hidden;
+   font-weight: bold;
+   /*display: inline;*/
+}
+
+table th_ label {
+  overflow: hidden;
+}
+
+/* fieldset */
+
+/* pager */
+.pager {
+    font-family: sans-serif;
+    text-align: center;
+    background-color: #e7eef6;
+    font-size: 1.5em;
+}
+
+.pager td {
+    width: 30px;
+}
+
+.pager td:hover {
+    background-color: #f22;
+    color: #EE2;
+}
+.pager td a {
+    text-decoration: none;
+}
+
+
+/*
+ * Style specifique par elements
+ */
+
+table#choix th_ {
+  width: 100px;
+  vertical-align: middle;
+}
+
+/* style pour l'horloge */
+#horloge {
+    font-size : 20px;
+    font-weight : bold;
+    color : black;
+    text-align : center;
+    width : 100px;
+    float: right;
+    font-family: arial;
+    color: #1F2;
+    background-color: #020;
+    margin: 5px 5px 0px 0px;
+    border:5px ridge #B90;
+    border-radius:15px;
+    -moz-border-radius:15px;
+    -webkit-border-radius:15px;
+}
+
+/*
+ * specifique au formulaires
+ */
+ 
+form {
+  padding: 0px;
+  margin: 0px;
+  font-family: inherit;
+}
+
+input[type="text"], input[type="password"], textarea, select {
+/*  font-family : Arial, Helvetica, sans-serif; 
+  font-size : 10pt; */
+  border: none;
+  color: darkblue;
+  background-color: white;
+  margin: 0px;
+  border: solid 1px white;
+  font-family: inherit;
+  
+/*  width: 150px; */
+}
+select {
+  /* pour les champs desactives */
+}
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+  border: solid 1px darkblue;
+  background-color: #dbffdb;
+}
+
+select:focus {
+  border: solid 0px darkblue;
+  background-color: #dbffdb;
+}
+
+input[disabled="disabled"], select[disabled="disabled"], textarea[disabled="disabled"] {
+  border: solid 1px lightblue;
+  background-color: transparent;
+}
+
+form table th_ {
+  text-align: right;
+  padding-right: 5px;
+  width: 25%;
+} 
+
+
+/*
+ * cas particulers 
+ */
+ .accompte {
+   color: red;
+ }
+
+ 
+
+ul.error_list {
+    visibility:hidden;
+    position:absolute;
+    left:-10000px;
+    top:auto;
+    overflow:hidden;
+}
+ 
+ .error_list+input {
+     background-color: lightpink;
+ }
+ 
+ label th_ {
+     display: table-cell;
+     vertical-align: middle;
+     
+ }
+ 
+th_~td:before {
+    vertical-align: top;
+    content: ": ";
+}
+
+select{
+    border:none;
+    
+    
+}
+_input{
+    margin:0px;
+    padding:0px;
+    height:16px;
+}
+
+_input[type=button], _input[type="submit"] {
+    border:1px;
+    border-style: groove ;
+    margin-left: 3px;
+    height:auto;
+    margin-top: 0px;
+    min-width: 70px;
+    margin-bottom: 0px;
+    padding: 0px 2px 3px 2px;
+    background-color: blue;
+    color: yellow;
+    font-family: inherit;
+}
+
+_input {
+  z-index: 1000;
+}
+input[type="button"]:disabled {
+  border: solid 1px lightblue;
+  background-color: #AAA;
+}
+
+input[type=button]:hover, input[type=button]:focus, input[type="submit"]:focus  {
+    background-color: #66f;
+    color: yellow;
+}
+
+
+input[value="..."]{
+    min-width: 30px;
+}
+
+legend{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+input.mdError, select.mdError, textarea.mdError, .errors {
+  background-color: lightpink;
+}
+
+span.mdError {
+  background-color: #F00;
+  color: #FF0;
+}
+/*
+input.mdError:before {
+  content: "X";
+}
+*/
+input.mdOk {
+  background-color: #EFE;
+}
+
+/*
+.notnull {
+  color: red;
+}
+*/
+
+div.errors {
+  background-color: lightpink;
+/*  position: absolute; */
+  display: inline-block;
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+.saisie_new {
+  background-color: #FF0;
+}
+
