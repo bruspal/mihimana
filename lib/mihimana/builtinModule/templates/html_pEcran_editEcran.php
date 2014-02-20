@@ -65,14 +65,14 @@ $form->setAction($action);
   function editAttribut()
   {
     champSelectionne = $('#liste_champ_id').val();
-    mdAjaxHtmlDialog('?module=pEcranPopup&action=editer&c='+champSelectionne);
+    mmAjaxHtmlDialog('?module=pEcranPopup&action=editer&c='+champSelectionne);
   }
   
   function assignVar()
   {
     contenu = $('#template_id').val();
     nbrVar = contenu.split(/\$/g).length - 1;
-    mdAjaxHtmlDialog('?module=pEcranService&action=editer');
+    mmAjaxHtmlDialog('?module=pEcranService&action=editer');
   }
   
   function reinitSaisie()
@@ -121,12 +121,12 @@ $form->setAction($action);
         var finSaisie = champText.val().substr(positionCurseur+1);
         var positionFinVar = finSaisie.indexOf(' ');
         var nomChamp = finSaisie.substr(0, positionFinVar);
-        mdAjaxHtmlDialog('?module=pEcranAssign&o=e&champ='+nomChamp, 'Modification de la variable '+nomChamp);
+        mmAjaxHtmlDialog('?module=pEcranAssign&o=e&champ='+nomChamp, 'Modification de la variable '+nomChamp);
         cleanTextArea();
       }
       else
       {
-        mdAjaxHtmlDialog('?module=pEcranAssign&o=i', 'Insertion d\'une variable');
+        mmAjaxHtmlDialog('?module=pEcranAssign&o=i', 'Insertion d\'une variable');
       }
     }
   }
@@ -196,12 +196,12 @@ $form->setAction($action);
             var finSaisie = $(this).val().substr(cPosition+1);
             var positionFinVar = finSaisie.indexOf(' ');
             var nomChamp = finSaisie.substr(0, positionFinVar);
-            mdAjaxHtmlDialog('?module=pEcranAssign&o=e&champ='+nomChamp, 'Modification de la variable '+nomChamp);
+            mmAjaxHtmlDialog('?module=pEcranAssign&o=e&champ='+nomChamp, 'Modification de la variable '+nomChamp);
             cleanTextArea();
           }
           else
           {
-            mdAjaxHtmlDialog('?module=pEcranAssign&o=i', 'Insertion d\'une variable');
+            mmAjaxHtmlDialog('?module=pEcranAssign&o=i', 'Insertion d\'une variable');
           }
         }
       }
@@ -225,7 +225,7 @@ $form->setAction($action);
             
       if (event.which == 112)
       {
-        mdAjaxHtmlDialog('aide/aideEcran.php');
+        mmAjaxHtmlDialog('aide/aideEcran.php');
 //        openWindow('aide/aideEcran.php');
         event.stopPropagation();
         event.preventDefault();
@@ -235,12 +235,12 @@ $form->setAction($action);
         $('#retour_id').hide();
         if (carCurseur == '$')
         {
-          mdAjaxHtmlDialog('?module=pEcranAssign&o=e&n='+nbInsertion, 'Assignation de la variable N°'+nbInsertion);
+          mmAjaxHtmlDialog('?module=pEcranAssign&o=e&n='+nbInsertion, 'Assignation de la variable N°'+nbInsertion);
           event.preventDefault(); //on arrete le comportement par defaut. i.e. on interdit l'insertion du $'
         }
         else
         {
-          mdAjaxHtmlDialog('?module=pEcranAssign&o=i&n='+nbInsertion, 'Assignation de la variable N°'+nbInsertion);
+          mmAjaxHtmlDialog('?module=pEcranAssign&o=i&n='+nbInsertion, 'Assignation de la variable N°'+nbInsertion);
         }
         //on cache les truc pour fermer
 //        $('.mdModalClose').hide();
@@ -271,7 +271,7 @@ $form->setAction($action);
                 var nbInsertion = recherche.length;
               }
               
-              mdAjaxHtmlDialog('?module=pEcranAssign&action=supprime&n='+nbInsertion, 'Suppression de la variable N°'+nbInsertion);
+              mmAjaxHtmlDialog('?module=pEcranAssign&action=supprime&n='+nbInsertion, 'Suppression de la variable N°'+nbInsertion);
             }
           }
           if (event.which == 46)
@@ -288,7 +288,7 @@ $form->setAction($action);
               {
                 var nbInsertion = recherche.length+1;
               }
-              mdAjaxHtmlDialog('?module=pEcranAssign&action=supprime&n='+nbInsertion, 'Suppression de la variable N°'+nbInsertion);
+              mmAjaxHtmlDialog('?module=pEcranAssign&action=supprime&n='+nbInsertion, 'Suppression de la variable N°'+nbInsertion);
             }
           }
         }
@@ -312,11 +312,11 @@ $form->setAction($action);
               selection = CKEDITOR.instances.template_id.getSelection().getSelectedText();
               if (selection.trim() == '')
               {
-                mdAjaxHtmlDialog('?module=pEcranAssign&o=i', 'Insertion de la variables');
+                mmAjaxHtmlDialog('?module=pEcranAssign&o=i', 'Insertion de la variables');
               }
               else
               {
-                mdAjaxHtmlDialog('?module=pEcranAssign&o=e&champ='+selection, 'Modification de la variable '+selection);
+                mmAjaxHtmlDialog('?module=pEcranAssign&o=e&champ='+selection, 'Modification de la variable '+selection);
               }
             }
           });
@@ -326,10 +326,10 @@ $form->setAction($action);
             selection = CKEDITOR.instances.template_id.getSelection().getSelectedText();
             if (selection.trim() == '')
             {
-              mdAjaxHtmlDialog('?module=pEcranAssign&o=i', 'Insertion de la variables');
+              mmAjaxHtmlDialog('?module=pEcranAssign&o=i', 'Insertion de la variables');
             }
             {
-              mdAjaxHtmlDialog('?module=pEcranAssign&o=e&champ='+selection, 'Modification de la variable '+selection);
+              mmAjaxHtmlDialog('?module=pEcranAssign&o=e&champ='+selection, 'Modification de la variable '+selection);
             }
           });
     });

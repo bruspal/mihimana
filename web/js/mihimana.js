@@ -1,9 +1,9 @@
 /*
  * Fonctions génériques
- */ 
+ */
 function openWindow(url, windowName, type) {
     if (windowName == undefined) {
-        windowName='subWindow';
+        windowName = 'subWindow';
     }
     switch (type) {
         case 'large':
@@ -16,7 +16,7 @@ function openWindow(url, windowName, type) {
 }
 
 function goPage(url) {
-    document.location.href=url;
+    document.location.href = url;
 }
 
 function refreshParent() {
@@ -30,12 +30,12 @@ function goPageParent(url)
 
 /*
  * Manipulation des widgets
- */ 
+ */
 function addToSelect(idSelect, dataObject) {
-    $.each(dataObject, function(key, label){
+    $.each(dataObject, function(key, label) {
         $(idSelect).append(
-            $('<option></option>').val(key).html(label)
-            )
+                $('<option></option>').val(key).html(label)
+                )
     });
 }
 
@@ -46,43 +46,43 @@ $.ajaxSetup({
     type: "GET",
     statusCode: {
         404: function() {
-            mdPopup('Page introuvable')
-            },
+            mmPopup('Page introuvable')
+        },
         500: function() {
-            mdPopup('Erreur interne')
-            }
+            mmPopup('Erreur interne')
+        }
     },
-    error: function(XHR, textError){
-        mdPopup("Erreur: "+textError+"\n"+XHR.responseText+"\nLa session a expire veuillez vous reconnecter");
+    error: function(XHR, textError) {
+        mmPopup("Erreur: " + textError + "\n" + XHR.responseText + "\nLa session a expire veuillez vous reconnecter");
     },
     dataType: "json"
 });
 /*
-function ajaxService(url, data)
-{
-  
-}
-
-function ajxService(remote)
-{
-  var resultat;
-  $.ajax(remote, {
-    dataType: "html",
-    async: false,
-    error: function(XHR, textError){
-      alert('retour erreur '+textError+XHR.responseText);
-    },
-    success: function(received){
-       resultat =received;
-    }
-  });
-  return resultat;
-}
-*/
-function mdAjxSubmit(formObject, resultContainer) {
+ function ajaxService(url, data)
+ {
+ 
+ }
+ 
+ function ajxService(remote)
+ {
+ var resultat;
+ $.ajax(remote, {
+ dataType: "html",
+ async: false,
+ error: function(XHR, textError){
+ alert('retour erreur '+textError+XHR.responseText);
+ },
+ success: function(received){
+ resultat =received;
+ }
+ });
+ return resultat;
+ }
+ */
+function mmAjxSubmit(formObject, resultContainer) {
     if (resultContainer == undefined)
     {
-        resultContainer = mdGetModalContainer('__mdDialog');
+        resultContainer = mmGetModalContainer('__mdDialog');
     }
     $.ajax({
         url: formObject.attr('action'),
@@ -95,7 +95,7 @@ function mdAjxSubmit(formObject, resultContainer) {
     });
 }
 
-function mdAjaxChangeAction(formObject, nvAction) {
+function mmAjaxChangeAction(formObject, nvAction) {
     formObject.attr('action', nvAction);
     toto = '';
     tata = '';
@@ -106,39 +106,39 @@ function mdAjaxChangeAction(formObject, nvAction) {
 //Gestion des popup
 function ajxPopup(content, title)
 {
-    alert('desuet. Utiliser mdPopup');
-    mdPopup(content, file);
+    alert('desuet. Utiliser mmPopup');
+    mmPopup(content, file);
 }
 
-function mdPopup(content, title){
+function mmPopup(content, title) {
     if (content == undefined) {
         content = '';
     }
     if (title == undefined) {
         title = 'Informations';
     }
-    mdGetModalContainer('__mdPopup');
+    mmGetModalContainer('__mmPopup');
     $('#__jqmPopup').jqm({
         modal: true
     });
-    $('#__mdPopup .title').html(title);
-    $('#__mdPopup .mdModalContent').html(content);
-    $('#__mdPopup').jqmShow();
+    $('#__mmPopup .title').html(title);
+    $('#__mmPopup .mdModalContent').html(content);
+    $('#__mmPopup').jqmShow();
 }
 
-function mdAjaxHtmlDialog(remote, title){
+function mmAjaxHtmlDialog(remote, title) {
     if (title == undefined) {
         title = 'Fenetre';
     }
-    if(remote.indexOf('?') == -1) { //on force la réponse sous forme http
+    if (remote.indexOf('?') == -1) { //on force la réponse sous forme http
         remote += '?_fhr_=1';
     } else {
         remote += '&_fhr_=1';
     }
-  
-    mdGetModalContainer('__mdDialog');
+
+    mmGetModalContainer('__mdDialog');
     $('#__mdDialog .title').text(title);
-  
+
     $('#__mdDialog').jqm({
         ajax: remote,
         modal: true,
@@ -147,9 +147,9 @@ function mdAjaxHtmlDialog(remote, title){
     $('#__mdDialog').jqmShow();
 }
 
-function mdGetModalContainer(containerName)
+function mmGetModalContainer(containerName)
 {
-    container = $('#'+containerName);
+    container = $('#' + containerName);
     if (container.length == 0)
     {
         container = $('<div>').addClass('mdModalWindow').attr('id', containerName).hide();
@@ -162,14 +162,14 @@ function mdGetModalContainer(containerName)
         });
         $(document.body).append(container);
     }
-  
+
     return container;
 }
 
 /*
  * Gestion des widgets
  */
-function mdAjaxSubWindow(idSubWindow, remote)
+function mmAjaxSubWindow(idSubWindow, remote)
 {
     $.ajax({
         url: remote,
@@ -178,12 +178,12 @@ function mdAjaxSubWindow(idSubWindow, remote)
             {
                 htmlRes = retour.data.replace('<_script', '<script').replace('<_/script', '</script');
                 //        $('#'+idSubWindow+' .subContent').html(htmlRes);
-                $('#'+idSubWindow+' .subContent')[0].innerHTML = htmlRes;
-                $('#'+idSubWindow).show();
+                $('#' + idSubWindow + ' .subContent')[0].innerHTML = htmlRes;
+                $('#' + idSubWindow).show();
             }
             else
             {
-                mdPopup(retour.message, 'Erreur');
+                mmPopup(retour.message, 'Erreur');
             }
         }
     });
@@ -192,15 +192,15 @@ function mdAjaxSubWindow(idSubWindow, remote)
 function pageRecordListe(nom, id, ordre)
 {
     $.ajax({
-        url: '?module=pWs&action=pg&o='+ordre+'&l='+nom,
-        success: function(data){
+        url: '?module=pWs&action=pg&o=' + ordre + '&l=' + nom,
+        success: function(data) {
             if (data.success)
             {
-                $('#'+id+'').html(data.html);
+                $('#' + id + '').html(data.html);
             }
             else
             {
-                mdPopup('Impossible de recupérer la liste');
+                mmPopup('Impossible de recupérer la liste');
             }
         }
     });
@@ -214,26 +214,26 @@ function pageRecordListe(nom, id, ordre)
 //Variable globale
 var errObject = {};
 
-function mdJsCheckLengthMax(jqObject, rule) {
-    $(jqObject).blur(function(){
-        displayError(jqObject, $(this).val().length > rule, 'Le champ ne doit pas exceder '+rule+' characteres', 'Erreur');
+function mmJsCheckLengthMax(jqObject, rule) {
+    $(jqObject).blur(function() {
+        displayError(jqObject, $(this).val().length > rule, 'Le champ ne doit pas exceder ' + rule + ' characteres', 'Erreur');
     });
 }
 
-function mdJsCheckNotnull(jqObject) {
-    jqObject.blur(function(){
+function mmJsCheckNotnull(jqObject) {
+    jqObject.blur(function() {
         displayError(jqObject, $(this).val().length == 0, 'Le champs ne peux pas etre vide');
     });
 }
 
-function mdJsCheckInteger_(jqObject, rule) {
-    jqObject.blur(function(){
-        displayError(jqObject, ! /^\d*$/.test(jqObject.val()), 'Le champ doit contenir un entier');
+function mmJsCheckInteger_(jqObject, rule) {
+    jqObject.blur(function() {
+        displayError(jqObject, !/^\d*$/.test(jqObject.val()), 'Le champ doit contenir un entier');
     });
 }
 
-function mdJsCheckInteger(jqObject) {
-    jqObject.blur(function(){
+function mmJsCheckInteger(jqObject) {
+    jqObject.blur(function() {
         //    displayError(jqObject, ! (/^\d*$/.test(jqObject)), 'Le champ doit contenir un entier');
         displayError(jqObject, false, 'Le champ doit contenir un entier');
     });
@@ -250,53 +250,59 @@ function mdJsCheckInteger(jqObject) {
 //  });
 //}
 
-function mdJsCheckReal(jqObject) {
-    jqObject.blur(function(){
-        displayError(jqObjedct, ! /^\d*.?\d*$/.test(jqObject), 'Le champ doit contenir un nombre');
+function mmJsCheckReal(jqObject) {
+    jqObject.blur(function() {
+        displayError(jqObjedct, !/^\d*.?\d*$/.test(jqObject), 'Le champ doit contenir un nombre');
     });
 }
 
-function mdJsCheckTime(jqObject, withSec) {
-  
+function mmJsCheckTime(jqObject, withSec) {
+
     if (withSec == undefined) {
         withSec = false;
-    //todo: implementer les seconde plus tard, deja present dans la version PHP
+        //todo: implementer les seconde plus tard, deja present dans la version PHP
     }
-  
+
     jqObject.blur(function() {
         valeur = jqObject.val();
-        if (valeur == '') return '';
-    
+        if (valeur == '')
+            return '';
+
         if (valeur.length == 4) {
-            valeur = valeur.substring(0,2)+':'+valeur.substring(2,4);
+            valeur = valeur.substring(0, 2) + ':' + valeur.substring(2, 4);
         }
         hour = parseInt(valeur.substring(0, 2));
         min = parseInt(valeur.substring(3, 5));
         error = false;
-        if (displayError(jqObject, hour < 0 || hour > 24, 'L\'heure doit etre entre 00 et 24')) error = true;
+        if (displayError(jqObject, hour < 0 || hour > 24, 'L\'heure doit etre entre 00 et 24'))
+            error = true;
         ;
-        if (displayError(jqObject, min < 0 || min > 60, 'Les minutes doivent etre entre 00 et 60')) error = true;
-        if ( ! error) {
-            if (hour < 10) hour='0'+hour;
-            if (min < 10) min = '0'+min;
-            jqObject.val(hour+':'+min);
+        if (displayError(jqObject, min < 0 || min > 60, 'Les minutes doivent etre entre 00 et 60'))
+            error = true;
+        if (!error) {
+            if (hour < 10)
+                hour = '0' + hour;
+            if (min < 10)
+                min = '0' + min;
+            jqObject.val(hour + ':' + min);
         }
     });
 }
 
-function mdJsCheckDate(jqObject) {
-  
+function mmJsCheckDate(jqObject) {
+
     function dateValide(d) {
         var dateRegEx = /^((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))$/;
         return d.match(dateRegEx);
     }
-  
-    jqObject.blur(function(){
+
+    jqObject.blur(function() {
         valeur = jqObject.val();
-        if (valeur == '') return '';
+        if (valeur == '')
+            return '';
 
         if (valeur.length == 8 && valeur.indexOf('-') == -1 && valeur.indexOf('/') == -1) {
-            valeur=valeur.substring(0,2)+"-"+valeur.substring(2,4)+"-"+valeur.substring(4);
+            valeur = valeur.substring(0, 2) + "-" + valeur.substring(2, 4) + "-" + valeur.substring(4);
         }
 
         if (valeur.length == 6) {
@@ -307,10 +313,10 @@ function mdJsCheckDate(jqObject) {
             else {
                 siecle = '19';
             }
-            valeur=valeur.substring(0,2)+"-"+valeur.substring(2,4)+"-"+siecle+annee;
+            valeur = valeur.substring(0, 2) + "-" + valeur.substring(2, 4) + "-" + siecle + annee;
         }
 
-        displayError(jqObject, ! dateValide(valeur), 'La date saisie n\'est pas valide. le format est jjmmaa, jjmmaaaa, jj-mm-aa ou jj-mm-aaaa.\nLe mois entre 01 et 12.\nLe jour entre 01 et 31.', 'Erreur')
+        displayError(jqObject, !dateValide(valeur), 'La date saisie n\'est pas valide. le format est jjmmaa, jjmmaaaa, jj-mm-aa ou jj-mm-aaaa.\nLe mois entre 01 et 12.\nLe jour entre 01 et 31.', 'Erreur')
         if (dateValide(valeur)) {
             jqObject.val(valeur);
         }
@@ -319,13 +325,13 @@ function mdJsCheckDate(jqObject) {
 
 //Gestion des erreurs
 function displayError(jqObject, testError, message) {
-    id = '#er_'+jqObject.attr('id');
+    id = '#er_' + jqObject.attr('id');
     //  id = '#maides_comm';
     uid = stringUID(message);
     if (testError) {
-        eval('errObject.'+uid+'="'+message+'"');
+        eval('errObject.' + uid + '="' + message + '"');
         jqObject.addClass('mdError');
-    //ajxPopup(message, 'Erreur');
+        //ajxPopup(message, 'Erreur');
     }
     else {
         delete errObject[uid];
@@ -334,16 +340,16 @@ function displayError(jqObject, testError, message) {
     //on redessine la zone d'erreur'
     $(id).empty();
     for (mess in errObject) {
-        $(id).append('<div>'+errObject[mess]+'</div>');
+        $(id).append('<div>' + errObject[mess] + '</div>');
     }
-  
+
     return testError;
 }
 
 //utilitaire
-function stringUID (enter) {
+function stringUID(enter) {
     cleaned = enter.replace(/[ \-\+@,?\.\:!'"]*/gi, '').toUpperCase();
-    result = cleaned.substr(Math.round(cleaned.length/2)-3, 6)+cleaned.length;
+    result = cleaned.substr(Math.round(cleaned.length / 2) - 3, 6) + cleaned.length;
     return result;
 }
 
@@ -352,17 +358,19 @@ function listToList(src, dest, ordered) {
     if (ordered == undefined) {
         ordered = true;
     }
-    $('#'+src+' option:selected').each(function() {
-        $('#'+dest).append($(this));
+    $('#' + src + ' option:selected').each(function() {
+        $('#' + dest).append($(this));
     });
     if (ordered) {
-        $('#'+dest+' option').get().sort(function(a, b) { 
+        $('#' + dest + ' option').get().sort(function(a, b) {
             keyA = $(a).val().toUpperCase();
             keyB = $(b).val().toUpperCase();
-            if (keyA < keyB) return -1;
-            if (keyA > keyB) return 1;
+            if (keyA < keyB)
+                return -1;
+            if (keyA > keyB)
+                return 1;
             return 0;
-        });  
+        });
     }
 }
 
@@ -374,7 +382,8 @@ function listToList(src, dest, ordered) {
 (function($) {
     $.fn.getCursorPosition = function() {
         var input = this.get(0);
-        if (!input) return; // No (input) element found
+        if (!input)
+            return; // No (input) element found
         if ('selectionStart' in input) {
             // Standard-compliant browsers
             return input.selectionStart;
@@ -387,10 +396,11 @@ function listToList(src, dest, ordered) {
             return sel.text.length - selLen;
         }
     }
-  
-    $.fn.getSelectedText = function () {
+
+    $.fn.getSelectedText = function() {
         var input = this.get(0);
-        if ( ! input) return false; //pas d'element valide'
+        if (!input)
+            return false; //pas d'element valide'
         if ('selectionStart' in input) {
             pStart = input.selectionStart;
             pStop = input.selectionEnd;
@@ -412,79 +422,79 @@ function listToList(src, dest, ordered) {
 // Full sample plugin, which does not only register a dialog window but also adds an item to the context menu.
 // To open the dialog window, choose "Open dialog" in the context menu.
 
-CKEDITOR.plugins.add( 'myplugin',
-{
-    init: function( editor )
-    {
-        editor.addCommand( 'mydialog',new CKEDITOR.dialogCommand( 'mydialog' ) );
-
-        if ( editor.contextMenu )
+CKEDITOR.plugins.add('myplugin',
         {
-            editor.addMenuGroup( 'mygroup', 10 );
-            editor.addMenuItem( 'My Dialog',
+            init: function(editor)
             {
-                label : 'Open dialog',
-                command : 'mydialog',
-                group : 'mygroup'
-            });
-            editor.contextMenu.addListener( function( element )
-            {
-                return {
-                    'My Dialog' : CKEDITOR.TRISTATE_OFF
-                };
-            });
-        }
+                editor.addCommand('mydialog', new CKEDITOR.dialogCommand('mydialog'));
 
-        CKEDITOR.dialog.add( 'mydialog', function( api )
-        {
-            // CKEDITOR.dialog.definition
-            var dialogDefinition =
-            {
-                title : 'Sample dialog',
-                minWidth : 390,
-                minHeight : 130,
-                contents : [
+                if (editor.contextMenu)
                 {
-                    id : 'tab1',
-                    label : 'Label',
-                    title : 'Title',
-                    expand : true,
-                    padding : 0,
-                    elements :
-                    [
+                    editor.addMenuGroup('mygroup', 10);
+                    editor.addMenuItem('My Dialog',
+                            {
+                                label: 'Open dialog',
+                                command: 'mydialog',
+                                group: 'mygroup'
+                            });
+                    editor.contextMenu.addListener(function(element)
                     {
-                        type : 'html',
-                        html : '<p>This is some sample HTML content.</p>'
-                    },
-                    {
-                        type : 'textarea',
-                        id : 'textareaId',
-                        rows : 4,
-                        cols : 40
-                    }
-                    ]
+                        return {
+                            'My Dialog': CKEDITOR.TRISTATE_OFF
+                        };
+                    });
                 }
-                ],
-                buttons : [ CKEDITOR.dialog.okButton, CKEDITOR.dialog.cancelButton ],
-                onOk : function() {
-                    // "this" is now a CKEDITOR.dialog object.
-                    // Accessing dialog elements:
-                    var textareaObj = this.getContentElement( 'tab1', 'textareaId' );
-                    alert( "You have entered: " + textareaObj.getValue() );
-                }
-            };
 
-            return dialogDefinition;
-        } );
-    }
-} );
+                CKEDITOR.dialog.add('mydialog', function(api)
+                {
+                    // CKEDITOR.dialog.definition
+                    var dialogDefinition =
+                            {
+                                title: 'Sample dialog',
+                                minWidth: 390,
+                                minHeight: 130,
+                                contents: [
+                                    {
+                                        id: 'tab1',
+                                        label: 'Label',
+                                        title: 'Title',
+                                        expand: true,
+                                        padding: 0,
+                                        elements:
+                                                [
+                                                    {
+                                                        type: 'html',
+                                                        html: '<p>This is some sample HTML content.</p>'
+                                                    },
+                                                    {
+                                                        type: 'textarea',
+                                                        id: 'textareaId',
+                                                        rows: 4,
+                                                        cols: 40
+                                                    }
+                                                ]
+                                    }
+                                ],
+                                buttons: [CKEDITOR.dialog.okButton, CKEDITOR.dialog.cancelButton],
+                                onOk: function() {
+                                    // "this" is now a CKEDITOR.dialog object.
+                                    // Accessing dialog elements:
+                                    var textareaObj = this.getContentElement('tab1', 'textareaId');
+                                    alert("You have entered: " + textareaObj.getValue());
+                                }
+                            };
+
+                    return dialogDefinition;
+                });
+            }
+        });
 
 function showHelp(widget)
 {
-    $('#'+widget).mouseenter(function(){
-        $('#a_'+widget).show();
+    $('#' + widget).mouseenter(function() {
+        $('#a_' + widget).show();
     });
-    $('#'+widget).mouseleave(function(){
-        $('#a_'+widget).hide();
+    $('#' + widget).mouseleave(function() {
+        $('#a_' + widget).hide();
     });
 }

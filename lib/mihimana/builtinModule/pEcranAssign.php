@@ -236,20 +236,20 @@ class pEcranAssign extends mmProgProcedural {
               nettoieChaineVariable(cPosition);
               cPosition--;
               insertChaine("$' . $donneesSaisie['nom_champ'] . '");
-              $("#__mdDialog").jqmHide();
+              $("#__mmDialog").jqmHide();
               </script>';
                     } else {
                         echo '<script type="text/javascript">
               insertChaine("' . $donneesSaisie['nom_champ'] . ' ");
-              $("#__mdDialog").jqmHide();
+              $("#__mmDialog").jqmHide();
               </script>';
                     }
                 } else {
                     //comportement en mode CKEditor
                     if ($operation == 'e') {
-                        echo '<script type="text/javascript">$("#__mdDialog").jqmHide();</script>';
+                        echo '<script type="text/javascript">$("#__mmDialog").jqmHide();</script>';
                     } else {
-                        printf('<script type="text/javascript">CKEDITOR.instances.template_id.insertText("$%s");$("#__mdDialog").jqmHide();</script>', $donneesSaisie['nom_champ']);
+                        printf('<script type="text/javascript">CKEDITOR.instances.template_id.insertText("$%s");$("#__mmDialog").jqmHide();</script>', $donneesSaisie['nom_champ']);
                     }
                 }
                 return true;
@@ -290,7 +290,7 @@ class pEcranAssign extends mmProgProcedural {
 //                execute();
 //        //on termine le programme en demandant a la popup ajax de se fermer
 //        echo '<script type="text/javascript">
-//          $("#__mdDialog").jqmHide();
+//          $("#__mmDialog").jqmHide();
 //          $("#ecran_utilisateur_id").submit();
 //          </script>';
 //        return true;
@@ -341,7 +341,7 @@ class pEcranAssign extends mmProgProcedural {
             $form->addWidget(new mmWidgetButton('annuler', 'Annuler', array('onclick' => 'reinitSaisie()')));
         } else {
             $form->addWidget(new mmWidgetButtonSubmit('Modifier', "creerOptions();$('#op_id').val('')", 'valider_champ'));
-            $form->addWidget(new mmWidgetButton('annuler', 'Annuler', array('onclick' => "$('#__mdDialog').jqmHide()")));
+            $form->addWidget(new mmWidgetButton('annuler', 'Annuler', array('onclick' => "$('#__mmDialog').jqmHide()")));
         }
 
         //On gere le nom du champ, c'est une combo si on a une table lié + un champ de saisie pour le champs libre

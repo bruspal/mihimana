@@ -7,9 +7,9 @@ contact@bmp-studio.com
 -------------------------------------
 
 -------------------------------------
-@package : %package%
-@module: %module%
-@file : %file%
+@package : tools
+@module: 
+@file : fixLicence.php
 -------------------------------------
 
 This file is part of Mihimana.
@@ -37,9 +37,9 @@ contact@bmp-studio.com
 -------------------------------------
 
 -------------------------------------
-@package : tools
-@module: 
-@file : fixLicence.php
+@package : %package%
+@module: %module%
+@file : %file%
 -------------------------------------
 
 This file is part of Mihimana.

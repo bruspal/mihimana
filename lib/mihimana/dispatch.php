@@ -65,8 +65,15 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             die;
         }
         //on est pas identifié on va vers le login
-        $dispatcher_module = 'pLogin';
-        $dispatcher_action = 'login';
+        
+        //NOTA : pour ecraser la page de login par defaut il faut mettre le pLogin.php personnalisé dans la racine de l'application
+        if (file_exists(APPLICATION_DIR.DIRECTORY_SEPARATOR.'pLogin.php')) {
+            $dispatcher_module = 'pLogin';
+            $dispatcher_action = 'login';
+        } else {
+            $dispatcher_module = 'pLoginStd';
+            $dispatcher_action = 'login';
+        }
     }
 
     //detection si c'est un appel en clair ou du https

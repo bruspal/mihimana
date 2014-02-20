@@ -9,7 +9,7 @@ contact@bmp-studio.com
 -------------------------------------
 @package : lib
 @module: builtinModule
-@file : pLogin.php
+@file : pLoginStd.php
 -------------------------------------
 
 This file is part of Mihimana.
@@ -29,7 +29,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
 
-class pLogin extends mmProg
+class pLoginStd extends mmProg
 {
   public function executeIndex(mmRequest $request) {
     if ( ! mmUser::isAuthenticated())
@@ -82,7 +82,7 @@ class pLogin extends mmProg
   public function initForm()
   {
     $form = new mmForm();
-    $form->setAction('?module=pLogin&action=login');
+    $form->setAction('?module=pLoginStd&action=login');
     $form->addWidget(new mmWidgetText('login'));
     $form->addWidget(new mmWidgetPassword('password'));
     $form->addWidget(new mmWidgetButtonSubmit());
