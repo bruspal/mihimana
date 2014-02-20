@@ -8,7 +8,7 @@ contact@bmp-studio.com
 
 -------------------------------------
 @package : lib
-@module: 
+@module: root
 @file : dispatch.php
 -------------------------------------
 
