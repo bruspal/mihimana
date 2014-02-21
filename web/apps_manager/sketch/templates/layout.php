@@ -2,14 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
     <head>
       <title>%title%</title>
-      <?php if(DEBUG): ?>
-      <meta http-equiv="cache-control" content="max-age=0" />
-      <meta http-equiv="cache-control" content="no-cache" />
-      <meta http-equiv="expires" content="0" />
-      <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-      <meta http-equiv="pragma" content="no-cache" />      
-      <?php endif; ?>
-      <?php require 'headerHtml.html' ?>
+      <?php require 'headerHtml.php' ?>
     </head>
     <body>
       <?php if(DEBUG): ?>
@@ -17,7 +10,6 @@
         <div><strong>Debug window</strong></div>
         <div id="debugZone"></div>
       </div>
-      <?php endif; ?>
       <script type="text/javascript">
         $(document).ready(function(){
           $(document.body).keydown(function(event){
@@ -36,6 +28,7 @@
           });
         });
       </script>
+      <?php endif; ?>
       <div id="mainLayout">
         <div id="header">
           <span id="horloge"></span>

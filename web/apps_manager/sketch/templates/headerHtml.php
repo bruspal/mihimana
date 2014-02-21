@@ -1,3 +1,11 @@
+<?php if(DEBUG): ?>
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />      
+<?php endif; ?>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php //inclusion de la feuille de style ?>
 <link rel="stylesheet" type="text/css" media="screen" href="css/bases.css" />
@@ -19,30 +27,9 @@
 <link rel="shortcut icon" href="favicon.ico" />
 <script>
 $(function() {    
-//    var tooltips = $(document).tooltip();
-/*
-    var tooltips = $(document).tooltip("option", "position", 
-    { position: 
-        {
-            my: "left top", 
-            at: "left top",
-            using: function(position, feedback){
-                $(this).offset({ top: 10, left: 30 });
-            }
-        } 
-    });
-*/
         $( ".stddate" ).datepicker({ dateFormat: "dd-mm-yy" });
 });
 
 </script>
 <style>
-/*
-.ui-tooltip {
-    padding: 10px 20px;
-    border-radius: 20px;
-    font: bold 14px "Helvetica Neue", Sans-Serif;
-    box-shadow: 0 0 7px black;
-}
-*/
 </style>

@@ -28,7 +28,11 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
-
+/**
+ * Slugify a string
+ * @param string $string the string
+ * @return string the slugified string
+ */
 function strSlugify($string) {
   $result = html_entity_decode($string, ENT_NOQUOTES);
 //  $result = strtolower($result);

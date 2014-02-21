@@ -28,20 +28,21 @@
   You should have received a copy of the GNU Lesser General Public License
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
+
 class mmWidgetButtonSubmit extends mmWidgetButton {
 
     protected $preSubmit;
 
     /**
-     * 
+     * submit button widget
      * @param type $label : submit button's label (Default 'OK')
-     * @param type $preSubmit : 
-     * @param type $name
-     * @param type $attributs
+     * @param type $preSubmit : javascript should be executed before perform submit
+     * @param type $name : the widget name
+     * @param type $attributs : extra attributes
      */
     public function __construct($label = 'OK', $preSubmit = '', $name = '', $attributs = array()) {
         if (!$name) {
-            $name = str_replace(' ', '_', lcfirst($label));
+            $name = strSlugify(lcfirst($label));
         }
         if ($preSubmit) {
             $this->preSubmit = $preSubmit . ';';
