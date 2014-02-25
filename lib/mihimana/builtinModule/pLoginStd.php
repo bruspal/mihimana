@@ -72,6 +72,7 @@ class pLoginStd extends mmProg {
     public function initForm() {
         $form = new mmForm();
         $form->setAction('?module=pLoginStd&action=login');
+        $form->setId('loginForm');
         $form->addWidget(new mmWidgetText('login'));
         $form->addWidget(new mmWidgetPassword('password'));
         $form->addWidget(new mmWidgetButtonSubmit());

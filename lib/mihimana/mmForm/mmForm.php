@@ -518,9 +518,25 @@ class mmForm extends mmObject implements ArrayAccess {
         $result .= $this->renderJavascript($fieldList);
         return $result;
     }
-
-    public function renderFormHeader() {
+    
+    /**
+     * start form
+     * @return string
+     */
+    public function start() {
         return sprintf('<form action="%s" method="%s" id="%s" enctype="%s">', $this->action, $this->method, $this->id, $this->enctype);
+    }
+    /**
+     * close the form zone
+     * @return string
+     */
+    public function stop() {
+        return '</form>';
+    }
+    
+    public function renderFormHeader() {
+        deprecatedMethode(__CLASS__, __METHOD__, 'start');
+        return $this->start();
     }
 
     public function renderRow($fieldList = null, $subFormsSetting = null) {

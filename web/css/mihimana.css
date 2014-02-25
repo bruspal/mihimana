@@ -116,6 +116,12 @@ table.login_table th {
 table.login_table td {
   text-align: center;
 }
+/*
+ * Style de structuration
+ */
+div.clearer {
+    clear: both;
+}
 
 /*
  * les style pour les interfaces administrateur
