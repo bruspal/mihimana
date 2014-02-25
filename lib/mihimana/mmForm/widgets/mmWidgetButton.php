@@ -49,28 +49,14 @@ class mmWidgetButton extends mmWidget {
 
     public function render($extraAttributes = array(), $replace = false) {
 
-        //Pour la futur gestion des droits
-        // si ecriture, edition, visu, delete
-        // Pour le moment on fais rien de particulier
-        //Gestion de 'laffichage ou non
-        if ($this->rendered)
-            return '';
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
-
+        $result = parent::render($extraAttributes, $replace);
+        
         if ($this->edit && $this->enabled) {
-            $this->addResultClass();
             $result = sprintf('<button name="%s" %s>%s</button>', sprintf($this->nameFormat, $this->attributes['name']), $this->generateAttributes($extraAttributes, $replace), $this->attributes['value']);
-        } else {
-            if ($this->view || ($this->edit && !$this->enabled)) {
-                $result = sprintf('<span %s>%s</span>', $this->generateAttributes($extraAttributes, $replace), $this->attributes['value']);
-            } else {
-                $result = sprintf('<span %s>&nbsp;</span>', $this->generateAttributes($extraAttributes, $replace));
-            }
+            $result .= $this->renderInfo() . $this->renderAdminMenu();
         }
-        //On marque le champ comme rendu pour indiquer que le widget a ete rendu et eviter le rendu multiple
-        $this->rendered = true;
-        return $result . $this->renderInfo() . $this->renderAdminMenu();
+        
+        return $result;
     }
   
   
