@@ -92,7 +92,7 @@ class pGestionBase extends mmProg {
         $uniqueId = md5(uniqid(microtime()) . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
         mmSession::set('migrationUniqueId', $uniqueId);
 
-        $nomFichier = sys_get_temp_dir() . '/schema_' . $uniqueId . '.yml';
+        $nomFichier = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'schema_' . $uniqueId . '.yml';
 
         $fichierTemp = fopen($nomFichier, 'w+');
         if (!$fichierTemp) {

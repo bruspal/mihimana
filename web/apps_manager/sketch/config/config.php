@@ -15,9 +15,14 @@
 //define('SQLITE_DIR', LIB_DIR.'/sqlite');
 
 /*
- * Definition
+ * Database configuration
  */
 define('DATABASE', '%database%');
 
+/*
+ * Login/register configuration
+ */
+define ('LOGIN_MODE', LOGIN_BY_USER); //User identhified by username
+define ('REGISTER_MODE', REGISTER_BY_USER); //Registration use username
 
 ?>

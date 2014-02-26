@@ -242,37 +242,106 @@ class mmUser extends mmSession {
 
     /**
      * Retourne TRUE si l'itilisateur courant est authentifié
+     * @param string $module Module sur lequel effectué la vérification
+     * @param string $action Action sur laquelle faire la vérification
      * @return boolean 
      */
-    public static function isAuthenticated() {
+    public static function isAuthenticated($module, $action) {
         if (MODE_INSTALL || NO_LOGIN) {
-//      //On cree en mémoire un utilisateur fictif avec des parametres figé
-//      $user = new Utilisateur();
-//      $user['id'] = 1;
-//      $user['actif'] = 1;
-//      if (MODE_INSTALL)
-//      {
-//        $user['super_admin'] = 1;
-//      }
-//      else
-//      {
-//        $user['super_admin'] = SUPER_ADMIN;
-//      }
-//      self::set('__user__', $user);
+            // On est en mode installation ou en mode fonctionnement sans login
+            // On cree en mémoire un utilisateur fictif avec des parametres figé
+            $user = new Utilisateur();
+            $user['id'] = 1;
+            $user['actif'] = 1;
+            if (MODE_INSTALL) {
+                $user['super_admin'] = true;
+                $user['prenom'] = 'INSTALL';
+            } else {
+                $user['super_admin'] = SUPER_ADMIN;
+                if (SUPER_ADMIN) {
+                    $user['prenom'] = 'ADMINISTRATEUR';
+                } else {
+                    $user['prenom'] = 'Visiteur';
+                }
+            }
+            $user['email'] = '';
+            $user = $user->toArray();
+            $user['auth'] = true;
+            self::set('__user__', $user);
             return true;
         }
+        //Verification d'authentification normale'
         $user = self::get('__user__', false);
         if ($user !== false && isset($user['auth']) && $user['auth'] == true) {
             return true;
         } else {
+            //Vérification des module/actions auquelles on a acces sans être identifier
+            //pour test
+            require APPLICATION_DIR.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'credentials.php';
+            $strCredentials = $module.'/'.$action;
+            if (isset($credentials[$strCredentials]) && $credentials[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
+                $user = self::createVirtualGuest();
+                $user = $user->toArray();
+                self::set('__user__', $user);
+                return true; //ok on est identifié
+            }
+            $strCredentials = $module;
+            if (isset($credentials[$strCredentials]) && $credentials[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
+                $user = self::createVirtualGuest();
+                $user = $user->toArray();
+                self::set('__user__', $user);
+                return true; //ok on est identifié
+            }
+            //si on a pas le droit de venir de manière anonyme ici on se fait jeter
             return false;
         }
     }
 
+    private static function createVirtualGuest() {
+        $user = new Utilisateur();
+        $user['id'] = false;
+        $user['login'] = 'Guest';
+        $user['password'] = false;
+        $user['actif'] = true;
+        $user['super_admin'] = false;
+        $user['nom'] = 'Visiteur';
+        $user['prenom'] = 'Visiteur';
+        
+        return $user;
+    }
+    /**
+     * Perform login mechanism
+     * @param type $login
+     * @param type $password
+     * @return boolean
+     * @throws mmExceptionAuth
+     */
     public static function doLogin($login, $password) {
-        $user = Doctrine_Core::getTable('Utilisateur')->createQuery()->
-                where('login = ? AND actif=1', $login)->
-                fetchOne();
+        switch (LOGIN_MODE) {
+            case LOGIN_BY_USER:
+                $user = Doctrine_Core::getTable('Utilisateur')->createQuery()->
+                        where('login = ? AND actif=1', $login)->
+                        fetchOne();
+                break;
+            case LOGIN_BY_EMAIL:
+                $user = Doctrine_Core::getTable('Utilisateur')->createQuery()->
+                        where('email = ? AND actif=1', $login)->
+                        fetchOne();
+                break;
+            case LOGIN_BY_BOTH:
+                $user = Doctrine_Core::getTable('Utilisateur')->createQuery()->
+                        where('login = ? AND actif=1', $login)->
+                        fetchOne();
+                if ( ! $user) {
+                    $user = Doctrine_Core::getTable('Utilisateur')->createQuery()->
+                            where('email = ? AND actif=1', $login)->
+                            fetchOne();
+                }
+                break;
+            default:
+                throw new mmExceptionConfig('LOGIN_MODE not correctly set, check config.php');
+                break;
+        }
         if ($user) {
             // On a un enregistrement, on verifie le mot de passe
             $user = $user->toArray();
@@ -280,7 +349,7 @@ class mmUser extends mmSession {
                 self::remove('__user__');
                 throw new mmExceptionAuth('utilisateur invalide');
             }
-            if ($user['password'] == $password) {
+            if ($user['password'] == self::encryptPassword($password, $user['salt'])) {
                 //c'est ok l'utilisateur est reconnu
                 $user['auth'] = true;
                 self::set('__user__', $user);
@@ -295,8 +364,44 @@ class mmUser extends mmSession {
         }
     }
 
+    /**
+     * Create a new user
+     * @param string $login username or email adresse depending the LOGIN_MODE parameter
+     * @param string $password uncrypted password
+     * @param boolean $actif set to TRUE (default) to make user able to log in
+     * @param boolean $superAdmin set to TRUE to make user as a super admin, FALSE by default
+     * @param string $email user email
+     */
+    public static function createUser($login, $password, $actif = true, $superAdmin = false, $email = '') {
+        //verification que le parametrage est correct
+        if (LOGIN_MODE < 3 && LOGIN_MODE != REGISTER_MODE) {
+            throw new mmExceptionConfig ("Incohérence dans la configuration de l'enregistrement/login.Si MODE n'est pas LOGIN_BY_BOTH, LOGIN_BY et REGISTER_BY doivent utilisé les meme mode");
+        }
+        $user = new Utilisateur();
+        if (REGISTER_MODE == REGISTER_BY_USER) {
+            $user['login'] = $login;
+            $user['email'] = $email;
+        } else {
+            $user['login'] = $login;
+            $user['email'] = $login;
+        }
+        mt_srand();
+        $salt = md5(uniqid(md5(mt_rand().microtime()), true));
+        $encryptedPassword = self::encryptPassword($password, $salt);
+        $user['salt'] = $salt;
+        $user['password'] = $encryptedPassword;
+        $user['actif'] = $actif;
+        $user['super_admin'] = $superAdmin;
+        $user->save();
+    }
+    
     public static function doLogout() {
         self::remove('__user__');
+    }
+    
+    public static function encryptPassword($password, $salt) {
+        $cryptedPassword = crypt($password.$salt, $salt);
+        return $cryptedPassword;
     }
 
 }

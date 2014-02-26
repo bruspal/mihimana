@@ -34,10 +34,14 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  * Dispatching
  */
 try { //On protege contre les erreurs ce qui se trouve dans le try { }
-
     //Recuperation des parametres fournis en URL et parametrage pour l'execution des modules
     $dispatch_recuDuClient = new mmRequest();
 
+    /*
+     * Router test
+     */
+    //$router = new mmRouter();
+    
     $dispatcher_module = $dispatch_recuDuClient->get('module', MODULE_DEFAUT);
     $dispatcher_action = $dispatch_recuDuClient->get('action', ACTION_DEFAUT);
 
@@ -58,7 +62,7 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     }
     
     //verification de l'authentification
-    if (!mmUser::isAuthenticated()) {
+    if (!mmUser::isAuthenticated($dispatcher_module, $dispatcher_action)) {
         //Si on est en ajax on affiche le message et un bouton
         if (AJAX_REQUEST) {
             echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>');

@@ -52,7 +52,7 @@ class pLoginStd extends mmProg {
                 if (!$password) {
                     throw new mmExceptionAuth('Veuillez saisir le mot de passe');
                 }
-                //On effectue le login (il n'y a pas de reour, si jamais ca marche pas ca generera une exception
+                //On effectue le login (il n'y a pas de retour, si jamais ca marche pas ca generera une exception
                 mmUser::doLogin($login, $password);
                 mmUser::flashSuccess('Bienvenue ' . mmUser::getNom());
                 $this->redirect('?module=' . MODULE_DEFAUT . '&action=' . ACTION_DEFAUT);

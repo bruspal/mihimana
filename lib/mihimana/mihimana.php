@@ -45,7 +45,6 @@ if (!defined('MODULE_DEFAUT')) {
 }
 if (!defined('ACTION_DEFAUT')) {
     define('ACTION_DEFAUT', 'index');
-    ;
 }
 if (!defined('DEBUG')) {
     define('DEBUG', false);
@@ -58,6 +57,12 @@ if (!defined('NO_LOGIN')) {
 }
 if (!defined('SUPER_ADMIN')) {
     define('SUPER_ADMIN', false);
+}
+if (!defined('LOGIN_MODE')) {
+    define('LOGIN_MODE', LOGIN_BY_USER);
+}
+if (!defined('REGISTER_MODE')) {
+    define ('REGISTER_MODE', REGISTER_BY_USER);
 }
 //Mise en place du niveau de report d'erreur
 if (DEBUG) {

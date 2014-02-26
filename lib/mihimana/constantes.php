@@ -56,4 +56,15 @@ define('MM_PDF_CREATOR', 'MihiMana Engine');
  */
 define('MM_DEVISE_DECIMAL', 0);
 define('MM_DEVISE_SYMBOL', '');
+/*
+ * Login system
+ */
+define('LOGIN_BY_USER', 0);     //On utilise le login de l'utilisateur pour les opération de login
+define('LOGIN_BY_EMAIL', 1);    //On utilise l'email pour se connecter'
+define('LOGIN_BY_BOTH', 2);     //On utilise l'email ou le login
+/*
+ * Register system
+ */
+define('REGISTER_BY_USER', 0);     //On utilise le login de l'utilisateur pour les opération de login
+define('REGISTER_BY_EMAIL', 1);    //On utilise l'email pour se connecter'
 ?>

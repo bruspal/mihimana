@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
       <title>%title%</title>
-      <?php require 'headerHtml.html' ?>
+      <?php require 'headerHtml.php' ?>
     </head>
     <body class="popup" <?php if ( ! DEBUG ): ?>onblur="close()"<?php endif; ?>>
       <div id="content">
