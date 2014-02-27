@@ -66,4 +66,7 @@ function getTemplatesPath() {
     }
 }
 
+function getTemplate() {
+    
+}
 ?>

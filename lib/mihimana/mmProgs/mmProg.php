@@ -29,13 +29,16 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
 
-
+/**
+ *  mmProg classe générique de programme piloté par action
+ */
 class mmProg extends mmObject {
 
     //
     protected
             $layout,
-            $template,
+            $templateModuleAction, //template associé a un module + action
+            $templateModule, //template associé a un module
             $parametresProgramme;
     public
             $variables;
@@ -43,7 +46,8 @@ class mmProg extends mmObject {
     public function __construct() {
         $this->layout = 'layout.php';
 //    $this->template = "html_{$GLOBALS['module']}.php";
-        $this->template = "html_" . MODULE_COURANT . ".php";
+        $this->templateModuleAction = "view_".MODULE_COURANT."#".ACTION_COURANTE.".php";
+        $this->templateModule = "view_".MODULE_COURANT.".php";
         $this->variables = array();
     }
 
@@ -76,16 +80,21 @@ class mmProg extends mmObject {
         $this->postExecute($request);
         //recuperation du buffer de sortie
         $sortieProgramme = ob_get_clean();
-        //Application du layout de l'ecran si un layout existe
-        if ($this->template && file_exists(getTemplatesPath() . '/' . $this->template)) {
-            //y'a un template, on le parse
-            $sortieLayout = mmTemplate::renderTemplate($this->template, $this->variables, getTemplatesPath());
-        } else {
-            //pas de templates associe, on a une chaine vide
-            $sortieLayout = '';
+        //par defaut on considere qu'il n'y a pas de template
+        $templateContent = '';
+        //on ecrase le template vide si jamais on en trouve 1
+        //le nommage des templates est le suivant :
+        // view_NOMDUMODULE.NOMDELACTION.php ou view_NOMDUMODULE.php
+        // la premiere ecriture est prioritaire sur la deuxieme. ainsi on peut definir que view_MODULE#ACTION.php sera executé lors de l'appel de ce module et de cet action, pour tous les autre cas ce sera view_MODULE.php
+        if ($this->templateModuleAction) {
+            $templateToParse = file_exists(getTemplatesPath() . '/' . $this->templateModuleAction) ? $this->templateModuleAction : (file_exists(getTemplatesPath() . '/' . $this->templateModule) ? $this->templateModule : false);
+            if ($templateToParse) {
+                //y'a un template, on le parse
+                $templateContent = mmTemplate::renderTemplate($templateToParse, $this->variables, getTemplatesPath());
+            }
         }
         //on chaine le layout au sortie brute du programme
-        $sortieProgramme = $sortieProgramme . $sortieLayout;
+        $sortieProgramme = $sortieProgramme . $templateContent;
 
         if (!AJAX_REQUEST && $this->layout) {
             $sortieFinale = mmTemplate::renderTemplate($this->layout, array('sortieProgramme' => $sortieProgramme), APPLICATION_DIR . '/templates');
@@ -151,19 +160,19 @@ class mmProg extends mmObject {
     }
 
     protected function setTemplate($nomTemplate = false) {
-        $oldTemplate = substr($this->template, 0, strpos($this->template, '.php'));
+        $oldTemplate = substr($this->templateModuleAction, 0, strpos($this->templateModuleAction, '.php'));
         if ($nomTemplate) {
-            $this->template = $nomTemplate . '.php';
+            $this->templateModuleAction = $nomTemplate . '.php';
         } else {
-            $this->template = false;
+            $this->templateModuleAction = false;
         }
 
         return $oldTemplate;
     }
 
     protected function getTemplate() {
-        if ($this->template) {
-            return substr($this->template, 0, strpos($this->template, '.php'));
+        if ($this->templateModuleAction) {
+            return substr($this->templateModuleAction, 0, strpos($this->templateModuleAction, '.php'));
         } else {
             return false;
         }

@@ -1,35 +1,33 @@
 <?php
-/*------------------------------------------------------------------------------
--------------------------------------
-Mihimana : the visual PHP framework.
-Copyright (C) 2012-2014  Bruno Maffre
-contact@bmp-studio.com
--------------------------------------
 
--------------------------------------
-@package : lib
-@module: root
-@file : dispatch.php
--------------------------------------
+/* ------------------------------------------------------------------------------
+  -------------------------------------
+  Mihimana : the visual PHP framework.
+  Copyright (C) 2012-2014  Bruno Maffre
+  contact@bmp-studio.com
+  -------------------------------------
 
-This file is part of Mihimana.
+  -------------------------------------
+  @package : lib
+  @module: root
+  @file : dispatch.php
+  -------------------------------------
 
-Mihimana is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This file is part of Mihimana.
 
-Mihimana is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+  Mihimana is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-You should have received a copy of the GNU Lesser General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------*/
+  Mihimana is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
 
-
-
+  You should have received a copy of the GNU Lesser General Public License
+  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  ------------------------------------------------------------------------------ */
 /*
  * Dispatching
  */
@@ -41,13 +39,15 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
      * Router test
      */
     //$router = new mmRouter();
-    
+
     $dispatcher_module = $dispatch_recuDuClient->get('module', MODULE_DEFAUT);
     $dispatcher_action = $dispatch_recuDuClient->get('action', ACTION_DEFAUT);
 
-    //detection d'un appel AJAX. Detection automatique sauf si le parametre _fhr_ est present dans le request et vaut 1
-    //determine si la reponse doit etre du json ou non, par defaut oui si on est en mode ajax. Dans ce cas la on est en mode json sauf si on force explicitement
-    //le mode http via le parametre _fhr_ fournis en parametre
+    /**************************/
+    // detection d'un appel AJAX. Detection automatique sauf si le parametre _fhr_ est present dans le request et vaut 1 (???? _fhr_ quoi est-ce deja ?)
+    // determine si la reponse doit etre du json ou non, par defaut oui si on est en mode ajax. Dans ce cas la on est en mode json sauf si on force explicitement
+    // le mode http via le parametre _fhr_ fournis en parametre
+    /**************************/
     if (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         define('AJAX_REQUEST', true);
         $_fhr_ = $dispatch_recuDuClient->get('_fhr_', false);
@@ -60,7 +60,7 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         define('AJAX_REQUEST', false);
         define('AJAX_RESPONSE', false);
     }
-    
+
     //verification de l'authentification
     if (!mmUser::isAuthenticated($dispatcher_module, $dispatcher_action)) {
         //Si on est en ajax on affiche le message et un bouton
@@ -69,9 +69,8 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             die;
         }
         //on est pas identifié on va vers le login
-        
         //NOTA : pour ecraser la page de login par defaut il faut mettre le pLogin.php personnalisé dans la racine de l'application
-        if (file_exists(APPLICATION_DIR.DIRECTORY_SEPARATOR.'pLogin.php')) {
+        if (file_exists(APPLICATION_DIR . DIRECTORY_SEPARATOR . 'pLogin.php')) {
             $dispatcher_module = 'pLogin';
             $dispatcher_action = 'login';
         } else {
