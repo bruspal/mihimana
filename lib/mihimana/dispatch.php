@@ -121,7 +121,7 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             include APPLICATION_DIR . '/templates/layout.php';
         }
     } else {
-        throw new mmExceptionControl("<h1>Module inexistant</h1>");
+        throw new mmExceptionControl("<h1>$dispatcher_module : Module inexistant</h1>");
     }
 } catch (mmExceptionControl $e) {
 

@@ -216,9 +216,9 @@ class mmUser extends mmSession {
     public static function getNom($full = false) {
         $user = self::get('__user__', false);
         if ($full) {
-            return ($user['prenom'] . ' ' . $user['nom']);
+            return ($user['firstname'] . ' ' . $user['lastname']);
         }
-        return ($user['prenom']);
+        return ($user['firstname']);
     }
 
     /**
@@ -255,13 +255,15 @@ class mmUser extends mmSession {
             $user['actif'] = 1;
             if (MODE_INSTALL) {
                 $user['super_admin'] = true;
-                $user['prenom'] = 'INSTALL';
+                $user['firstname'] = 'INSTALL';
             } else {
                 $user['super_admin'] = SUPER_ADMIN;
                 if (SUPER_ADMIN) {
-                    $user['prenom'] = 'ADMINISTRATEUR';
+                    $user['firstname'] = 'ADMINISTRATEUR';
+                    $user['username'] = "L'administrateur d'install";
                 } else {
-                    $user['prenom'] = 'Visiteur';
+                    $user['firstname'] = 'Visiteur';
+                    $user['username'] = '';
                 }
             }
             $user['email'] = '';
@@ -304,8 +306,9 @@ class mmUser extends mmSession {
         $user['password'] = false;
         $user['actif'] = true;
         $user['super_admin'] = false;
-        $user['nom'] = 'Visiteur';
-        $user['prenom'] = 'Visiteur';
+        $user['lastname'] = 'Visiteur';
+        $user['firstname'] = 'Visiteur';
+        $user['username'] = 'Invité';
         
         return $user;
     }
@@ -344,17 +347,25 @@ class mmUser extends mmSession {
         }
         if ($user) {
             // On a un enregistrement, on verifie le mot de passe
-            $user = $user->toArray();
+            $user['last_login'] = date("Y-m-d H:i:s");
+            $user['remote_ip'] = $_SERVER['REMOTE_ADDR'];
             if (!$user['password']) {
                 self::remove('__user__');
                 throw new mmExceptionAuth('utilisateur invalide');
             }
             if ($user['password'] == self::encryptPassword($password, $user['salt'])) {
                 //c'est ok l'utilisateur est reconnu
+                // on met a jour les info de suivie de connection
+                $user['login_failure'] = 0; //on remet a zero le compteur d'echec de connexion
+                $user->save();
+                // mise a jour de la session
+                $user = $user->toArray();
                 $user['auth'] = true;
                 self::set('__user__', $user);
                 return true;
             } else {
+                $user['login_failure'] = $user['login_failure'] + 1; //echec de connection on additionne 1 au nombre de tentative de connection raté
+                $user->save();
                 self::remove('__user__');
                 throw new mmExceptionAuth("Utilisateur inconnu ou inactif");
             }
@@ -392,6 +403,7 @@ class mmUser extends mmSession {
         $user['password'] = $encryptedPassword;
         $user['actif'] = $actif;
         $user['super_admin'] = $superAdmin;
+        $user['registration_date'] = date("Y-m-d H:i:s");
         $user->save();
     }
     
@@ -400,7 +412,7 @@ class mmUser extends mmSession {
     }
     
     public static function encryptPassword($password, $salt) {
-        $cryptedPassword = crypt($password.$salt, $salt);
+        $cryptedPassword = crypt($password.$salt, $salt).crypt(md5($salt.$password), $salt);
         return $cryptedPassword;
     }
 

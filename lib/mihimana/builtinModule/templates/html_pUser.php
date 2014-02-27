@@ -51,11 +51,11 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
       </tr>
       <tr>
         <th>Nom</th>
-        <td><?php echo $form['nom'] ?></td>
+        <td><?php echo $form['lastname'] ?></td>
       </tr>
       <tr>
         <th>Prénom</th>
-        <td><?php echo $form['prenom'] ?></td>
+        <td><?php echo $form['firstname'] ?></td>
       </tr>
       <tr>
         <th>Email</th>
