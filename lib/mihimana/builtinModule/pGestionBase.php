@@ -264,7 +264,7 @@ class pGestionBase extends mmProg {
         $form->addWidget(new mmWidgetPassword('passwd'));
         $form->addWidget(new mmWidgetButtonSubmit());
         
-        if ($request) {
+        if ( ! $request->isEmpty()) {
             $form->setValues($request);
         }
         echo $form->start();
