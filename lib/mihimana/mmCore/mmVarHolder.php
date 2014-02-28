@@ -71,6 +71,9 @@ class mmVarHolder extends mmObject implements ArrayAccess {
         return $this->variables;
     }
 
+    public function isEmpty() {
+        return count($this->variables) == 0;
+    }
     /*
      * Method pour l'acces de type array
      * ceci permet de gerer les parametres comme un tableau

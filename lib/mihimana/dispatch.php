@@ -33,24 +33,29 @@
  */
 try { //On protege contre les erreurs ce qui se trouve dans le try { }
     //Recuperation des parametres fournis en URL et parametrage pour l'execution des modules
-    $dispatch_recuDuClient = new mmRequest();
+    $request = new mmRequest();
 
     /*
      * Router test
      */
     //$router = new mmRouter();
 
-    $dispatcher_module = $dispatch_recuDuClient->get('module', MODULE_DEFAUT);
-    $dispatcher_action = $dispatch_recuDuClient->get('action', ACTION_DEFAUT);
+    $dispatcher_module = $request->get('module', MODULE_DEFAUT);
+    $dispatcher_action = $request->get('action', ACTION_DEFAUT);
+    //cleanup the request object : removing module and action
+    $request->remove('module');
+    $request->remove('action');
 
     /**************************/
-    // detection d'un appel AJAX. Detection automatique sauf si le parametre _fhr_ est present dans le request et vaut 1 (???? _fhr_ quoi est-ce deja ?)
+    // TODO : revoir le mécanisme de forcage de reponse JSON
+    // /!\ _fhr_ a 1 pour forcer la reponse le mode AJAX
+    // detection d'un appel AJAX. Detection automatique sauf si le parametre _fhr_ est present dans le request et vaut 1 
     // determine si la reponse doit etre du json ou non, par defaut oui si on est en mode ajax. Dans ce cas la on est en mode json sauf si on force explicitement
     // le mode http via le parametre _fhr_ fournis en parametre
     /**************************/
     if (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         define('AJAX_REQUEST', true);
-        $_fhr_ = $dispatch_recuDuClient->get('_fhr_', false);
+        $_fhr_ = $request->get('_fhr_', false);
         if ($_fhr_) {
             define('AJAX_RESPONSE', true);
         } else {
@@ -112,7 +117,7 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             //creation en memoire du programme
             $dispatcher_programmePhp = new $dispatcher_module();
             //on execute l'action du programme avec les parametres fournis au script par l'url
-            $dispatcher_programmePhp->execute($dispatcher_action, $dispatch_recuDuClient);
+            $dispatcher_programmePhp->execute($dispatcher_action, $request);
         } else {
             //on recupère le buffer PHP car le code contenu dans le module a deja été exécuté lors du require
             //on affiche ce buffer dans le template en faisant un require du layout
