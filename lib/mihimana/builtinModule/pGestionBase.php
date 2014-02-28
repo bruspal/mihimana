@@ -45,6 +45,7 @@ class pGestionBase extends mmProg {
             echo new mmWidgetButton('creerDB', 'Creer la base de données de parametres', array('onclick' => "if (confirm('CECI VA DETRUIRE LA BASE ETES VOUS SUR DE VOULOIR CONTINUER ?')) goPage('?module=pGestionBase&action=createDBParam')")) . '<br />';
             echo new mmWidgetButtonGoPage('Dumper les data de la base de parametres', "?module=pGestionBase&action=dumpData") . '<br />';
             echo new mmWidgetButtonGoPage('Charger les data de la base de parametres', "?module=pGestionBase&action=loadData") . '<br />';
+            echo new mmWidgetButtonGoModule('Importer modele depuis une base existante', 'pGestionBase', 'importFromDB').'<br />';
         }
         echo new mmWidgetButtonGoPage('Genere la base de données utilisateur', "?module=pGestionBase&action=genereBaseUtilisateur");
     }
@@ -254,6 +255,23 @@ class pGestionBase extends mmProg {
         echo "termine";
     }
 
+    public function executeImportFromDB(mmRequest $request) {
+        $form = new mmForm();
+        $form->setAction('?module=pGestionBase&action=importFromDB');
+        $form->addWidget(new mmWidgetText('db'));
+        $form->addWidget(new mmWidgetText('host', '127.0.0.1'));
+        $form->addWidget(new mmWidgetText('user'));
+        $form->addWidget(new mmWidgetPassword('passwd'));
+        $form->addWidget(new mmWidgetButtonSubmit());
+        
+        if ($request) {
+            $form->setValues($request);
+        }
+        echo $form->start();
+        echo $form->render();
+        echo $form->stop();
+    }
+    
     public function executeNettoyerModel(mmRequest $request) {
         echo "<h1>Nettoyage du model</h1>";
         //on va supprimer les classes qui ne sont plus

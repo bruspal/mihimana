@@ -396,8 +396,6 @@ class mmWidget extends mmObject {
         //Gestion de 'laffichage ou non
         if ($this->rendered)
             return '';
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
 
         if ($this->edit && $this->enabled) {
             $this->addResultClass();
@@ -422,8 +420,6 @@ class mmWidget extends mmObject {
         //Gestion de 'laffichage ou non
         if ($this->rendered)
             return '';
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
 
         if ($this->view || $this->edit) {
             $result = sprintf('<span>%s</span>', $this->attributes['value']);
@@ -472,10 +468,6 @@ class mmWidget extends mmObject {
      */
     public function renderText($extraAttributes = array(), $replace = false) {
 
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
-
-
         if ($this->edit || $this->view) {
             return sprintf('<span %s>%s</span>', $this->generateAttributes($extraAttributes, $replace), $this->attributes['value']) . $this->renderAdminMenu();
         }
@@ -483,9 +475,6 @@ class mmWidget extends mmObject {
     }
 
     public function renderTextRow($extraAttributes = array(), $replace = false) {
-
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
 
         if ($this->view) {
             return sprintf('<tr><th>%s</th><td>%s</td></tr>', $this->renderLabel(), $this->renderText());
@@ -499,9 +488,6 @@ class mmWidget extends mmObject {
      * @return string 
      */
     public function renderRow($option = array(), $renderRow = false) {
-
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
 
         if ($this->rendered)
             return '';
@@ -628,7 +614,7 @@ class mmWidget extends mmObject {
      * Gestion du portefeuille sorte de 'plugin'
      */
 
-    public function setDroitsParPortefeuilles() {
+    public function _old_setDroitsParPortefeuilles() {
         $this->view = true;
         $this->edit = true;
         return true;
@@ -645,7 +631,7 @@ class mmWidget extends mmObject {
         }
     }
 
-    public function ignorePortefeuille() {
+    public function _old_ignorePortefeuille() {
         $this->ignorePortefeuille = true;
     }
 
@@ -653,7 +639,7 @@ class mmWidget extends mmObject {
      * Rendu static
      */
 
-    public static function draw($name, $value, $attributes = array()) {
+    public static function _old_draw($name, $value, $attributes = array()) {
         $className = get_called_class();
         if ($className == 'mdWidget') {
             $widget = new $className($name, '', $value, $attributes);
@@ -663,7 +649,7 @@ class mmWidget extends mmObject {
         return $widget->render();
     }
 
-    public static function drawIf($condition, $name, $value, $attributes = array()) {
+    public static function _old_drawIf($condition, $name, $value, $attributes = array()) {
         if ($condition) {
             return static::draw($name, $value, $attributes);
         }
@@ -673,7 +659,7 @@ class mmWidget extends mmObject {
 //    return static::drawIf( ! $condition, $name, $value, $attributes);
 //  }
 
-    public static function drawIfElse($condition, $name, $value, $trueAttributes = array(), $falseAttributes = array()) {
+    public static function _old_drawIfElse($condition, $name, $value, $trueAttributes = array(), $falseAttributes = array()) {
         if ($condition) {
             return static::draw($name, $value, $trueAttributes);
         } else {

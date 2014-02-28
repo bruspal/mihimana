@@ -42,7 +42,7 @@ class mmWidgetButtonSubmit extends mmWidgetButton {
      */
     public function __construct($label = 'OK', $preSubmit = '', $name = '', $attributs = array()) {
         if (!$name) {
-            $name = strSlugify(lcfirst($label));
+            $name = strSlugify($label);
         }
         if ($preSubmit) {
             $this->preSubmit = $preSubmit . ';';

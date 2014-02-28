@@ -29,9 +29,12 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
-class mmRequest extends mmObject implements ArrayAccess {
+class mmRequest extends mmVarHolder implements ArrayAccess {
 
-    protected $parametres;
+    /*
+     * TODO : Really use mmVarHolder inheritence
+     */
+//    protected $variables;
 
     public function __construct($parametres = false) {
         if (!$parametres) {
@@ -53,7 +56,7 @@ class mmRequest extends mmObject implements ArrayAccess {
                     //on vire la cle de hashage
                     unset($parametres['ucah']);
                     //On termine l'initialisation en fournissant l'ensemble des parametre hors ucah
-                    $this->parametres = array_merge($parametres, $tableauTemp);
+                    $this->variables = array_merge($parametres, $tableauTemp);
                     //On arrive la? On nettoie la session.
                     mmSession::remove('__tableauUrls__');
                 } else {
@@ -65,11 +68,11 @@ class mmRequest extends mmObject implements ArrayAccess {
             //On a pas d'url protegé
             //TODO: voir si on autorise les url non protegé a terme. Pour le moment non sauf si on est en mode debug
             if (true || DEBUG) {
-                $this->parametres = $parametres;
+                $this->variables = $parametres;
             } else {
                 //si on a pas fournis de parametres, on considere que c'est la page par defaut. Dans ce cas la c'est pas une erreur, simplement la table des parametres est vide
                 if (count($parametres) == 0) {
-                    $this->parametres = array();
+                    $this->variables = array();
                 } else {
                     //sinon c'est une erreur bloquante
                     throw new mmExceptionControl("format d'url non authorisé");
@@ -78,68 +81,74 @@ class mmRequest extends mmObject implements ArrayAccess {
         }
     }
 
-    public function getParam($nomVar, $default = null) {
-        if (isset($this->parametres[$nomVar])) {
-            return $this->parametres[$nomVar];
-        } else {
-            return $default;
-        }
+    /* A SUPPRIMER A TERME */
+    public function getParam ($varName, $default = null) {
+        throw new mmExceptionDev('Cette methode ne doit plus etre utilisée. utiliser get()');
     }
-
-    public function get($nomVar, $default = null) {
-        return $this->getParam($nomVar, $default);
-    }
-
     public function setParam($nomVar, $valeur) {
-        $this->parametres[$nomVar] = $valeur;
+        throw new mmExceptionDev('Cette methode ne doit plus etre utilisée. utiliser set()');
     }
-
-    public function set($nomVar, $valeur) {
-        $this->parametres[$nomVar] = $valeur;
-    }
-
-    /**
-     * Retourne l'ensemble des parametres dans un tableau associatif
-     * @return type 
-     */
-    public function getTableauParam() {
-        return $this->parametres;
-        mmUser::flashDebug('getTableauParam: utiliser toArray a la place');
-    }
-
-    /**
-     * Retourne l'ensemble des parametres dans un tableau associatif
-     * @return type 
-     */
-    public function toArray() {
-        return $this->parametres;
-    }
-
-    /*
-     * Method pour l'acces de type array
-     * ceci permet de gerer les parametres comme un tableau
-     */
-
-    public function offsetGet($offset) {
-        if (isset($this->parametres[$offset])) {
-            return $this->parametres[$offset];
-        } else {
-            throw new mmExceptionDev("le parametre $offset n'existe pas");
-        }
-    }
-
-    public function offsetSet($offset, $value) {
-        $this->parametres[$offset] = $value;
-    }
-
-    public function offsetUnset($offset) {
-        unset($this->parametres[$offset]);
-    }
-
-    public function offsetExists($offset) {
-        return isset($this->parametres[$offset]);
-    }
+    
+//    public function getParam($nomVar, $default = null) {
+//        if (isset($this->variables[$nomVar])) {
+//            return $this->variables[$nomVar];
+//        } else {
+//            return $default;
+//        }
+//    }
+//
+//    public function get($nomVar, $default = null) {
+//        return $this->getParam($nomVar, $default);
+//    }
+//
+//    public function setParam($nomVar, $valeur) {
+//        $this->variables[$nomVar] = $valeur;
+//    }
+//
+//    public function set($nomVar, $valeur) {
+//        $this->variables[$nomVar] = $valeur;
+//    }
+//
+//    /**
+//     * Retourne l'ensemble des parametres dans un tableau associatif
+//     * @return type 
+//     */
+//    public function getTableauParam() {
+//        return $this->variables;
+//        mmUser::flashDebug('getTableauParam: utiliser toArray a la place');
+//    }
+//
+//    /**
+//     * Retourne l'ensemble des parametres dans un tableau associatif
+//     * @return type 
+//     */
+//    public function toArray() {
+//        return $this->variables;
+//    }
+//
+//    /*
+//     * Method pour l'acces de type array
+//     * ceci permet de gerer les parametres comme un tableau
+//     */
+//
+//    public function offsetGet($offset) {
+//        if (isset($this->variables[$offset])) {
+//            return $this->variables[$offset];
+//        } else {
+//            throw new mmExceptionDev("le parametre $offset n'existe pas");
+//        }
+//    }
+//
+//    public function offsetSet($offset, $value) {
+//        $this->variables[$offset] = $value;
+//    }
+//
+//    public function offsetUnset($offset) {
+//        unset($this->variables[$offset]);
+//    }
+//
+//    public function offsetExists($offset) {
+//        return isset($this->variables[$offset]);
+//    }
 
 }
-
-?>

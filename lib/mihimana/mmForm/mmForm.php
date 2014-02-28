@@ -332,9 +332,22 @@ class mmForm extends mmObject implements ArrayAccess {
         return $this->valid;
     }
 
+    /**
+     * set values to the form, $values is a associative array 'field_name' => 'value'
+     * @param array $values
+     * @return boolean true if all fields are validated false otherwise
+     */
     public function setValues($values = array()) {
         $this->valid = true;
-        foreach ($values as $name => $value) {
+        /*
+         * Because of the behaviour of foreach regarding arrayAccess implementation, mmVarHolder is internally turned to an array (BUG #34445 : https://bugs.php.net/bug.php?id=34445)
+         */
+        if ($values instanceof mmVarHolder) {
+            $_values = $values->toArray();
+        } else {
+            $_values =& $values;
+        }
+        foreach ($_values as $name => $value) {
             if (isset($this->widgetList[$name])) {
                 try {
                     //On verifie les droits

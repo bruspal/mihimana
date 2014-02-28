@@ -1,68 +1,70 @@
 <?php
-/*------------------------------------------------------------------------------
--------------------------------------
-Mihimana : the visual PHP framework.
-Copyright (C) 2012-2014  Bruno Maffre
-contact@bmp-studio.com
--------------------------------------
 
--------------------------------------
-@package : lib
-@module: mmForm/widgets
-@file : mmWidgetButton.php
--------------------------------------
+/* ------------------------------------------------------------------------------
+  -------------------------------------
+  Mihimana : the visual PHP framework.
+  Copyright (C) 2012-2014  Bruno Maffre
+  contact@bmp-studio.com
+  -------------------------------------
 
-This file is part of Mihimana.
+  -------------------------------------
+  @package : lib
+  @module: mmForm/widgets
+  @file : mmWidgetButton.php
+  -------------------------------------
 
-Mihimana is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This file is part of Mihimana.
 
-Mihimana is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+  Mihimana is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-You should have received a copy of the GNU Lesser General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------*/
+  Mihimana is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
 
+  You should have received a copy of the GNU Lesser General Public License
+  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  ------------------------------------------------------------------------------ */
 
 class mmWidgetButton extends mmWidget {
-  
-  public function __construct($name, $value = '', $attributes = array()) {
-    $this->addAttribute('class', 'button');
-    parent::__construct($name, 'button', $value, $attributes);
-  }
-  
-  public function click($jsClick, $confirm = '') {
-    if ($confirm) {
-      $script = sprintf("if (confirm('%s')) %s", $confirm, $jsClick);
+
+    public function __construct($name, $value = '', $attributes = array()) {
+        $this->addAttribute('class', 'button');
+        parent::__construct($name, 'button', $value, $attributes);
     }
-    else {
-      $script = $jsClick;
-    }
-    $this->attributes['onclick'] = $script;
+
+    public function click($jsClick, $confirm = '') {
+        if ($confirm) {
+            $script = sprintf("if (confirm('%s')) %s", $confirm, $jsClick);
+        } else {
+            $script = $jsClick;
+        }
+        $this->attributes['onclick'] = $script;
 //    return $this->render(array('onclick'=>$script));
-  }
+    }
 
     public function render($extraAttributes = array(), $replace = false) {
 
-        $result = parent::render($extraAttributes, $replace);
-        
         if ($this->edit && $this->enabled) {
             $result = sprintf('<button name="%s" %s>%s</button>', sprintf($this->nameFormat, $this->attributes['name']), $this->generateAttributes($extraAttributes, $replace), $this->attributes['value']);
             $result .= $this->renderInfo() . $this->renderAdminMenu();
+        } else {
+            $result = parent::render($extraAttributes, $replace);
         }
-        
         return $result;
     }
-  
-  
-  public function goUrl($url, $confirm = '') {
-    return $this->click(sprintf("goPage('%s')", $url), $confirm);
-  }
-  
+
+    public function setValue($value, $ignoreControle = 0) {
+        // Do nothing : setting the value will change the value
+    }
+
+    public function goUrl($url, $confirm = '') {
+        return $this->click(sprintf("goPage('%s')", $url), $confirm);
+    }
+
 }
+
 ?>
