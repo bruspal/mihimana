@@ -81,6 +81,9 @@ foreach ($liste as $fichier) {
 //chargemet de Doctrine et autoload des classe doctrine
 //et bootstrapping (config initiale)
 require_once DOCTRINE_DIR . '/Doctrine.php';
+//configuration de Doctrine
+Doctrine_Core::debug(DEBUG);
+//autoload register
 spl_autoload_register(array('Doctrine_Core', 'autoload'));
 spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
 
@@ -92,8 +95,8 @@ $mdManager->setAttribute(Doctrine_Core::ATTR_AUTOLOAD_TABLE_CLASSES, true);
 $mdManager->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_CONSERVATIVE);
 
 try {
-//  $mdConnParam = Doctrine_Manager::connection(DATABASE_PARAM, 'param');
-    $mdConnData = Doctrine_Manager::connection(DATABASE, 'data');
+    $mmConnData = Doctrine_Manager::connection(DATABASE, 'data');
+    $mmConnData->setAttribute(Doctrine_Core::ATTR_QUOTE_IDENTIFIER, true);
 } catch (Doctrine_Manager_Exception $e) {
     die($e->getMessage());
 }
