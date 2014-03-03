@@ -44,4 +44,3 @@ class mmWidgetButtonAjaxPopup extends mmWidgetButton {
   }
   
 }
-?>

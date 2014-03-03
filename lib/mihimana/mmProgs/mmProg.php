@@ -1,33 +1,33 @@
 <?php
-/*------------------------------------------------------------------------------
--------------------------------------
-Mihimana : the visual PHP framework.
-Copyright (C) 2012-2014  Bruno Maffre
-contact@bmp-studio.com
--------------------------------------
 
--------------------------------------
-@package : lib
-@module: mmProgs
-@file : mmProg.php
--------------------------------------
+/* ------------------------------------------------------------------------------
+  -------------------------------------
+  Mihimana : the visual PHP framework.
+  Copyright (C) 2012-2014  Bruno Maffre
+  contact@bmp-studio.com
+  -------------------------------------
 
-This file is part of Mihimana.
+  -------------------------------------
+  @package : lib
+  @module: mmProgs
+  @file : mmProg.php
+  -------------------------------------
 
-Mihimana is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This file is part of Mihimana.
 
-Mihimana is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+  Mihimana is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-You should have received a copy of the GNU Lesser General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------*/
+  Mihimana is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
 
+  You should have received a copy of the GNU Lesser General Public License
+  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  ------------------------------------------------------------------------------ */
 
 /**
  *  mmProg classe générique de programme piloté par action
@@ -46,8 +46,8 @@ class mmProg extends mmObject {
     public function __construct() {
         $this->layout = 'layout.php';
 //    $this->template = "html_{$GLOBALS['module']}.php";
-        $this->templateModuleAction = "view_".MODULE_COURANT."#".ACTION_COURANTE.".php";
-        $this->templateModule = "view_".MODULE_COURANT.".php";
+        $this->templateModuleAction = "view_" . MODULE_COURANT . "#" . ACTION_COURANTE . ".php";
+        $this->templateModule = "view_" . MODULE_COURANT . ".php";
         $this->variables = array();
     }
 
@@ -225,5 +225,3 @@ class mmProg extends mmObject {
     }
 
 }
-
-?>

@@ -33,6 +33,4 @@ class mmObject {
 /*
  * La classe parent de base, utilse pour 'identifier' les classe de maides
  */
-  
 }
-?>

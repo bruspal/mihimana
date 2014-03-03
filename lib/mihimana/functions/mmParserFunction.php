@@ -1,34 +1,33 @@
 <?php
-/*------------------------------------------------------------------------------
--------------------------------------
-Mihimana : the visual PHP framework.
-Copyright (C) 2012-2014  Bruno Maffre
-contact@bmp-studio.com
--------------------------------------
 
--------------------------------------
-@package : lib
-@module: functions
-@file : mmParserFunction.php
--------------------------------------
+/* ------------------------------------------------------------------------------
+  -------------------------------------
+  Mihimana : the visual PHP framework.
+  Copyright (C) 2012-2014  Bruno Maffre
+  contact@bmp-studio.com
+  -------------------------------------
 
-This file is part of Mihimana.
+  -------------------------------------
+  @package : lib
+  @module: functions
+  @file : mmParserFunction.php
+  -------------------------------------
 
-Mihimana is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This file is part of Mihimana.
 
-Mihimana is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+  Mihimana is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-You should have received a copy of the GNU Lesser General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------*/
+  Mihimana is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
 
-
+  You should have received a copy of the GNU Lesser General Public License
+  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  ------------------------------------------------------------------------------ */
 
 /**
  * Parse un bloc de ligne au format |l+....|  |l-|
@@ -47,7 +46,6 @@ function mmParseListe($source, $tableauVariables) {
         if ($posFin === false) {
             //On ouvre mais on ferme pas: erreur renvoyé a l'utilisateur
             return "$chaineResultat<strong>$chaineTravail</strong><span class=\"mdError\">Pas de balise |l-| trouvée</span>";
-//<----------- Sortie de la fonction ici
         }
         //On commence par recupérer la chaine codant la liste
         $chaineListe = substr($chaineTravail, $posDebut, $posFin - $posDebut);
@@ -60,12 +58,6 @@ function mmParseListe($source, $tableauVariables) {
         //On met dans un tableau chaque ligne du bloc de parametrage
         $tableauTravail = explode("\n", $chaineListe);
 
-//    if (count($tableauTravail) != 4)
-//    {
-//      //Erreur ici dans le formatage general du bloc on a pas toutes les lignes ou trop de lignes
-//      return "$chaineResultat<strong>$chaineListe</strong><span class=\"mdError\">Nombre de ligne incorrecte</span>$chaineTravail";
-////<----------- Sortie ici avec message d'erreur      
-//    }
         //Debut de l'analyse des parametres de la ligne 1
         //Netoyage de la chaine des parametres
         $chaineParametre = substr($tableauTravail[0], 3);
@@ -80,12 +72,10 @@ function mmParseListe($source, $tableauVariables) {
         if (!isset($options['table'])) {
             //Erreur ici dans le formatage general du bloc on a pas toutes les lignes ou trop de lignes
             return "$chaineResultat<strong>$chaineListe</strong><span class=\"mdError\">le parametre table='nom de la table' est manquant</span>$chaineTravail";
-//<----------- Sortie ici avec message d'erreur      
         }
         if (!isset($options['click'])) {
             //Erreur ici dans le formatage general du bloc on a pas toutes les lignes ou trop de lignes
             return "$chaineResultat<strong>$chaineListe</strong><span class=\"mdError\">le parametre click='action' est manquant</span>$chaineTravail";
-//<----------- Sortie ici avec message d'erreur      
         }
         //le nom
         if (!isset($options['nom'])) {
@@ -108,7 +98,6 @@ function mmParseListe($source, $tableauVariables) {
         if (count($tableauChampAffiche) != count($tableauLibelle)) {
             //pas le meme nombre de colonne et de libelle
             return "$chaineResultat<strong>$chaineListe</strong><span class=\"mdError\">Nombre de colonne et de libellé différent</span>$chaineTravail";
-//<----------- Sortie ici avec message d'erreur      
         }
 
         $tableauColonne = array();
@@ -143,7 +132,6 @@ function mmParseOptions($chaineOptions, $optionDefaut = array()) {
     //Si on a pas de parametre
     if (trim($chaineOptions) == '') {
         return $optionDefaut;
-//<------ On sort en renvoyant le tableau des options par defaut   
     }
 
     //Premiere chose on transforme l'entrée pour qu'elle soit compatible
@@ -187,7 +175,6 @@ function mmParseSqlConcat($colonne, $listeColonnesTable, $seulementAlias = false
     $nomColonne = str_replace(array('+', ' '), '_', $colonne);
     if ($seulementAlias) {
         return $nomColonne;
-//<--- soetie ici, on ne renvois que l'alias de la colonne    
     } else {
         if (strpos($colonne, '+') !== false) {
             //Si on fournis une chaine on va chercher la liste des champs de la table
@@ -216,7 +203,6 @@ function mmParseSqlConcat($colonne, $listeColonnesTable, $seulementAlias = false
             $result = "$colonne AS $nomColonne";
         }
         return $result;
-//<----- sortie destiné a etre include dans la clause select d'une requette sql    
     }
 }
 
@@ -254,11 +240,8 @@ function __mmParseValeurVariablesCallback($fragments) {
         }
 
         return $valeur;
-//<------------ sortie avec la valeur de la variable au lieu de son nom
     } else {
         // variable inconnue on genere une exception
         throw new mmExceptionControl("La variables <strong>{$fragments[2]}</strong> n'existe pas");
     }
 }
-
-?>

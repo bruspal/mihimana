@@ -250,7 +250,7 @@ class mmUser extends mmSession {
         if (MODE_INSTALL || NO_LOGIN) {
             // On est en mode installation ou en mode fonctionnement sans login
             // On cree en mémoire un utilisateur fictif avec des parametres figé
-            if ( ! MODE_INSTALL) {
+            if (!MODE_INSTALL) {
                 $user = new User();
                 $user['id'] = 1;
                 $user['actif'] = 1;
@@ -283,8 +283,8 @@ class mmUser extends mmSession {
         } else {
             //Vérification des module/actions auquelles on a acces sans être identifier
             //pour test
-            require APPLICATION_DIR.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'credentials.php';
-            $strCredentials = $module.'/'.$action;
+            require APPLICATION_DIR . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'credentials.php';
+            $strCredentials = $module . '/' . $action;
             if (isset($credentials[$strCredentials]) && $credentials[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
                 $user = self::createVirtualGuest();
                 $user = $user->toArray();
@@ -313,9 +313,10 @@ class mmUser extends mmSession {
         $user['lastname'] = 'Visiteur';
         $user['firstname'] = 'Visiteur';
         $user['username'] = 'Invité';
-        
+
         return $user;
     }
+
     /**
      * Perform login mechanism
      * @param type $login
@@ -339,7 +340,7 @@ class mmUser extends mmSession {
                 $user = Doctrine_Core::getTable('User')->createQuery()->
                         where('login = ? AND actif=1', $login)->
                         fetchOne();
-                if ( ! $user) {
+                if (!$user) {
                     $user = Doctrine_Core::getTable('User')->createQuery()->
                             where('email = ? AND actif=1', $login)->
                             fetchOne();
@@ -390,7 +391,7 @@ class mmUser extends mmSession {
     public static function createUser($login, $password, $actif = true, $superAdmin = false, $email = '') {
         //verification que le parametrage est correct
         if (LOGIN_MODE < 3 && LOGIN_MODE != REGISTER_MODE) {
-            throw new mmExceptionConfig ("Incohérence dans la configuration de l'enregistrement/login.Si MODE n'est pas LOGIN_BY_BOTH, LOGIN_BY et REGISTER_BY doivent utilisé les meme mode");
+            throw new mmExceptionConfig("Incohérence dans la configuration de l'enregistrement/login.Si MODE n'est pas LOGIN_BY_BOTH, LOGIN_BY et REGISTER_BY doivent utilisé les meme mode");
         }
         $user = new User();
         if (REGISTER_MODE == REGISTER_BY_USER) {
@@ -401,7 +402,7 @@ class mmUser extends mmSession {
             $user['email'] = $login;
         }
         mt_srand();
-        $salt = md5(uniqid(md5(mt_rand().microtime()), true));
+        $salt = md5(uniqid(md5(mt_rand() . microtime()), true));
         $encryptedPassword = self::encryptPassword($password, $salt);
         $user['salt'] = $salt;
         $user['password'] = $encryptedPassword;
@@ -410,16 +411,14 @@ class mmUser extends mmSession {
         $user['registration_date'] = date("Y-m-d H:i:s");
         $user->save();
     }
-    
+
     public static function doLogout() {
         self::remove('__user__');
     }
-    
+
     public static function encryptPassword($password, $salt) {
-        $cryptedPassword = crypt($password.$salt, $salt).crypt(md5($salt.$password), $salt);
+        $cryptedPassword = crypt($password . $salt, $salt) . crypt(md5($salt . $password), $salt);
         return $cryptedPassword;
     }
 
 }
-
-?>

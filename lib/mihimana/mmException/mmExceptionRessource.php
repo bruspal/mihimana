@@ -34,4 +34,3 @@ class mmExceptionRessource extends mmException {
     parent::__construct($message, $code, $previous);
   }
 }
-?>

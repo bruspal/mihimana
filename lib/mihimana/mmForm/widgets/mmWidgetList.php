@@ -1,85 +1,79 @@
 <?php
-/*------------------------------------------------------------------------------
--------------------------------------
-Mihimana : the visual PHP framework.
-Copyright (C) 2012-2014  Bruno Maffre
-contact@bmp-studio.com
--------------------------------------
 
--------------------------------------
-@package : lib
-@module: mmForm/widgets
-@file : mmWidgetList.php
--------------------------------------
+/* ------------------------------------------------------------------------------
+  -------------------------------------
+  Mihimana : the visual PHP framework.
+  Copyright (C) 2012-2014  Bruno Maffre
+  contact@bmp-studio.com
+  -------------------------------------
 
-This file is part of Mihimana.
+  -------------------------------------
+  @package : lib
+  @module: mmForm/widgets
+  @file : mmWidgetList.php
+  -------------------------------------
 
-Mihimana is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This file is part of Mihimana.
 
-Mihimana is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+  Mihimana is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-You should have received a copy of the GNU Lesser General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------*/
+  Mihimana is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
 
+  You should have received a copy of the GNU Lesser General Public License
+  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  ------------------------------------------------------------------------------ */
 
 class mmWidgetList extends mmWidgetSelect {
-  public function __construct($name, $values = array(), $value = '', $attributes = array()) {
-    $this->addAttribute('class', 'list');
-    $this->addAttribute('multiple', 'multiple');
-    $this->addAttribute('size', 5);
-    parent::__construct($name, $values, $value, $attributes);
-  }
-  
-  public function render($extraAttributes = array(), $replace =  false) {
-    
-    //on met a jour par rapport au portefeuille
-    $this->setDroitsParPortefeuilles();
-    
-    if ($replace) {
-      $attributes = $extraAttributes;
+
+    public function __construct($name, $values = array(), $value = '', $attributes = array()) {
+        $this->addAttribute('class', 'list');
+        $this->addAttribute('multiple', 'multiple');
+        $this->addAttribute('size', 5);
+        parent::__construct($name, $values, $value, $attributes);
     }
-    else {
-      $attributes = array_merge($this->attributes, $extraAttributes);
-    }
-    $result = '';
-    if ($this->edit) {
-      $result = sprintf('<select name="%s" %s>', sprintf($this->nameFormat, $this->attributes['name']), $this->generateAttributes($extraAttributes, $replace));
-      if (is_array($this->attributes['value'])) {
-        $values = $this->attributes['value'];
-      }
-      else {
-        $values = array($this->attributes['value']);
-      }
-              
-      foreach ($this->values as $key => $label) {
-//        if ($key == $this->attributes['value']) {
-        if (in_array($key, $values)) {
-          $result .= sprintf('<option value="%s" selected>%s</option>', $key, $label);
+
+    public function render($extraAttributes = array(), $replace = false) {
+
+        //on met a jour par rapport au portefeuille
+        $this->setDroitsParPortefeuilles();
+
+        if ($replace) {
+            $attributes = $extraAttributes;
+        } else {
+            $attributes = array_merge($this->attributes, $extraAttributes);
         }
-        else {
-          $result .= sprintf('<option value="%s">%s</option>', $key, $label);
-        }
-      }
-      $result .= '</select>';
-    }
-    else {
-      if ($this->view) {
-        $result = sprintf('<span %s>%s - %s</span>', $this->generateAttributes($extraAttributes, $replace),
-                $this->attributes['value'],
-                isset($this->values[$this->attributes['value']])?$this->values[$this->attributes['value']]:'');
-      }
-      else {
         $result = '';
-      }
+        if ($this->edit) {
+            $result = sprintf('<select name="%s" %s>', sprintf($this->nameFormat, $this->attributes['name']), $this->generateAttributes($extraAttributes, $replace));
+            if (is_array($this->attributes['value'])) {
+                $values = $this->attributes['value'];
+            } else {
+                $values = array($this->attributes['value']);
+            }
+
+            foreach ($this->values as $key => $label) {
+//        if ($key == $this->attributes['value']) {
+                if (in_array($key, $values)) {
+                    $result .= sprintf('<option value="%s" selected>%s</option>', $key, $label);
+                } else {
+                    $result .= sprintf('<option value="%s">%s</option>', $key, $label);
+                }
+            }
+            $result .= '</select>';
+        } else {
+            if ($this->view) {
+                $result = sprintf('<span %s>%s - %s</span>', $this->generateAttributes($extraAttributes, $replace), $this->attributes['value'], isset($this->values[$this->attributes['value']]) ? $this->values[$this->attributes['value']] : '');
+            } else {
+                $result = '';
+            }
+        }
+        return $result . $this->renderInfo() . $this->renderAdminMenu();
     }
-    return $result.$this->renderInfo().$this->renderAdminMenu();
-  }
+
 }
-?>

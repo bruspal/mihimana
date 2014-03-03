@@ -1,34 +1,33 @@
 <?php
-/*------------------------------------------------------------------------------
--------------------------------------
-Mihimana : the visual PHP framework.
-Copyright (C) 2012-2014  Bruno Maffre
-contact@bmp-studio.com
--------------------------------------
 
--------------------------------------
-@package : lib
-@module: mmForm
-@file : mmForm.php
--------------------------------------
+/* ------------------------------------------------------------------------------
+  -------------------------------------
+  Mihimana : the visual PHP framework.
+  Copyright (C) 2012-2014  Bruno Maffre
+  contact@bmp-studio.com
+  -------------------------------------
 
-This file is part of Mihimana.
+  -------------------------------------
+  @package : lib
+  @module: mmForm
+  @file : mmForm.php
+  -------------------------------------
 
-Mihimana is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This file is part of Mihimana.
 
-Mihimana is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+  Mihimana is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-You should have received a copy of the GNU Lesser General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------*/
+  Mihimana is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
 
-
+  You should have received a copy of the GNU Lesser General Public License
+  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  ------------------------------------------------------------------------------ */
 
 class mmForm extends mmObject implements ArrayAccess {
 
@@ -345,7 +344,7 @@ class mmForm extends mmObject implements ArrayAccess {
         if ($values instanceof mmVarHolder) {
             $_values = $values->toArray();
         } else {
-            $_values =& $values;
+            $_values = & $values;
         }
         foreach ($_values as $name => $value) {
             if (isset($this->widgetList[$name])) {
@@ -531,7 +530,7 @@ class mmForm extends mmObject implements ArrayAccess {
         $result .= $this->renderJavascript($fieldList);
         return $result;
     }
-    
+
     /**
      * start form
      * @return string
@@ -539,6 +538,7 @@ class mmForm extends mmObject implements ArrayAccess {
     public function start() {
         return sprintf('<form action="%s" method="%s" id="%s" enctype="%s">', $this->action, $this->method, $this->id, $this->enctype);
     }
+
     /**
      * close the form zone
      * @return string
@@ -546,7 +546,7 @@ class mmForm extends mmObject implements ArrayAccess {
     public function stop() {
         return '</form>';
     }
-    
+
     public function renderFormHeader() {
         deprecatedMethode(__CLASS__, __METHOD__, 'start');
         return $this->start();
@@ -937,5 +937,3 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
 }
-
-?>

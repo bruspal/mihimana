@@ -1583,5 +1583,3 @@ function fFunc_chargeCollection($table, $condition, $tri = '') {
 function fFunc_superAdmin() {
     return array('nbr', (int) mmUser::superAdmin());
 }
-
-?>

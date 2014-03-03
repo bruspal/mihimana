@@ -1,34 +1,33 @@
 <?php
-/*------------------------------------------------------------------------------
--------------------------------------
-Mihimana : the visual PHP framework.
-Copyright (C) 2012-2014  Bruno Maffre
-contact@bmp-studio.com
--------------------------------------
 
--------------------------------------
-@package : lib
-@module: mmForm
-@file : mmScreen.php
--------------------------------------
+/* ------------------------------------------------------------------------------
+  -------------------------------------
+  Mihimana : the visual PHP framework.
+  Copyright (C) 2012-2014  Bruno Maffre
+  contact@bmp-studio.com
+  -------------------------------------
 
-This file is part of Mihimana.
+  -------------------------------------
+  @package : lib
+  @module: mmForm
+  @file : mmScreen.php
+  -------------------------------------
 
-Mihimana is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This file is part of Mihimana.
 
-Mihimana is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+  Mihimana is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-You should have received a copy of the GNU Lesser General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------*/
+  Mihimana is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
 
-
+  You should have received a copy of the GNU Lesser General Public License
+  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  ------------------------------------------------------------------------------ */
 
 /**
  * Cette classe va interpreter un template avec les variables au format $nomVar 
@@ -38,13 +37,13 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 class mmScreen extends mmForm {
 
     //Propriete
-            public
+    public
             $variablesExtra = array(),
             $exclusionSetValue = array(),
             $listChampsFormule = array(),
             $ecran;
 //  protected $htmlResult, $action, $method, $listeChampsTableEcran;
-            protected
+    protected
             $htmlResult,
             $listeChampsTableEcran,
             $destination,
@@ -656,7 +655,7 @@ class mmScreen extends mmForm {
         $listeVariables = array();
         $cible = preg_match_all($regex, $this->ecran['template'], $listeVariables);
         //on construit le tableau final des variable
-        
+
         return $listeVariables[1];
     }
 
@@ -695,7 +694,6 @@ class mmScreen extends mmForm {
             $occurence = substr_count($ligne, $balise); //      $occurence = preg_match_all($masqueBalise, $ligne, $positionsBalise);
 
             if ($occurence > 0) { //On a au moins une balise ouvrante
-
                 //deux cas: la balise a deja été ouverte ou pas
                 if (isset($tableauFormatage[$lettreBalise]) && $tableauFormatage[$lettreBalise] > 0) { //On a deja une balise ouverte
                     //on a deja la balise ouverte on invalide toutes les balises ouverte avec message d'erreur
@@ -729,7 +727,6 @@ class mmScreen extends mmForm {
             //on cherche les occurences balise
             $occurence = substr_count($ligne, $balise); //$occurence = preg_match_all($masqueBalise, $ligne, $positionsBalise);
             if ($occurence > 0) { //On a au moins une balise fermante
-
                 //deux cas: la balise a deja été fermée ou pas
                 if (!isset($tableauFormatage[$lettreBalise]) || (isset($tableauFormatage[$lettreBalise]) && $tableauFormatage[$lettreBalise] < 1)) {  //On a deja une balise ouverte
                     //on a deja la balise fermante on invalide toutes les balises fermante avec message d'erreur
@@ -1535,5 +1532,3 @@ class mmScreen extends mmForm {
     }
 
 }
-
-?>

@@ -65,5 +65,3 @@ class mmWidgetButtonSubmit extends mmWidgetButton {
     }
 
 }
-
-?>

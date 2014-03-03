@@ -94,4 +94,3 @@ function mdHtmlHeaderStandard() {
     <script type="text/javascript" src="js/maides.js"></script>
     <?php
 }
-?>

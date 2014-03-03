@@ -154,4 +154,3 @@ class mmWidgetInputPopup extends mmWidgetText {
  * 
  */
 }
-?>

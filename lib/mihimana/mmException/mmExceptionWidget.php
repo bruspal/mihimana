@@ -34,4 +34,3 @@ class mmExceptionWidget extends mmException {
     parent::__construct($message, $code, $previous);
   }
 }
-?>

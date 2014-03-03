@@ -66,5 +66,3 @@ class mmWidgetButton extends mmWidget {
     }
 
 }
-
-?>

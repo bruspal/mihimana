@@ -34,4 +34,3 @@ class mmExceptionAuth extends mmException {
     parent::__construct($message, $code, $previous);
   }
 }
-?>
