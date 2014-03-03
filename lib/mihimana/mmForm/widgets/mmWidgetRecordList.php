@@ -60,7 +60,7 @@ class mmWidgetRecordList extends mmWidget {
      * <ul>
      * <li><b>lines :</b> nombre de resultats par page (par defaut 10)</li>
      * <li><b>cols :</b>list des champs affiché sous forme d'un tableau au format array('nom_colonne_table' et/ou 'nom_colonne_table'=>'libellé colonne'). Si omis prend toutes les colonnes</li>
-     * <li><b>urlChgPage :</b>url du code de changement de page. Par defaut pWs. au format ?module=pWs&action=%s</li>
+     * <li><b>urlChgPage :</b>url du code de changement de page. Par defaut pWidgetAjax. au format ?module=pWidgetAjax&action=%s</li>
      * <li><b> :</b></li>
      * </ul>
      * @param type $name

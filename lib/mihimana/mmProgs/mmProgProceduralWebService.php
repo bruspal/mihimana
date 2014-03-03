@@ -10,7 +10,7 @@
   -------------------------------------
   @package : lib
   @module: mmProgs
-  @file : mmProgWebService.php
+  @file : mmProgProceduralWebService.php
   -------------------------------------
 
   This file is part of Mihimana.
@@ -29,18 +29,39 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
-/**
- *  mmProg classe générique de programme piloté par action
- */
-class mmProgWebService extends mmProg {
+class mmProgProceduralWebService extends mmProg {
 
-    public function execute($action, \mmRequest $request) {
+    public function configure(mmRequest $request) {
+        $this->setLayout(null);
+        $this->setTemplate(null);
+    }
+
+    public function execute($action = '', mmRequest $request = null) {
         if (AJAX_REQUEST || DEBUG) {
-            parent::execute($action, $request);
+            try {
+                //demarage du buffer
+                ob_clean();
+                ob_start();
+                //execution
+                $codeSortie = $this->principale($action, $request);
+                //recuperation du buffer de sortie
+                $sortieProgramme = ob_get_clean();
+                $this->genereHtmlFinal($sortieProgramme);
+            } catch (Exception $e) {
+                if (DEBUG) {
+                    echo mdAjaxError($e->getMessage() . '<br /><pre>' . $e->getTraceAsString() . '</pre>');
+                } else {
+                    echo mdAjaxError("Une erreur interne s'est produite");
+                }
+            }
         } else {
             //Ici on ne fais rien, si on tente d'executer un service web en mode standard on renvois un ecran vide.
-            header('HTTP/1.1 403 Forbidden'); //on ecrit acces refusé standard            
+            header('HTTP/1.1 403 Forbidden'); //on ecrit acces refusé standard
         }
+    }
+
+    public function principale($action = '', $parametres = null) {
+        
     }
 
 }
