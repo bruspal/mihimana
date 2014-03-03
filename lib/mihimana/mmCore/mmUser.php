@@ -271,6 +271,8 @@ class mmUser extends mmSession {
                 $user = $user->toArray();
                 $user['auth'] = true;
                 self::set('__user__', $user);
+            } else {
+                self::remove('__user__');
             }
             return true;
         }
@@ -324,21 +326,21 @@ class mmUser extends mmSession {
     public static function doLogin($login, $password) {
         switch (LOGIN_MODE) {
             case LOGIN_BY_USER:
-                $user = Doctrine_Core::getTable('Utilisateur')->createQuery()->
+                $user = Doctrine_Core::getTable('User')->createQuery()->
                         where('login = ? AND actif=1', $login)->
                         fetchOne();
                 break;
             case LOGIN_BY_EMAIL:
-                $user = Doctrine_Core::getTable('Utilisateur')->createQuery()->
+                $user = Doctrine_Core::getTable('User')->createQuery()->
                         where('email = ? AND actif=1', $login)->
                         fetchOne();
                 break;
             case LOGIN_BY_BOTH:
-                $user = Doctrine_Core::getTable('Utilisateur')->createQuery()->
+                $user = Doctrine_Core::getTable('User')->createQuery()->
                         where('login = ? AND actif=1', $login)->
                         fetchOne();
                 if ( ! $user) {
-                    $user = Doctrine_Core::getTable('Utilisateur')->createQuery()->
+                    $user = Doctrine_Core::getTable('User')->createQuery()->
                             where('email = ? AND actif=1', $login)->
                             fetchOne();
                 }

@@ -27,6 +27,11 @@ Menu:
     #table de stockage des menus (v2.0)
     connection: data
     columns:
+        id:
+            type: integer(20)
+            primary: true
+            autoincrement: true
+            unsigned: true
         menu_name:
             type: string(20)
             primary: true
@@ -69,6 +74,11 @@ ChampsTableUtilisateur:
     #tableName: T102
     connection: data
     columns:
+        id:
+            type: integer(20)
+            primary: true
+            autoincrement: true
+            unsigned: true
         nom_table:
             type: string(20)
             notnull: true
@@ -184,6 +194,11 @@ ChampsEcranUtilisateur:
     #Description du schema de la base de données
     connection: data
     columns:
+        id:
+            type: integer(20)
+            primary: true
+            autoincrement: true
+            unsigned: true
         nom_ecran:
             type: string(20)
             notnull: true
@@ -280,6 +295,11 @@ Tables:
 EnchainementProgrammes:
     connection: data
     columns:
+        id:
+            type: integer(20)
+            primary: true
+            autoincrement: true
+            unsigned: true
         nom_enchainement:
             type: string(50)
             notnull: true
@@ -301,6 +321,11 @@ EnchainementProgrammes:
 Ged:
     connection: data
     columns:
+        id:
+            type: integer(20)
+            primary: true
+            autoincrement: true
+            unsigned: true
         date_creation:
             type: timestamp
         titre:
@@ -351,9 +376,14 @@ Ged:
         idDate:
             fields: [date_creation]
 # Table des utilisateurs
-Utilisateur:
+User:
     connection: data
     columns:
+        id:
+            type: integer(20)
+            primary: true
+            autoincrement: true
+            unsigned: true
         login:
             type: string(20)
             notnull: true
@@ -400,10 +430,7 @@ Utilisateur:
 #            type: string(15)
     indexes:
         idx_login:
-            fields: [login]
-            type: unique
-        idx_email:
-            fields: [email]
+            fields: [login, email]
             type: unique
 
 ##Table permettant de connaitre la version de base de donnée. 1 lors de l'installation initiale
