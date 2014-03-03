@@ -370,5 +370,3 @@ class pGestionBase extends mmProg {
     }
 
 }
-
-?>

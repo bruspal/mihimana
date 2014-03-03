@@ -58,5 +58,3 @@ class pUser extends mmProgCRUD {
     }
 
 }
-
-?>

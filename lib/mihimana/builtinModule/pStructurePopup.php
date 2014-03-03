@@ -1,51 +1,53 @@
 <?php
-/*------------------------------------------------------------------------------
--------------------------------------
-Mihimana : the visual PHP framework.
-Copyright (C) 2012-2014  Bruno Maffre
-contact@bmp-studio.com
--------------------------------------
 
--------------------------------------
-@package : lib
-@module: builtinModule
-@file : pStructurePopup.php
--------------------------------------
+/* ------------------------------------------------------------------------------
+  -------------------------------------
+  Mihimana : the visual PHP framework.
+  Copyright (C) 2012-2014  Bruno Maffre
+  contact@bmp-studio.com
+  -------------------------------------
 
-This file is part of Mihimana.
+  -------------------------------------
+  @package : lib
+  @module: builtinModule
+  @file : pStructurePopup.php
+  -------------------------------------
 
-Mihimana is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This file is part of Mihimana.
 
-Mihimana is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
+  Mihimana is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-You should have received a copy of the GNU Lesser General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------*/
+  Mihimana is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public License
+  along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  ------------------------------------------------------------------------------ */
 
 
 require_once 'widgetsList.php';
 
 class pStructurePopup extends mmProgCRUD {
+
     protected
-    $typeChamp = array(
-        'string'=>'Chaîne',
-        'integer'=>'Entier',
-        'decimal'=>'Décimal',
-        'boolean'=>'Booléen',
-        'clop'=>'Zone de text',
-        'blob'=>'Blob binaire',
-        'timestamp'=>'Timestamp',
-        'time'=>'heure',
-        'date'=>'Date',
-        'array'=>'Tableau'
-    ),
-    $ouiNon = array(0=>'non', 1=>'oui');
+            $typeChamp = array(
+                'string' => 'Chaîne',
+                'integer' => 'Entier',
+                'decimal' => 'Décimal',
+                'boolean' => 'Booléen',
+                'clop' => 'Zone de text',
+                'blob' => 'Blob binaire',
+                'timestamp' => 'Timestamp',
+                'time' => 'heure',
+                'date' => 'Date',
+                'array' => 'Tableau'
+                    ),
+            $ouiNon = array(0 => 'non', 1 => 'oui');
 
     public function configure($parametres) {
         $this->setLayout('popup');
@@ -101,4 +103,3 @@ class pStructurePopup extends mmProgCRUD {
     }
 
 }
-?>
