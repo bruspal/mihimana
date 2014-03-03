@@ -1,4 +1,4 @@
-<?php
+<?php namespace mm\dispatcher;
 
 /* ------------------------------------------------------------------------------
   -------------------------------------
@@ -33,15 +33,17 @@
  */
 try { //On protege contre les erreurs ce qui se trouve dans le try { }
     //Recuperation des parametres fournis en URL et parametrage pour l'execution des modules
-    $request = new mmRequest();
+    $request = new \mmRequest();
+
+    
 
     /*
      * Router test
      */
     //$router = new mmRouter();
 
-    $dispatcher_module = $request->get('module', MODULE_DEFAUT);
-    $dispatcher_action = $request->get('action', ACTION_DEFAUT);
+    $module = $request->get('module', MODULE_DEFAUT);
+    $action = $request->get('action', ACTION_DEFAUT);
     //cleanup the request object : removing module and action
     $request->remove('module');
     $request->remove('action');
@@ -67,7 +69,7 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     }
 
     //verification de l'authentification
-    if (!mmUser::isAuthenticated($dispatcher_module, $dispatcher_action)) {
+    if (!\mmUser::isAuthenticated($module, $action)) {
         //Si on est en ajax on affiche le message et un bouton
         if (AJAX_REQUEST) {
             echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>');
@@ -76,11 +78,11 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         //on est pas identifié on va vers le login
         //NOTA : pour ecraser la page de login par defaut il faut mettre le pLogin.php personnalisé dans la racine de l'application
         if (file_exists(APPLICATION_DIR . DIRECTORY_SEPARATOR . 'pLogin.php')) {
-            $dispatcher_module = 'pLogin';
-            $dispatcher_action = 'login';
+            $module = 'pLogin';
+            $action = 'login';
         } else {
-            $dispatcher_module = 'pLoginStd';
-            $dispatcher_action = 'login';
+            $module = 'pLoginStd';
+            $action = 'login';
         }
     }
 
@@ -91,18 +93,18 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         define('HTTPS', false);
     }
     //On declare les module et action courant dans des constante pour pouvoir les recuperer facilement dans les modules et scripts.
-    define('MODULE_COURANT', $dispatcher_module);
-    define('ACTION_COURANTE', $dispatcher_action);
+    define('MODULE_COURANT', $module);
+    define('ACTION_COURANTE', $action);
 
 
     //ici deux choix : soit le fichier php existe. On le charge et l'execute. Sinon on charge et execute le programme générique d'extension
     $dispatcher_fichierProgramme = false;
-    if (file_exists('../' . APPLICATION . '/' . $dispatcher_module . '.php')) {
-        $dispatcher_fichierProgramme = '../' . APPLICATION . '/' . $dispatcher_module . '.php';
+    if (file_exists('../' . APPLICATION . '/' . $module . '.php')) {
+        $dispatcher_fichierProgramme = '../' . APPLICATION . '/' . $module . '.php';
         define('PROGRAMME_STANDARD', false);
     } else {
-        if (file_exists(MIHIMANA_DIR . '/builtinModule/' . $dispatcher_module . '.php')) {
-            $dispatcher_fichierProgramme = MIHIMANA_DIR . '/builtinModule/' . $dispatcher_module . '.php';
+        if (file_exists(MIHIMANA_DIR . '/builtinModule/' . $module . '.php')) {
+            $dispatcher_fichierProgramme = MIHIMANA_DIR . '/builtinModule/' . $module . '.php';
             define('PROGRAMME_STANDARD', true);
         }
     }
@@ -112,12 +114,12 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         //inclusion du programme en fonction du module
         ob_start(); //on commence la bufferisation des sortie PHP
         require $dispatcher_fichierProgramme;
-        if (class_exists($dispatcher_module)) { //est ce que le fichier charger contient une classe du meme nom que module ? dans ce cas la c'est un programme encapsulé dans une classe
+        if (class_exists($module)) { //est ce que le fichier charger contient une classe du meme nom que module ? dans ce cas la c'est un programme encapsulé dans une classe
             ob_clean(); //on vide le buffer de sortie pour avoir un buffer de sortie vide avant de commencer l'execution du programme
             //creation en memoire du programme
-            $dispatcher_programmePhp = new $dispatcher_module();
+            $dispatcher_programmePhp = new $module();
             //on execute l'action du programme avec les parametres fournis au script par l'url
-            $dispatcher_programmePhp->execute($dispatcher_action, $request);
+            $dispatcher_programmePhp->execute($action, $request);
         } else {
             //on recupère le buffer PHP car le code contenu dans le module a deja été exécuté lors du require
             //on affiche ce buffer dans le template en faisant un require du layout
@@ -125,7 +127,7 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             include APPLICATION_DIR . '/templates/layout.php';
         }
     } else {
-        throw new mmExceptionControl("<h1>$dispatcher_module : Module inexistant</h1>");
+        throw new \mmExceptionControl("<h1>$module : Module inexistant</h1>");
     }
 } catch (mmExceptionControl $e) {
 
