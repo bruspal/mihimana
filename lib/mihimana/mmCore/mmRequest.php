@@ -81,13 +81,13 @@ class mmRequest extends mmVarHolder implements ArrayAccess {
         }
     }
 
-    /* A SUPPRIMER A TERME */
-    public function getParam ($varName, $default = null) {
-        throw new mmExceptionDev('Cette methode ne doit plus etre utilisée. utiliser get()');
-    }
-    public function setParam($nomVar, $valeur) {
-        throw new mmExceptionDev('Cette methode ne doit plus etre utilisée. utiliser set()');
-    }
+//    /* A SUPPRIMER A TERME */
+//    public function getParam ($varName, $default = null) {
+//        throw new mmExceptionDev('Cette methode ne doit plus etre utilisée. utiliser get()');
+//    }
+//    public function setParam($nomVar, $valeur) {
+//        throw new mmExceptionDev('Cette methode ne doit plus etre utilisée. utiliser set()');
+//    }
     
 //    public function getParam($nomVar, $default = null) {
 //        if (isset($this->variables[$nomVar])) {

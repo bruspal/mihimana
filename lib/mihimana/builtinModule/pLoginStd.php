@@ -44,11 +44,11 @@ class pLoginStd extends mmProg {
         if (count($_POST) > 0) {
             //C'est un retour
             try {
-                $login = $request->getParam('login', false);
+                $login = $request->get('login', false);
                 if (!$login) {
                     throw new mmExceptionAuth('Veuillez saisir le login');
                 }
-                $password = $request->getParam('password', false);
+                $password = $request->get('password', false);
                 if (!$password) {
                     throw new mmExceptionAuth('Veuillez saisir le mot de passe');
                 }
