@@ -250,26 +250,28 @@ class mmUser extends mmSession {
         if (MODE_INSTALL || NO_LOGIN) {
             // On est en mode installation ou en mode fonctionnement sans login
             // On cree en mémoire un utilisateur fictif avec des parametres figé
-            $user = new Utilisateur();
-            $user['id'] = 1;
-            $user['actif'] = 1;
-            if (MODE_INSTALL) {
-                $user['super_admin'] = true;
-                $user['firstname'] = 'INSTALL';
-            } else {
-                $user['super_admin'] = SUPER_ADMIN;
-                if (SUPER_ADMIN) {
-                    $user['firstname'] = 'ADMINISTRATEUR';
-                    $user['username'] = "L'administrateur d'install";
+            if ( ! MODE_INSTALL) {
+                $user = new User();
+                $user['id'] = 1;
+                $user['actif'] = 1;
+                if (MODE_INSTALL) {
+                    $user['super_admin'] = true;
+                    $user['firstname'] = 'INSTALL';
                 } else {
-                    $user['firstname'] = 'Visiteur';
-                    $user['username'] = '';
+                    $user['super_admin'] = SUPER_ADMIN;
+                    if (SUPER_ADMIN) {
+                        $user['firstname'] = 'ADMINISTRATEUR';
+                        $user['username'] = "L'administrateur d'install";
+                    } else {
+                        $user['firstname'] = 'Visiteur';
+                        $user['username'] = '';
+                    }
                 }
+                $user['email'] = '';
+                $user = $user->toArray();
+                $user['auth'] = true;
+                self::set('__user__', $user);
             }
-            $user['email'] = '';
-            $user = $user->toArray();
-            $user['auth'] = true;
-            self::set('__user__', $user);
             return true;
         }
         //Verification d'authentification normale'
@@ -300,7 +302,7 @@ class mmUser extends mmSession {
     }
 
     private static function createVirtualGuest() {
-        $user = new Utilisateur();
+        $user = new User();
         $user['id'] = false;
         $user['login'] = 'Guest';
         $user['password'] = false;
@@ -388,7 +390,7 @@ class mmUser extends mmSession {
         if (LOGIN_MODE < 3 && LOGIN_MODE != REGISTER_MODE) {
             throw new mmExceptionConfig ("Incohérence dans la configuration de l'enregistrement/login.Si MODE n'est pas LOGIN_BY_BOTH, LOGIN_BY et REGISTER_BY doivent utilisé les meme mode");
         }
-        $user = new Utilisateur();
+        $user = new User();
         if (REGISTER_MODE == REGISTER_BY_USER) {
             $user['login'] = $login;
             $user['email'] = $email;
