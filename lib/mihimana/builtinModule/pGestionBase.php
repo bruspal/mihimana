@@ -43,11 +43,12 @@ class pGestionBase extends mmProg {
         echo '<h1>Options</h1>';
         if (MODE_INSTALL) {
             echo new mmWidgetButton('creerDB', 'Creer la base de données de parametres', array('onclick' => "if (confirm('CECI VA DETRUIRE LA BASE ETES VOUS SUR DE VOULOIR CONTINUER ?')) goPage('?module=pGestionBase&action=createDBParam')")) . '<br />';
-            echo new mmWidgetButtonGoPage('Dumper les data de la base de parametres', "?module=pGestionBase&action=dumpData") . '<br />';
+            echo new mmWidgetButtonGoModule('Dumper les data de la base de parametres', 'pGestionBase', 'dumpData') . '<br />';
             echo new mmWidgetButtonGoPage('Charger les data de la base de parametres', "?module=pGestionBase&action=loadData") . '<br />';
             echo new mmWidgetButtonGoModule('Importer modele depuis une base existante', 'pGestionBase', 'importFromDB').'<br />';
         }
-        echo new mmWidgetButtonGoPage('Genere la base de données utilisateur', "?module=pGestionBase&action=genereBaseUtilisateur");
+        echo new mmWidgetButtonGoModule('Genere la base de données utilisateur', 'pGestionBase', 'genereBaseUtilisateur').'<br />';
+        echo new mmWidgetButtonGoModule('Migrer depuis un fichier Yaml', 'pGestionBase', 'migrateFromYaml').'<br />';
     }
 
     public function executeCreateDBParam(mmRequest $request) {
@@ -179,7 +180,7 @@ class pGestionBase extends mmProg {
             readfile($nomFichier);
             echo "</pre>";
         }
-        //Onf fait le menage dans le model avant de generer la mise a jour
+        //On fait le menage dans le model avant de generer la mise a jour
         //Mise a jour à la version de base :
         $listeConnection = Doctrine_Manager::getInstance()->getConnections();
         foreach ($listeConnection as $connectionCourante) {
@@ -258,18 +259,107 @@ class pGestionBase extends mmProg {
     public function executeImportFromDB(mmRequest $request) {
         $form = new mmForm();
         $form->setAction('?module=pGestionBase&action=importFromDB');
+        //fields
+        $form->addWidget(new mmWidgetText('file_name', 'model.yml'));
         $form->addWidget(new mmWidgetText('db'));
         $form->addWidget(new mmWidgetText('host', '127.0.0.1'));
         $form->addWidget(new mmWidgetText('user'));
         $form->addWidget(new mmWidgetPassword('passwd'));
         $form->addWidget(new mmWidgetButtonSubmit());
+        //validator
+        $form['file_name']->addValidation('notnull');
+        $form['db']->addValidation('notnull');
+        $form['host']->addValidation('notnull');
+        $form['user']->addValidation('notnull');
+        $form['passwd']->addValidation('notnull');
         
-        if ( ! $request->isEmpty()) {
-            $form->setValues($request);
+        $form->setValues($request);
+        if ( ! $request->isEmpty() && $form->isValid()) {
+            $db = $form->getValue('db');
+            $host = $form->getValue('host');
+            $user = $form->getValue('user');
+            $passwd = $form->getValue('passwd');
+            $fileName = $form->getValue('file_name');
+            //On abandonne la connection actuelle
+            $conn = Doctrine_Manager::connection();
+            $manager = Doctrine_Manager::getInstance();
+            $manager->closeConnection($conn);
+            //On cre la nouvelle connection
+            $conn = Doctrine_Manager::connection("mysql://$user:$passwd@$host/$db", "data");
+            $conn->setAttribute(Doctrine_Core::ATTR_QUOTE_IDENTIFIER, true);
+            try {
+                $path = APPLICATION_DIR.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.$fileName;
+                Doctrine_Core::generateYamlFromDb(APPLICATION_DIR.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.$fileName, array('data'));
+                echo "<h1>Import ok</h1>";
+                $content = file_get_contents($path);
+                echo "<pre>$content</pre>";
+            }
+            catch (Doctrine_Exception $e) {
+                echo "<h1>Erreur lors de la creation</h1>";
+                echo $e->getMessage();
+                echo "<pre>".$e->getTraceAsString()."</pre>";
+            }
+        } else {
+            echo $form->start();
+            echo $form->render();
+            echo $form->stop();
         }
+    }
+    /**
+     * Cette methode prend un fichier yaml et effectue la migration de la base en fonction de celui-ci par rapport au model existant
+     * @param mmRequest $request
+     */
+    public function executeMigrateFromYaml(mmRequest $request) {
+        $form = new mmForm();
+        $form->addWidget(new mmWidgetFile('ymlFile'));
+        $form->addWidget(new mmWidgetButtonSubmit());
+        
+        $form->setValues($request);
+        if ( ! $request->isEmpty() && $form->isValid()) {
+            echo "<h1>Importe</h1>";
+            $uniqueId = uniqid();
+            $manager = Doctrine_Manager::getInstance();
+            //recupération du fichier yaml
+            $importYaml = APPLICATION_DIR.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'model.yml';
+            //On construit le nouveau fichier yaml en mixant le fichier importer avec la base standard
+            //parsing des fichier sources: le fichier de base de mihimana + le fichier uploadé
+            $mihimanaDBArray = sfYaml::load(CONFIG_DIR.DIRECTORY_SEPARATOR.'schema_param.yml');
+            $sourceArray =  sfYaml::load($importYaml);
+            //merge des tableau et ecriture du fichier temporaire
+            $resultArray = array_merge($mihimanaDBArray, $sourceArray);
+            $newYamlStr = sfYaml::dump($resultArray);
+            
+            $currentModelYaml = sys_get_temp_dir().DIRECTORY_SEPARATOR."currentModel_$uniqueId.yml";
+            $newModelYaml =  sys_get_temp_dir().DIRECTORY_SEPARATOR."newModel_$uniqueId.yml";
+            
+            file_put_contents($newModelYaml, $newYamlStr);
+            
+            //récupération du yaml a partir du model existant
+
+            Doctrine_Core::generateYamlFromModels($currentModelYaml, MODELS_DIR);
+            //generation des classes de migration
+            Doctrine_Core::generateMigrationsFromDiff(MIGRATION_DIR, $currentModelYaml, $newModelYaml);
+            //On fait la migration du model
+            mmEmptyDirectory(MODELS_DIR.DIRECTORY_SEPARATOR.'generated');
+            Doctrine_Core::generateModelsFromYaml($newModelYaml, MODELS_DIR, array('generateTableClasses' => true));
+            //On fait la migration de la base
+            try {
+                $migration = new Doctrine_Migration(MIGRATION_DIR);
+                $migration->migrate();
+            } catch (Doctrine_Migration_Exception $e) {
+                echo $e->getMessage();
+            }
+                
+            
+            unlink($currentModelYaml);
+            unlink($newModelYaml);
+        }
+        
         echo $form->start();
         echo $form->render();
         echo $form->stop();
+        
+        
     }
     
     public function executeNettoyerModel(mmRequest $request) {
