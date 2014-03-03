@@ -29,7 +29,7 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
-class mmProgProceduralWebService extends mmProg {
+class mmProgProceduralWebService extends mmProgProcedural {
 
     public function configure(mmRequest $request) {
         $this->setLayout(null);
@@ -38,30 +38,11 @@ class mmProgProceduralWebService extends mmProg {
 
     public function execute($action = '', mmRequest $request = null) {
         if (AJAX_REQUEST || DEBUG) {
-            try {
-                //demarage du buffer
-                ob_clean();
-                ob_start();
-                //execution
-                $codeSortie = $this->principale($action, $request);
-                //recuperation du buffer de sortie
-                $sortieProgramme = ob_get_clean();
-                $this->genereHtmlFinal($sortieProgramme);
-            } catch (Exception $e) {
-                if (DEBUG) {
-                    echo mdAjaxError($e->getMessage() . '<br /><pre>' . $e->getTraceAsString() . '</pre>');
-                } else {
-                    echo mdAjaxError("Une erreur interne s'est produite");
-                }
-            }
+            parent::execute($action, $request);
         } else {
             //Ici on ne fais rien, si on tente d'executer un service web en mode standard on renvois un ecran vide.
             header('HTTP/1.1 403 Forbidden'); //on ecrit acces refusé standard
         }
-    }
-
-    public function principale($action = '', $parametres = null) {
-        
     }
 
 }
