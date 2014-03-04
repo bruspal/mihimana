@@ -1,4 +1,8 @@
 /*
+ * Global variables
+ */
+
+/*
  * Fonctions génériques
  */
 function openWindow(url, windowName, type) {
@@ -57,28 +61,7 @@ $.ajaxSetup({
     },
     dataType: "json"
 });
-/*
- function ajaxService(url, data)
- {
- 
- }
- 
- function ajxService(remote)
- {
- var resultat;
- $.ajax(remote, {
- dataType: "html",
- async: false,
- error: function(XHR, textError){
- alert('retour erreur '+textError+XHR.responseText);
- },
- success: function(received){
- resultat =received;
- }
- });
- return resultat;
- }
- */
+
 function mmAjxSubmit(formObject, resultContainer) {
     if (resultContainer == undefined)
     {
@@ -238,17 +221,6 @@ function mmJsCheckInteger(jqObject) {
         displayError(jqObject, false, 'Le champ doit contenir un entier');
     });
 }
-//function mdJsCheckInteger(jqObject, rule) {
-//  jqObject.blur(function(){
-//    if ( ! /^\d*$/.test(jqObject)) {
-//      ajxPopup('Le champ doit contenir un entier', 'Erreur');
-//      $(this).addClass('mdError');
-//    }
-//    else {
-//      $(this).removeClass('mdError');
-//    }
-//  });
-//}
 
 function mmJsCheckReal(jqObject) {
     jqObject.blur(function() {
@@ -323,15 +295,20 @@ function mmJsCheckDate(jqObject) {
     });
 }
 
+function mmJsCheckEmail(jqObject) {
+    var rexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (rexp.test(jqObject.val())) {
+        displayError();
+    }
+}
+
 //Gestion des erreurs
 function displayError(jqObject, testError, message) {
     id = '#er_' + jqObject.attr('id');
-    //  id = '#maides_comm';
     uid = stringUID(message);
     if (testError) {
         eval('errObject.' + uid + '="' + message + '"');
         jqObject.addClass('mdError');
-        //ajxPopup(message, 'Erreur');
     }
     else {
         delete errObject[uid];

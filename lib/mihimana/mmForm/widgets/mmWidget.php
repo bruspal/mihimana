@@ -32,10 +32,7 @@
 class mmWidget extends mmObject {
 
     protected $attributes = array();  //Tableau des attibuts
-//  protected $type = ''; //type du widget
-//  protected $name = ''; //nom du widget
     protected $label = ''; // libelle
-//  protected $value = ''; // Valeur
     protected $default = '';  //Valeur initial (copie de value jamais modifier)
     protected $dbValue = ''; //Valeur nettoyee
     protected $display = true; //A true on affiche le widget, a false non
@@ -65,13 +62,9 @@ class mmWidget extends mmObject {
      * @param type $attributes tablleaux des attributs
      */
     public function __construct($name, $type = 'input', $value = '', $attributes = array(), $options = array()) {
-//    $this->name = $name;
-//    $this->type = $type;
-//    $this->value = $value;
         if (is_string($name)) {
             $this->default = $value;
             //TODO: mettre tous les attribut name, type, value dans la list des attribut
-//      $this->attributes['name'] = sprintf($this->nameFormat, $name);
             $this->attributes['name'] = $name;
             $this->attributes['type'] = $type;
             $this->attributes['value'] = $value;
@@ -101,7 +94,7 @@ class mmWidget extends mmObject {
             $this->enabled = $name->enabled;
             return $this;
         }
-        throw new mmExceptionDev(sprintf('%s $name doit etre soit une chaine soit un mdWidget', __METHOD__));
+        throw new mmExceptionDev(sprintf('%s $name doit etre soit une chaine soit un mmWidget', __METHOD__));
     }
 
     public function __toString() {
@@ -761,14 +754,20 @@ class mmWidget extends mmObject {
     }
 
     public function php_validator_integer() {
-        if ((int) $this->attributes['value'] != $this->attributes['value']) {
+        if ( ! filter_var($this->attributes['value'], FILTER_VALIDATE_INT)) {
             $this->addError('Le champ doit etre un entier', 0);
         }
     }
 
     public function php_validator_real() {
-        if ((float) $this->attributes['value'] != $this->attributes['value']) {
-            $this->addError('Le champ doit etre unevaleur numerique', 0);
+        if ( ! filter_var($this->attributes['value'], FILTER_VALIDATE_FLOAT)) {
+            $this->addError('Le champ doit etre une valeur numerique', 0);
+        }
+    }
+    
+    public function php_validator_email() {
+        if ( ! filter_var($this->attributes['value'], FILTER_VALIDATE_EMAIL)) {
+            $this->addError('Adresse email invalide');
         }
     }
 
@@ -777,19 +776,23 @@ class mmWidget extends mmObject {
      * ********************************** */
 
     public function js_validator_notnull() {
-        $this->addJavascript('__notnull', "mdJsCheckNotnull($('#{$this->attributes['id']}'));\n");
+        $this->addJavascript('__notnull', "mmJsCheckNotnull($('#{$this->attributes['id']}'));\n");
     }
 
     public function js_validator_length_max($params) {
-        $this->addJavascript('__length_max', "mdJsCheckLengthMax($('#{$this->attributes['id']}'), {$params});\n");
+        $this->addJavascript('__length_max', "mmJsCheckLengthMax($('#{$this->attributes['id']}'), {$params});\n");
     }
 
     public function js_validator_integer() {
-        $this->addJavascript('__integer', "mdJsCheckInteger($('#{$this->attributes['id']}'));\n");
+        $this->addJavascript('__integer', "mmJsCheckInteger($('#{$this->attributes['id']}'));\n");
     }
 
     public function js_validator_real($rule) {
-        $this->addJavascript('__real', "mdJsCheckReal($('#{$this->attributes['id']}'));\n");
+        $this->addJavascript('__real', "mmJsCheckReal($('#{$this->attributes['id']}'));\n");
+    }
+    
+    public function js_validator_email() {
+        $this->addJavascript('__email', "mmJsCheckEmail($('#{$this->attributes['id']}'));\n");
     }
 
 }
