@@ -34,6 +34,7 @@ class mmWidgetButton extends mmWidget {
     public function __construct($name, $value = '', $attributes = array()) {
         $this->addAttribute('class', 'button');
         parent::__construct($name, 'button', $value, $attributes);
+        $this->setLabel($value);
     }
 
     public function click($jsClick, $confirm = '') {
@@ -49,7 +50,7 @@ class mmWidgetButton extends mmWidget {
     public function render($extraAttributes = array(), $replace = false) {
 
         if ($this->edit && $this->enabled) {
-            $result = sprintf('<button name="%s" %s>%s</button>', sprintf($this->nameFormat, $this->attributes['name']), $this->generateAttributes($extraAttributes, $replace), $this->attributes['value']);
+            $result = sprintf('<button name="%s" %s>%s</button>', sprintf($this->nameFormat, $this->attributes['name']), $this->generateAttributes($extraAttributes, $replace), $this->label);
             $result .= $this->renderInfo() . $this->renderAdminMenu();
         } else {
             $result = parent::render($extraAttributes, $replace);
@@ -58,7 +59,7 @@ class mmWidgetButton extends mmWidget {
     }
 
     public function setValue($value, $ignoreControle = 0) {
-        // Do nothing : setting the value will change the value
+        $this->setLabel($value);
     }
 
     public function goUrl($url, $confirm = '') {
