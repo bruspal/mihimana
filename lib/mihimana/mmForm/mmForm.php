@@ -53,7 +53,7 @@ class mmForm extends mmObject implements ArrayAccess {
             $adminMenu = true,
             $method = 'post',
             $action = '',
-            $id = 'mdForm_id',
+            $id = '',
             $modified;
 
     public function __construct(Doctrine_Record $record = null, $options = array()) {
@@ -61,7 +61,6 @@ class mmForm extends mmObject implements ArrayAccess {
         if ($record) {
             $this->setWidgetFromRecord($record);
             $this->new = !$this->record->exists();
-//      $this->setNameFormat('%s[%%s]');
         }
         $this->option = $options;
 //    if (myUser::superAdmin() && $this->adminMenu) {
@@ -124,6 +123,9 @@ class mmForm extends mmObject implements ArrayAccess {
         }
         $widget->setContainer($this);
         $widget->postAddWidget();
+        if ($this->getId()) {
+            $widget->setId($this->getId().'_'.$widget->getId());
+        }
         $this->widgetList[$name] = $widget;
     }
 
@@ -195,7 +197,7 @@ class mmForm extends mmObject implements ArrayAccess {
         //Initialisation de l'objet
         $this->valid = true;
         $this->name = $record->getTable()->getTableName();
-        $this->id = $this->name . '_id';
+        $this->id = $this->name;
         $this->screen = $this->name;
         if (!$nameFormat) {
             $this->nameFormat = sprintf('%s[%%s]', $this->name);
@@ -440,7 +442,7 @@ class mmForm extends mmObject implements ArrayAccess {
         }
     }
 
-    public function setId($id = 'mdFormId') {
+    public function setId($id = '') {
         $this->id = $id;
     }
 
@@ -525,7 +527,7 @@ class mmForm extends mmObject implements ArrayAccess {
         }
         //On ajoute les balise <form> si l'action a ete definie
         if ($this->action) {
-            $result = sprintf('<form action="%s" method="%s" id="%s" enctype="%s">%s</form>', $this->action, $this->method, $this->id, $this->enctype, $result);
+            $result = $this->start().$result.$this->stop();
         }
         $result .= $this->renderJavascript($fieldList);
         return $result;
@@ -536,7 +538,7 @@ class mmForm extends mmObject implements ArrayAccess {
      * @return string
      */
     public function start() {
-        return sprintf('<form action="%s" method="%s" id="%s" enctype="%s">', $this->action, $this->method, $this->id, $this->enctype);
+        return sprintf('<form action="%s" method="%s" %s enctype="%s">', $this->action, $this->method, $this->id == '' ? '' : 'id="'.$this->id.'"', $this->enctype);
     }
 
     /**
@@ -549,7 +551,7 @@ class mmForm extends mmObject implements ArrayAccess {
 
     public function renderFormHeader() {
         deprecatedMethode(__CLASS__, __METHOD__, 'start');
-        return $this->start();
+        throw new mmExceptionDev('Method renderFormHeader desuete. Utiliser start()');
     }
 
     public function renderRow($fieldList = null, $subFormsSetting = null) {

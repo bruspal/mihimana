@@ -41,26 +41,37 @@ class pLoginStd extends mmProg {
 
     public function executeLogin(mmRequest $request) {
         $this->initForm();
-        if (count($_POST) > 0) {
+        if ( ! $request->isEmpty()) {
             //C'est un retour
             try {
+                $this->signinForm->setValues($request);
                 $login = $request->get('login', false);
-                if (!$login) {
-                    throw new mmExceptionAuth('Veuillez saisir le login');
-                }
                 $password = $request->get('password', false);
-                if (!$password) {
-                    throw new mmExceptionAuth('Veuillez saisir le mot de passe');
+                if ($this->signinForm->isValid() && $login != false && $password != false) {
+                    mmUser::doLogin($this->signinForm->getValue('login'), $this->signinForm->getValue('password'));
+                    mmUser::flashSuccess('Bienvenue ' . mmUser::getNom());
+                    $this->redirect('?module=' . MODULE_DEFAUT . '&action=' . ACTION_DEFAUT);
                 }
-                //On effectue le login (il n'y a pas de retour, si jamais ca marche pas ca generera une exception
-                mmUser::doLogin($login, $password);
-                mmUser::flashSuccess('Bienvenue ' . mmUser::getNom());
-                $this->redirect('?module=' . MODULE_DEFAUT . '&action=' . ACTION_DEFAUT);
             } catch (mmExceptionAuth $e) {
                 mmUser::flashError($e->getMessage());
             }
         }
-        //ici le html est generé implicitement
+    }
+
+    public function executeSubscribe(mmRequest $request) {
+        $this->initForm();
+        if ( ! $request->isEmpty()) {
+            $this->registerForm->setValues($request);
+            if ($this->registerForm->isValid()) {
+                $login = $request->get('login', false);
+                $password = $request->get('password', false);
+                $this->registerSuccess = true;
+//                try {
+                    mmUser::createUser($login, $password);
+//                }
+                
+            }
+        }
     }
 
     public function executeLogout(mmRequest $request) {
@@ -70,16 +81,66 @@ class pLoginStd extends mmProg {
     }
 
     public function initForm() {
-        $form = new mmForm();
-        $form->setAction('?module=pLoginStd&action=login');
-        $form->setId('loginForm');
-        $form->addWidget(new mmWidgetText('login'));
-        $form->addWidget(new mmWidgetPassword('password'));
-        $form->addWidget(new mmWidgetButtonSubmit());
+        /* Signin form */
+        switch (LOGIN_MODE) {
+            case LOGIN_BY_EMAIL:
+                $phLogin = 'email@example.com';
+                break;
+            case LOGIN_BY_USER:
+                $phLogin = 'login';
+                break;
+            case LOGIN_BY_BOTH:
+                $phLogin = 'email / login';
+                break;
+            default:
+                throw new mmExceptionDev('LOGIN_MODE d&eacute;fini avec une valeur &eacute;ronn&eacute;e');
+                break;
+        }
+        
+        switch (REGISTER_MODE) {
+            case REGISTER_BY_EMAIL:
+                $phRegister = 'email@example.com';
+                break;
+            case REGISTER_BY_USER:
+                $phRegister = 'login';
+                break;
+            default:
+                throw new mmExceptionDev('REGISTER_MODE d&eacute;fini avec une valeur &eacute;ronn&eacute;e');
+                break;
+        }
+        
+        $signinForm = new mmForm();
+        $signinForm->setAction('?module=pLoginStd&action=login');
+        $signinForm->setId('loginForm');
+        $signinForm->addWidget(new mmWidgetText('login', '', array('placeholder' => $phLogin)));
+        $signinForm->addWidget(new mmWidgetPassword('password', '', array('placeholder' => 'password')));
+        $signinForm->addWidget(new mmWidgetButtonSubmit('Sign In'));
+        //validator
+        $signinForm['login']->addValidation('notnull');
+        if (REGISTER_MODE == REGISTER_BY_EMAIL) {
+            $signinForm['login']->addValidation('email');
+        }
+        $signinForm['password']->addValidation('notnull');
+        //make it availlable for template
+        $this->signinForm = $signinForm;
 
-        $this->form = $form;
+        /* Register form */
+        //formulaire d'enregistrement
+        $registerForm = new mmForm();
+        $registerForm->setId('subForm');
+        $registerForm->setAction('?module=pLoginStd&action=subscribe');
+        $registerForm->addWidget(new mmWidgetText('login', '', array('placeholder' => $phRegister)));
+        $registerForm->addWidget(new mmWidgetText('loginConf', '', array('placeholder' => 'confirm '.$phRegister)));
+        $registerForm->addWidget(new mmWidgetPassword('password', '', array('placeholder' => 'Password')));
+        $registerForm->addWidget(new mmWidgetButtonSubmit("Register"));
+        //validator
+        $registerForm['login']->addValidation('notnull');
+        if (REGISTER_MODE == REGISTER_BY_EMAIL) {
+            $registerForm['login']->addValidation('email');
+        }
+        $registerForm['password']->addValidation('notnull');
+        //make it availlable for template
+        $this->registerForm = $registerForm;
     }
 
 }
-
-?>

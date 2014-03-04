@@ -58,9 +58,9 @@ class mmWidgetButton extends mmWidget {
         return $result;
     }
 
-    public function setValue($value, $ignoreControle = 0) {
-        $this->setLabel($value);
-    }
+//    public function setValue($value, $ignoreControle = 0) {
+//        
+//    }
 
     public function goUrl($url, $confirm = '') {
         return $this->click(sprintf("goPage('%s')", $url), $confirm);

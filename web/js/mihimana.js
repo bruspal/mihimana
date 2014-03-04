@@ -65,7 +65,7 @@ $.ajaxSetup({
 function mmAjxSubmit(formObject, resultContainer) {
     if (resultContainer == undefined)
     {
-        resultContainer = mmGetModalContainer('__mdDialog');
+        resultContainer = mmGetModalContainer('__mmDialog');
     }
     $.ajax({
         url: formObject.attr('action'),
@@ -73,7 +73,7 @@ function mmAjxSubmit(formObject, resultContainer) {
         type: 'POST',
         dataType: 'html',
         success: function(data) {
-            resultContainer.find('.mdModalContent').html(data);
+            resultContainer.find('.mmModalContent').html(data);
         }
     });
 }
@@ -105,7 +105,7 @@ function mmPopup(content, title) {
         modal: true
     });
     $('#__mmPopup .title').html(title);
-    $('#__mmPopup .mdModalContent').html(content);
+    $('#__mmPopup .mmModalContent').html(content);
     $('#__mmPopup').jqmShow();
 }
 
@@ -119,15 +119,15 @@ function mmAjaxHtmlDialog(remote, title) {
         remote += '&_fhr_=1';
     }
 
-    mmGetModalContainer('__mdDialog');
-    $('#__mdDialog .title').text(title);
+    mmGetModalContainer('__mmDialog');
+    $('#__mmDialog .title').text(title);
 
-    $('#__mdDialog').jqm({
+    $('#__mmDialog').jqm({
         ajax: remote,
         modal: true,
-        target: $('#__mdDialog .mdModalContent')
+        target: $('#__mmDialog .mmModalContent')
     });
-    $('#__mdDialog').jqmShow();
+    $('#__mmDialog').jqmShow();
 }
 
 function mmGetModalContainer(containerName)
@@ -135,13 +135,13 @@ function mmGetModalContainer(containerName)
     container = $('#' + containerName);
     if (container.length == 0)
     {
-        container = $('<div>').addClass('mdModalWindow').attr('id', containerName).hide();
-        container.append($('<div>').addClass('windowBar').append($('<span>').addClass('title').addClass('mdModalClose')).append($('<span>').addClass('mdXClose').addClass('mdModalClose').text('[X]')));
-        container.append($('<div>').addClass('mdModalContent'));
-        //    container.append($('<div>').addClass('mdModalMenu').append($('<button>').addClass('mdButtonClose').addClass('mdModalClose').text('Fermer')));
+        container = $('<div>').addClass('mmModalWindow').attr('id', containerName).hide();
+        container.append($('<div>').addClass('windowBar').append($('<span>').addClass('title').addClass('mmModalClose')).append($('<span>').addClass('mmXClose').addClass('mmModalClose').text('[X]')));
+        container.append($('<div>').addClass('mmModalContent'));
+        //    container.append($('<div>').addClass('mmModalMenu').append($('<button>').addClass('mmButtonClose').addClass('mmModalClose').text('Fermer')));
         container.jqm({
-            closeClass: 'mdModalClose',
-            overlayClass: 'mdModalOverlay'
+            closeClass: 'mmModalClose',
+            overlayClass: 'mmModalOverlay'
         });
         $(document.body).append(container);
     }
@@ -198,34 +198,28 @@ function pageRecordListe(nom, id, ordre)
 var errObject = {};
 
 function mmJsCheckLengthMax(jqObject, rule) {
-    $(jqObject).blur(function() {
-        displayError(jqObject, $(this).val().length > rule, 'Le champ ne doit pas exceder ' + rule + ' characteres', 'Erreur');
-    });
+//    $(jqObject).blur(function() {
+        displayError(jqObject, jqObject.val().length > rule, 'Le champ ne doit pas exceder ' + rule + ' characteres', 'Erreur');
+//    });
 }
 
 function mmJsCheckNotnull(jqObject) {
-    jqObject.blur(function() {
-        displayError(jqObject, $(this).val().length == 0, 'Le champs ne peux pas etre vide');
-    });
-}
-
-function mmJsCheckInteger_(jqObject, rule) {
-    jqObject.blur(function() {
-        displayError(jqObject, !/^\d*$/.test(jqObject.val()), 'Le champ doit contenir un entier');
-    });
+//    jqObject.blur(function() {
+        displayError(jqObject, jqObject.val().length == 0, 'Le champs ne peux pas etre vide');
+//    });
 }
 
 function mmJsCheckInteger(jqObject) {
-    jqObject.blur(function() {
-        //    displayError(jqObject, ! (/^\d*$/.test(jqObject)), 'Le champ doit contenir un entier');
-        displayError(jqObject, false, 'Le champ doit contenir un entier');
-    });
+//    jqObject.blur(function() {
+        displayError(jqObject, ! /^\d*$/.test(jqObject.val()), 'Le champ doit contenir un entier');
+//        displayError(jqObject, false, 'Le champ doit contenir un entier');
+//    });
 }
 
 function mmJsCheckReal(jqObject) {
-    jqObject.blur(function() {
-        displayError(jqObjedct, !/^\d*.?\d*$/.test(jqObject), 'Le champ doit contenir un nombre');
-    });
+//    jqObject.blur(function() {
+        displayError(jqObject, !/^\d*.?\d*$/.test(jqObject.val()), 'Le champ doit contenir un nombre');
+//    });
 }
 
 function mmJsCheckTime(jqObject, withSec) {
@@ -235,7 +229,7 @@ function mmJsCheckTime(jqObject, withSec) {
         //todo: implementer les seconde plus tard, deja present dans la version PHP
     }
 
-    jqObject.blur(function() {
+//    jqObject.blur(function() {
         valeur = jqObject.val();
         if (valeur == '')
             return '';
@@ -258,7 +252,7 @@ function mmJsCheckTime(jqObject, withSec) {
                 min = '0' + min;
             jqObject.val(hour + ':' + min);
         }
-    });
+//    });
 }
 
 function mmJsCheckDate(jqObject) {
@@ -268,7 +262,7 @@ function mmJsCheckDate(jqObject) {
         return d.match(dateRegEx);
     }
 
-    jqObject.blur(function() {
+//    jqObject.blur(function() {
         valeur = jqObject.val();
         if (valeur == '')
             return '';
@@ -292,32 +286,37 @@ function mmJsCheckDate(jqObject) {
         if (dateValide(valeur)) {
             jqObject.val(valeur);
         }
-    });
+//    });
 }
 
 function mmJsCheckEmail(jqObject) {
-    var rexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (rexp.test(jqObject.val())) {
-        displayError();
-    }
+//    jqObject.blur(function(){
+        var rexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        displayError(jqObject, ! rexp.test(jqObject.val()), 'adresse email invalide');
+//    });
 }
 
 //Gestion des erreurs
 function displayError(jqObject, testError, message) {
     id = '#er_' + jqObject.attr('id');
     uid = stringUID(message);
+    if (jqObject['__errArray__'] == undefined) {
+        jqObject['__errArray__'] = {};
+    }
     if (testError) {
-        eval('errObject.' + uid + '="' + message + '"');
-        jqObject.addClass('mdError');
+//        eval('errObject.' + uid + '="' + message + '"');
+        jqObject['__errArray__'][uid] = message;
+        jqObject.addClass('mmError');
     }
     else {
-        delete errObject[uid];
-        jqObject.removeClass('mdError');
+//        delete errObject[uid];
+        delete jqObject['__errArray__'][uid];
+        jqObject.removeClass('mmError');
     }
     //on redessine la zone d'erreur'
     $(id).empty();
-    for (mess in errObject) {
-        $(id).append('<div>' + errObject[mess] + '</div>');
+    for (mess in jqObject['__errArray__']) {
+        $(id).append('<div>' + jqObject['__errArray__'][mess] + '</div>');
     }
 
     return testError;

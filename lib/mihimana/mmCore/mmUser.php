@@ -282,17 +282,23 @@ class mmUser extends mmSession {
             return true;
         } else {
             //Vérification des module/actions auquelles on a acces sans être identifier
-            //pour test
-            require APPLICATION_DIR . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'credentials.php';
+            //list des credentials par defaut, peuvent etre ecrasé par les valeur dans le fichier credentials
+            $credentialsArray = array( 
+                'pLoginStd/subscribe'      => false,
+            );
+            if (file_exists(APPLICATION_CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php')) {
+                require APPLICATION_CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php';
+                $credentialsArray = array_merge($credentialsArray, $credentials);
+            }
             $strCredentials = $module . '/' . $action;
-            if (isset($credentials[$strCredentials]) && $credentials[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
+            if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
                 $user = self::createVirtualGuest();
                 $user = $user->toArray();
                 self::set('__user__', $user);
                 return true; //ok on est identifié
             }
             $strCredentials = $module;
-            if (isset($credentials[$strCredentials]) && $credentials[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
+            if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
                 $user = self::createVirtualGuest();
                 $user = $user->toArray();
                 self::set('__user__', $user);

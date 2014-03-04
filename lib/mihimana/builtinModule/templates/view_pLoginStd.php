@@ -28,7 +28,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
- echo $form->renderFormHeader() ?>
+echo $signinForm->start() ?>
   <table class="login_table">
     <tr>
       <td colspan="3" class="titre">
@@ -41,9 +41,9 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
       <td></td>
     </tr>
     <tr>
-      <td><?php echo $form['login'] ?></td>
-      <td><?php echo $form['password'] ?></td>
-      <td><input type="submit" value="Valider" /></td>
+      <td><?php echo $signinForm['login'].$signinForm['login']->renderErrors() ?></td>
+      <td><?php echo $signinForm['password'].$signinForm['password']->renderErrors() ?></td>
+      <td><?php echo $signinForm['sign_in'] ?></td>
     </tr>
   </table>
-</form>
+<?php echo $signinForm->stop();

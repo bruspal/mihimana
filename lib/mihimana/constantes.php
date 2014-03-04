@@ -42,7 +42,7 @@ define('MIGRATION_DIR', APPLICATION_DIR.'/lib/migration');
 define('FIXTURE_DIR', LIB_DIR.'/fixtures');
 define('MIHIMANA_DIR', LIB_DIR.'/mihimana');
 define('CONFIG_DIR', LIB_DIR.'/config');
-define('APPPLICATION_CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
+define('APPLICATION_CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
 define('SQLITE_DIR', LIB_DIR.'/sqlite');
 define('PLUGINS_DIR', LIB_DIR.'/plugins');
 define('DOCTRINE_DIR', PLUGINS_DIR.'/Doctrine-1.2.4');
