@@ -32,7 +32,7 @@
 class mmWidgetText extends mmWidget {
 
     public function __construct($name, $value = '', $attributes = array()) {
-        $this->addAttribute('autocomplete', 'off');
+        //$this->addAttribute('autocomplete', 'off');
         $this->addAttribute('class', 'text');
         parent::__construct($name, 'text', $value, $attributes);
     }
