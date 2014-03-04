@@ -61,9 +61,27 @@ class mmWidgetButton extends mmWidget {
 //    public function setValue($value, $ignoreControle = 0) {
 //        
 //    }
+    protected function generateAttributes($extraAttributes = array(), $replace = false) {
+        if ($replace) {
+            $attributes = $extraAttributes;
+        } else {
+            $attributes = array_merge($this->attributes, $extraAttributes);
+        }
+        //On vire les attribut 'speciaux'
+        unset(
+                $attributes['name'], $attributes['value']
+        );
 
-    public function goUrl($url, $confirm = '') {
-        return $this->click(sprintf("goPage('%s')", $url), $confirm);
+        $result = '';
+
+        foreach ($attributes as $an => $a) {
+            $result .= sprintf(' %s="%s"', $an, $a);
+        }
+        return substr($result, 1);
     }
+
+//    public function goUrl($url, $confirm = '') {
+//        return $this->click(sprintf("goPage('%s')", $url), $confirm);
+//    }
 
 }

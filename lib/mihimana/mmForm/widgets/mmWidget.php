@@ -545,10 +545,10 @@ class mmWidget extends mmObject {
 
     //Code de verification
     public function addValidation($name, $params = array()) {
-//    if ( ! method_exists($this, $name.'_php') || ! method_exists($this, $name.'_js'));
-//    {
-//      throw new mdExceptionControl("le validateur $name n'est pas définie");
-//    }
+//        if (!method_exists($this, $name . '_php') || !method_exists($this, $name . '_js'))
+//            ; {
+//            throw new mdExceptionControl("le validateur $name n'est pas définie");
+//        }
 //    if ( ! ($this instanceof mdWidgetHidden)) {
 //      $methodName = $name.'_pre';
 //      $this->$methodName($params);
@@ -560,6 +560,10 @@ class mmWidget extends mmObject {
         if (!($this instanceof mmWidgetHidden)) {
             $methodName = 'js_validator_' . $name;
             call_user_func_array(array($this, $methodName), $params);
+            if ( ! is_null($this->containerForm)) {
+                $this->containerForm->addJavascript('_jquerytoolsValidator', "$('#{$this->containerForm->getId()}').validator();\n");
+
+            }
         }
     }
 
@@ -777,27 +781,33 @@ class mmWidget extends mmObject {
 
     public function js_validator_notnull() {
 //        $this->addJavascript('__notnull', "mmJsCheckNotnull($('#{$this->attributes['id']}'));\n");
-        $this->addJavascript('__notnull', "$('#{$this->attributes['id']}').change(function(){mmJsCheckNotnull($(this))});\n");
+//        $this->addJavascript('__notnull', "$('#{$this->attributes['id']}').change(function(){mmJsCheckNotnull($(this))});\n");
+        $this->addAttribute('required', 'required');
     }
 
     public function js_validator_length_max($params) {
 //        $this->addJavascript('__length_max', "mmJsCheckLengthMax($('#{$this->attributes['id']}'), {$params});\n");
-        $this->addJavascript('__length_max', "$('#{$this->attributes['id']}').change(function(){mmJsCheckLengthMax($(this), {$params})});\n");
+//        $this->addJavascript('__length_max', "$('#{$this->attributes['id']}').change(function(){mmJsCheckLengthMax($(this), {$params})});\n");
     }
 
     public function js_validator_integer() {
 //        $this->addJavascript('__integer', "mmJsCheckInteger($('#{$this->attributes['id']}'));\n");
-        $this->addJavascript('__integer', "$('#{$this->attributes['id']}').change(function(){mmJsCheckInteger($(this))});\n");
+//        $this->addJavascript('__integer', "$('#{$this->attributes['id']}').change(function(){mmJsCheckInteger($(this))});\n");
     }
 
     public function js_validator_real($rule) {
 //        $this->addJavascript('__real', "mmJsCheckReal($('#{$this->attributes['id']}'));\n");
-        $this->addJavascript('__real', "$('#{$this->attributes['id']}').change(function(){mmJsCheckReal($(this))});\n");
+//        $this->addJavascript('__real', "$('#{$this->attributes['id']}').change(function(){mmJsCheckReal($(this))});\n");
     }
     
     public function js_validator_email() {
 //        $this->addJavascript('__email', "mmJsCheckEmail($('#{$this->attributes['id']}'));\n");
-        $this->addJavascript('__email', "$('#{$this->attributes['id']}').change(function(){mmJsCheckEmail($(this))});\n");
+//        $this->addJavascript('__email', "$('#{$this->attributes['id']}').change(function(){mmJsCheckEmail($(this))});\n");
+        if ($this instanceof mmWidgetEmail) {
+            $this->addAttribute('required', 'required');
+        } else {
+            //add regexp for email
+        }
     }
 
 }

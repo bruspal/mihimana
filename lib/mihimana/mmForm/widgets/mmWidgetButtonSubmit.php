@@ -58,6 +58,7 @@ class mmWidgetButtonSubmit extends mmWidgetButton {
             $parameters = array('onclick' => sprintf("%smmAjxSubmit($('form#%s'))", $this->preSubmit, $this->containerForm->getId()));
         } else {
             $parameters = array('onclick' => sprintf("%ssubmit()", $this->preSubmit));
+//            $parameters = array('type' => 'submit');
         }
         $this->addAttributes($parameters);
         //On effectue maintenant le rendu normal
