@@ -28,9 +28,19 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
-function url_for($url = false) {
-    if ($url) {
-        
+function url($url = false) {
+    switch ($url) {
+        case '@home':
+            return $_SERVER['SCRIPT_NAME'];
+            //return WEB_CONTEXT;
+            break;
+
+        default:
+            if (preg_match('#http[s]?://#', $url)) {
+                return $url;
+            }
+            return $_SERVER['SCRIPT_NAME'].'/'.$url;
+            break;
     }
 }
 
@@ -73,24 +83,4 @@ function redirect($url, $protegeUrl = true) {
         header("Location: $url");
         exit();
     }
-}
-
-/**
- * Envois via apache les entetes par defaut necessaire au fonctionnement du programme coté client. Attention cette fonction doit etre appelé dans le head du fond d'ecran de l'application
- */
-function mdHtmlHeaderStandard() {
-    ?>
-    <link rel="stylesheet" type="text/css" media="screen" href="css/menu.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="css/maides.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="css/jquery.ui.css" />
-    <link rel="stylesheet" href="js/codeMirror/lib/codemirror.css">
-    <link rel="stylesheet" href="js/codeMirror/lib/custom.css">
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery-ui.js"></script>
-    <script type="text/javascript" src="js/jqModal.js"></script>
-    <script type="text/javascript" src="js/ckeditor/ckeditor.js"></script>
-    <script src="js/codeMirror/lib/codemirror.js"></script>
-    <script src="js/codeMirror/mode/javascript/javascript.js"></script>
-    <script type="text/javascript" src="js/maides.js"></script>
-    <?php
 }
