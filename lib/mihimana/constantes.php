@@ -46,6 +46,16 @@ define('APPLICATION_CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
 define('SQLITE_DIR', LIB_DIR.'/sqlite');
 define('PLUGINS_DIR', LIB_DIR.'/plugins');
 define('DOCTRINE_DIR', PLUGINS_DIR.'/Doctrine-1.2.4');
+/*
+ * Constante URI
+ */
+if (array_key_exists('CONTEXT_PREFIX', $_SERVER)) {
+    define('WEB_CONTEXT', $_SERVER['CONTEXT_PREFIX']);
+} else {
+    $posLastSlash = strrpos($_SERVER['SCRIPT_NAME'], '/');
+    $webContext = substr($_SERVER['SCRIPT_NAME'], 0, $posLastSlash);
+    define('WEB_CONTEXT', $webContext);
+}
 
 /*
  * Constantes pdf
