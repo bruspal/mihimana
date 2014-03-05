@@ -50,7 +50,7 @@ class pLoginStd extends mmProg {
                 if ($this->signinForm->isValid() && $login != false && $password != false) {
                     mmUser::doLogin($this->signinForm->getValue('login'), $this->signinForm->getValue('password'));
                     mmUser::flashSuccess('Bienvenue ' . mmUser::getNom());
-                    $this->redirect('?module=' . MODULE_DEFAUT . '&action=' . ACTION_DEFAUT);
+                    $this->redirect(url('@home'));
                 }
             } catch (mmExceptionAuth $e) {
                 mmUser::flashError($e->getMessage());
@@ -77,7 +77,7 @@ class pLoginStd extends mmProg {
     public function executeLogout(mmRequest $request) {
         mmUser::flashSuccess('Vous êtes déconnecté');
         mmUser::doLogout();
-        $this->redirect('?module=' . MODULE_DEFAUT . '&action=' . ACTION_DEFAUT);
+        $this->redirect(url('login'));
     }
 
     public function initForm() {
@@ -110,7 +110,7 @@ class pLoginStd extends mmProg {
         }
         
         $signinForm = new mmForm();
-        $signinForm->setAction('?module=pLoginStd&action=login');
+        $signinForm->setAction(url('login'));
         $signinForm->setId('loginForm');
         $signinForm->addWidget(new mmWidgetText('login', '', array('placeholder' => $phLogin)));
         $signinForm->addWidget(new mmWidgetPassword('password', '', array('placeholder' => 'password')));
@@ -128,7 +128,7 @@ class pLoginStd extends mmProg {
         //formulaire d'enregistrement
         $registerForm = new mmForm();
         $registerForm->setId('subForm');
-        $registerForm->setAction('?module=pLoginStd&action=subscribe');
+        $registerForm->setAction(url('subscribe'));
         $registerForm->addWidget(new mmWidgetText('login', '', array('placeholder' => $phRegister)));
         $registerForm->addWidget(new mmWidgetText('loginConf', '', array('placeholder' => 'confirm '.$phRegister)));
         $registerForm->addWidget(new mmWidgetPassword('password', '', array('placeholder' => 'Password')));
