@@ -116,8 +116,6 @@ class mmRouter extends mmObject {
             'login'     =>  'module=pLoginStd&action=login',
             'logout'    =>  'module=pLoginStd&action=logout',
             'subscribe' =>  'module=pLoginStd&action=subscribe',
-            'user/*'    =>  'module=profile&action=viewUser&userName=$1',
-            'user'      =>  'module=profile&action=index',
             '*/*'       =>  'module=$1&action=$2',
             '*'         =>  'module=$1&action=index',
         );

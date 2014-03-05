@@ -124,11 +124,13 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     } else {
         throw new \mmExceptionControl("<h1>$module : Module inexistant</h1>");
     }
-} catch (mmExceptionControl $e) {
-
+} catch (\mmExceptionControl $e) {
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
     include APPLICATION_DIR . '/templates/layout.php';
-} catch (Exception $e) {
+} catch (\mmExceptionRessource $e) {
+    $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
+    include APPLICATION_DIR . '/templates/layout.php';
+} catch (\Exception $e) {
     //Si une erreur non gerée se produit on affiche le message d'erreur detaillé si on est en mode DEBUG, sinon on fais autre chose (genre log, mail, etc)
     //TODO: voir comment gerer les erreurs critique en production
     $sortieProgramme = ob_get_clean();

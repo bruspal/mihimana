@@ -246,7 +246,10 @@ class mmUser extends mmSession {
      * @param string $action Action sur laquelle faire la vérification
      * @return boolean 
      */
-    public static function isAuthenticated($module, $action) {
+    public static function isAuthenticated($module=false, $action=false) {
+        if (empty($module)) $module = MODULE_COURANT;
+        if (empty($action)) $action = ACTION_COURANTE;
+        
         if (MODE_INSTALL || NO_LOGIN) {
             // On est en mode installation ou en mode fonctionnement sans login
             // On cree en mémoire un utilisateur fictif avec des parametres figé

@@ -43,17 +43,15 @@
  */
 class mmWidgetButtonGoModule extends mmWidgetButtonGoPage {
 
-    public function __construct($libelle, $module = '', $action = '', $parametres = '', $replace = false, $name = '', $attributs = array()) {
+    public function __construct($libelle, $module, $action = '', $parametres = '', $replace = false, $name = '', $attributs = array()) {
         if ($module) {
-            $url = "?module=$module";
-        } else {
-            $url = "?";
+            $url = "$module";
         }
         if ($action) {
-            $url .= "&action=$action";
+            $url .= "/$action";
         }
         if ($parametres) {
-            $url .= "&$parametres";
+            $url .= "?".http_build_query($parametres);
         }
         //pour l'encodage de l'url on laisse ca au parent
         parent::__construct($libelle, $url, $replace, $name, $attributs);

@@ -35,20 +35,21 @@ class pGestionBase extends mmProg {
     public function preExecute(mmRequest $request) {
         if (!mmUser::superAdmin()) {
             mmUser::flashError('Vous ne pouvez pas acceder à cet écran');
-            $this->redirect('?');
+            $this->redirect(url('@home'));
         }
     }
 
     public function executeIndex(mmRequest $request) {
         echo '<h1>Options</h1>';
         if (MODE_INSTALL) {
-            echo new mmWidgetButton('creerDB', 'Creer la base de données de parametres', array('onclick' => "if (confirm('CECI VA DETRUIRE LA BASE ETES VOUS SUR DE VOULOIR CONTINUER ?')) goPage('?module=pGestionBase&action=createDBParam')")) . '<br />';
+            echo new mmWidgetButton('creerDB', 'Creer la base de données de parametres', array('onclick' => "if (confirm('CECI VA DETRUIRE LA BASE ETES VOUS SUR DE VOULOIR CONTINUER ?')) goPage('".url('pGestionBase/createDBParam')."')")) . '<br />';
             echo new mmWidgetButtonGoModule('Dumper les data de la base de parametres', 'pGestionBase', 'dumpData') . '<br />';
-            echo new mmWidgetButtonGoPage('Charger les data de la base de parametres', "?module=pGestionBase&action=loadData") . '<br />';
+            echo new mmWidgetButtonGoModule('Charger les data de la base de parametres', 'pGestionBase', 'loadData') . '<br />';
             echo new mmWidgetButtonGoModule('Importer modele depuis une base existante', 'pGestionBase', 'importFromDB').'<br />';
         }
         echo new mmWidgetButtonGoModule('Genere la base de données utilisateur', 'pGestionBase', 'genereBaseUtilisateur').'<br />';
         echo new mmWidgetButtonGoModule('Migrer depuis un fichier Yaml', 'pGestionBase', 'migrateFromYaml').'<br />';
+        echo new mmWidgetButtonGoModule('Importer le fichier yaml dans la base de parametre', 'pGestionBase', 'fillParamBaseFromYaml');
     }
 
     public function executeCreateDBParam(mmRequest $request) {
@@ -359,6 +360,10 @@ class pGestionBase extends mmProg {
         echo $form->render();
         echo $form->stop();
         
+        
+    }
+    
+    public function executeFillParamBaseFromYaml (mmRequest $request) {
         
     }
     
