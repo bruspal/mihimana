@@ -40,7 +40,9 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     /*
      * Router test
      */
-    //$router = new mmRouter();
+    $router = new \mmRouter();
+    $request = $router->getRequest();
+    
 
     $module = $request->get('module', MODULE_DEFAUT);
     $action = $request->get('action', ACTION_DEFAUT);
