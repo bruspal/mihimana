@@ -284,7 +284,8 @@ class mmUser extends mmSession {
             //Vérification des module/actions auquelles on a acces sans être identifier
             //list des credentials par defaut, peuvent etre ecrasé par les valeur dans le fichier credentials
             $credentialsArray = array( 
-                'pLoginStd/subscribe'      => false,
+                'pLoginStd/subscribe'   => false,
+                'pLoginStd/login'       => false
             );
             if (file_exists(APPLICATION_CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php')) {
                 require APPLICATION_CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php';
