@@ -77,15 +77,8 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>');
             die;
         }
-        //on est pas identifié on va vers le login
-        //NOTA : pour ecraser la page de login par defaut il faut mettre le pLogin.php personnalisé dans la racine de l'application
-        if (file_exists(APPLICATION_DIR . DIRECTORY_SEPARATOR . 'pLogin.php')) {
-            $module = 'pLogin';
-            $action = 'login';
-        } else {
-            $module = 'pLoginStd';
-            $action = 'login';
-        }
+        //on fait une redirection vers la page de login
+        redirect(url('login'));
     }
 
     //detection si c'est un appel en clair ou du https
