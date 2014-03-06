@@ -1,5 +1,14 @@
 {
-	"require": {
-		"doctrine/orm": "*"
-	}
+    "name": "mihimana",
+    "type": "project",
+    "description": "Mihimana is a complet php framework",
+    "licence": [
+        "LGPL-3.0"
+    ],
+    "require": {
+        "doctrine/orm": "1.2.4",
+        "php": ">=5.3.0",
+        "nodejs": "0.10.*",
+        "leafo/scssphp": "0.0.9"
+    }
 }
