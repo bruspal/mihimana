@@ -32,11 +32,11 @@
  * Dispatching
  */
 try { //On protege contre les erreurs ce qui se trouve dans le try { }
-    //Recuperation des parametres fournis en URL et parametrage pour l'execution des modules
-    $request = new \mmRequest();
-
-    
-
+//    //Recuperation des parametres fournis en URL et parametrage pour l'execution des modules
+//    $request = new \mmRequest();
+//
+//    
+//
     /*
      * Router test
      */
@@ -114,7 +114,7 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             //creation en memoire du programme
             $dispatcher_programmePhp = new $module();
             //on execute l'action du programme avec les parametres fournis au script par l'url
-            $dispatcher_programmePhp->execute($action, $request);
+            $dispatcher_programmePhp->execute($request);
         } else {
             //on recupère le buffer PHP car le code contenu dans le module a deja été exécuté lors du require
             //on affiche ce buffer dans le template en faisant un require du layout

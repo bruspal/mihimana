@@ -50,7 +50,7 @@ class pGed extends mmProgProcedural
           $cleGed,
           $options;
 
-  public function principale($action = '', $parametres = null)
+  public function main(mmRequest $request)
   {
     $this->setLayout('popup');
     $optionsDefaut = array(
@@ -75,7 +75,7 @@ class pGed extends mmProgProcedural
       $this->baseUrl = 'http://'.$_SERVER['HTTP_HOST'];//.$SERVER['REQUEST_URI'];
     }
     
-    $options = mmParseOptions($parametres->getParam('o',0), $optionsDefaut);
+    $options = mmParseOptions($request->getParam('o',0), $optionsDefaut);
     
     $this->nomFichier = $options['nomFichier'];
     
@@ -127,7 +127,7 @@ class pGed extends mmProgProcedural
       $this->setTemplate(false);
       return false;
     }
-    switch ($action) {
+    switch (ACTION_COURANTE) {
     case 'scan':
       try
       {
@@ -145,13 +145,13 @@ class pGed extends mmProgProcedural
       $this->contextScan->set('cleGed', $this->cleGed);
       break;
     case 'doc':
-      $this->afficheDoc($parametres);
+      $this->afficheDoc($request);
       break;
     case 'som':
       $this->afficheResume($options['t']);
       break;
     case 'maj':
-      $this->majDocument($parametres);
+      $this->majDocument($request);
       break;
     default:
       $this->contextScan->set('cleGed', $this->cleGed);

@@ -116,10 +116,11 @@ class mmRouter extends mmObject {
             'login'     =>  'module=pLoginStd&action=login',
             'logout'    =>  'module=pLoginStd&action=logout',
             'subscribe' =>  'module=pLoginStd&action=subscribe',
+            'sass/*'    =>  'module=pSass&scss=$1',
             '*/*'       =>  'module=$1&action=$2',
             '*'         =>  'module=$1&action=index',
         );
-        $routesFile = APPLICATION_CONFIG_DIR.DIRECTORY_SEPARATOR.'routes.php';
+        $routesFile = CONFIG_DIR.DIRECTORY_SEPARATOR.'routes.php';
         if (file_exists($routesFile)) {
             require $routesFile;
             $_routes = array_merge($_routes, $routes);

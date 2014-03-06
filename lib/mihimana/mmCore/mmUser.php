@@ -64,12 +64,14 @@ class mmUser extends mmSession {
     }
 
     /*
-     * Methodes de communication a  vec l'uilisateur
+     * Override
      */
-
-    /*
-     * Methode de gestion de la pile des messages
-     */
+    public static function get($nomVar, $defaut = null) {
+        if (isset($_SESSION['__user__'][$nomVar])) {
+            return $_SESSION['__user__'][$nomVar];
+        }
+        return parent::get($nomVar, $defaut);
+    }
 
     /**
      * Ajoute un message utilisateur dans la pile des messages identifié par message
@@ -78,14 +80,14 @@ class mmUser extends mmSession {
      * @param type $message 
      */
     public static function flashMessage($type, $message) {
-        $__flashs__ = mmSession::get('__flashs__', array());
+        $__flashs__ = parent::get('__flashs__', array());
         $cleUniqueMessage = hash('adler32', $message);
         $__flashs__[$type][$cleUniqueMessage] = $message;
-        mmSession::set('__flashs__', $__flashs__);
+        parent::set('__flashs__', $__flashs__);
     }
 
     public static function clearFlashes() {
-        mmSession::set('__flashs__', array());
+        parent::set('__flashs__', array());
     }
 
     /**
@@ -149,14 +151,14 @@ class mmUser extends mmSession {
      */
     public static function getFlashs($type = false) {
         if ($type) {
-            $__flashs__ = mmSession::get('__flashs__', array());
+            $__flashs__ = parent::get('__flashs__', array());
             if (isset($__flashs__[$type])) {
                 return $__flashs__[$type];
             } else {
                 return array();
             }
         } else {
-            return mmSession::get('__flashs__', array());
+            return parent::get('__flashs__', array());
         }
     }
 
@@ -179,7 +181,7 @@ class mmUser extends mmSession {
         }
         //Si c'est demané on vide la pile des flashs
         if ($videApresRendu) {
-            mmSession::remove('__flashs__');
+            parent::remove('__flashs__');
         }
         //on renvois la chaine contenant le HTML
         return $resultat;
@@ -290,8 +292,8 @@ class mmUser extends mmSession {
                 'pLoginStd/subscribe'   => false,
                 'pLoginStd/login'       => false
             );
-            if (file_exists(APPLICATION_CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php')) {
-                require APPLICATION_CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php';
+            if (file_exists(CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php')) {
+                require CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php';
                 $credentialsArray = array_merge($credentialsArray, $credentials);
             }
             $strCredentials = $module . '/' . $action;

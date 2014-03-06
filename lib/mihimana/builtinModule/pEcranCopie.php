@@ -32,8 +32,8 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 class pEcranCopie extends mmProgProcedural
 {
-  public function principale($action = '', mmRequest $parametres = null) {
-    if ( ! $this->initForm($parametres))
+  public function main(mmRequest $request) {
+    if ( ! $this->initForm($request))
     {
       return false;
     }
@@ -45,14 +45,14 @@ class pEcranCopie extends mmProgProcedural
     else
     {
       //c'est un retour
-      $saisie = $parametres->toArray();
-      $nvNom = $parametres->getParam('n', '');
+      $saisie = $request->toArray();
+      $nvNom = $request->getParam('n', '');
       if ( $nvNom == false)
       {
         echo "Le nouveau nom ne doit pas etre vide";
         goto suite;
       }
-      $acNom = $parametres->getParam('a', false);
+      $acNom = $request->getParam('a', false);
       if ( $acNom == false)
       {
         echo "Le nom initial ne doit pas etre vide";

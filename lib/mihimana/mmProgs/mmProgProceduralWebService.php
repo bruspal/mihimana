@@ -36,9 +36,9 @@ class mmProgProceduralWebService extends mmProgProcedural {
         $this->setTemplate(null);
     }
 
-    public function execute($action = '', mmRequest $request = null) {
+    public function main(mmRequest $request = null) {
         if (AJAX_REQUEST || DEBUG) {
-            parent::execute($action, $request);
+            parent::main($request);
         } else {
             //Ici on ne fais rien, si on tente d'executer un service web en mode standard on renvois un ecran vide.
             header('HTTP/1.1 403 Forbidden'); //on ecrit acces refusé standard

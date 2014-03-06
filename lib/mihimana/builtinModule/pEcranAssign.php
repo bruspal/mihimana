@@ -49,11 +49,11 @@ class pEcranAssign extends mmProgProcedural {
                 'anc' => 'Ancrage'
     );
 
-    public function principale($action = '', $parametres = null) {
+    public function main(mmRequest $request) {
         $this->verifDroits();
-        switch ($action) {
+        switch (ACTION_COURANTE) {
             case 'index':
-                $this->ajout($parametres);
+                $this->ajout($request);
                 break;
             default:
                 throw new mmException('Appel incorrecte');

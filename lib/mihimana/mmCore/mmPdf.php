@@ -31,7 +31,7 @@
 
 
 
-require_once PLUGINS_DIR . '/html2pdf/html2pdf.class.php';
+require_once MM_PLUGINS_DIR . '/html2pdf/html2pdf.class.php';
 
 class mmPdf extends HTML2PDF {
 

@@ -80,7 +80,7 @@ foreach ($liste as $fichier) {
 
 //chargemet de Doctrine et autoload des classe doctrine
 //et bootstrapping (config initiale)
-require_once DOCTRINE_DIR . '/Doctrine.php';
+require_once MM_DOCTRINE_DIR . '/Doctrine.php';
 //configuration de Doctrine
 Doctrine_Core::debug(DEBUG);
 //autoload register

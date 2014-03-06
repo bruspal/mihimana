@@ -41,11 +41,11 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  * @author bruno
  */
 class pEcranGenereCRUD extends mmProgProcedural{
-  public function principale($action = '', $parametres = null) {
+  public function main($request = null) {
     //On va creer le fichier source pour creer le CRUD lié a l'écran
     
     //Recuperation des parametres en parametres ou en session
-    $nomEcran = $parametres->getParam('ecran', User::get('__editionNomEcran__', false));
+    $nomEcran = $request->getParam('ecran', User::get('__editionNomEcran__', false));
     if ( ! $nomEcran)
     {
       $nomEcran = mmSession::get('__editionNomEcran__', false);

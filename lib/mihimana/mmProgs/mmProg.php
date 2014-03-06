@@ -57,15 +57,13 @@ class mmProg extends mmObject {
      * @param array $request
      * @return boolean 
      */
-    public function execute($action, mmRequest $request) {
+    public function execute(mmRequest $request) {
+        $action = ACTION_COURANTE;
         //On sauvegarde les parametres passé au programme
         $this->parametresProgramme = $request;
         //On definie quelle action a executer
         $methodAction = 'execute' . ucfirst($action); //action a executer
-        //
-//    //Methode de configuration
-//    $resultatConfiguration = $this->configure();
-        //
+        
     //demarage du buffer
         ob_clean();
         ob_start();

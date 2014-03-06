@@ -34,24 +34,26 @@ class mmProgProcedural extends mmProg {
 
     /**
      * Execute l'action $action et affiche le resultat
-     * @param string $action
-     * @param array $request
+     * @param mmRequest $request
      * @return boolean 
      */
-    public function execute($action, mmRequest $request) {
+    public function execute(mmRequest $request) {
         //On sauvegarde les parametres passé au programme
         $this->parametresProgramme = $request;
         //demarage du buffer
         ob_clean();
         ob_start();
         //execution
-        $codeSortie = $this->principale($action, $request);
+        if (method_exists($this, 'principale')) {
+            throw new mmExceptionDev("la methode 'principale n'est plus authorisé. utiliser main et adapter le source");
+        }
+        $codeSortie = $this->main($request);
         //recuperation du buffer de sortie
         $sortieProgramme = ob_get_clean();
         //Application du layout de l'ecran si un layout existe
-        if ($this->template && file_exists(getTemplatesPath() . '/' . $this->template)) {
+        if ($this->templateModule && file_exists(getTemplatesPath() . '/' . $this->templateModule)) {
             //y'a un template, on le parse
-            $sortieLayout = mmTemplate::renderTemplate($this->template, $this->variables, getTemplatesPath());
+            $sortieLayout = mmTemplate::renderTemplate($this->templateModule, $this->variables, getTemplatesPath());
         } else {
             //pas de templates associe, on a une chaine vide
             $sortieLayout = '';
@@ -71,11 +73,10 @@ class mmProgProcedural extends mmProg {
     }
 
     /**
-     * Principale est le point d'entrée principale d'un programme utilisateur
-     * @param type $action
-     * @param type $parametres 
+     * Entry point
+     * @param mmRequest $request
      */
-    public function principale($action = '', $parametres = null) {
+    public function main(mmRequest $request) {
         
     }
 

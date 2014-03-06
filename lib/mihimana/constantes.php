@@ -31,21 +31,28 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 //Fichier qui stock et defini les constantes
 /*
- * Constantes de chemins
+ * Constantes de chemins généraux
  */
-define('BASE_DIR', dirname(dirname(dirname(__FILE__))));
-define('WEB_DIR', BASE_DIR.'/web');
-define('APPLICATION_DIR', BASE_DIR.'/'.APPLICATION);
-define('LIB_DIR', BASE_DIR.'/lib');
-define('MODELS_DIR', APPLICATION_DIR.'/lib/models');
+define('MM_BASE_DIR', dirname(dirname(dirname(__FILE__))));
+define('WEB_DIR', MM_BASE_DIR.'/web');
+define('MM_LIB_DIR', MM_BASE_DIR.'/lib');
+//define('FIXTURE_DIR', MM_LIB_DIR.'/fixtures');
+define('MIHIMANA_DIR', MM_LIB_DIR.'/mihimana');
+define('MM_CONFIG_DIR', MM_LIB_DIR.'/config');
+//define('SQLITE_DIR', MM_LIB_DIR.'/sqlite');
+define('MM_PLUGINS_DIR', MM_LIB_DIR.'/plugins');
+define('MM_DOCTRINE_DIR', MM_PLUGINS_DIR.'/Doctrine-1.2.4');
+
+/*
+ * Constantes de chemin vers les dir spécifique a l'application
+ */
+define('APPLICATION_DIR', MM_BASE_DIR.DIRECTORY_SEPARATOR.APPLICATION);
+define('LIB_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'lib');
+define('MODELS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'models');
+define('CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
+define('ASSETS_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'assets');
+define('PLUGINS_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'plugins');
 define('MIGRATION_DIR', APPLICATION_DIR.'/lib/migration');
-define('FIXTURE_DIR', LIB_DIR.'/fixtures');
-define('MIHIMANA_DIR', LIB_DIR.'/mihimana');
-define('CONFIG_DIR', LIB_DIR.'/config');
-define('APPLICATION_CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
-define('SQLITE_DIR', LIB_DIR.'/sqlite');
-define('PLUGINS_DIR', LIB_DIR.'/plugins');
-define('DOCTRINE_DIR', PLUGINS_DIR.'/Doctrine-1.2.4');
 /*
  * Constante URI
  */

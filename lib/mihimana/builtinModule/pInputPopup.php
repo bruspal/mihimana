@@ -30,10 +30,10 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
 class pInputPopup extends mmProgProceduralWebService{
-  public function principale($action = '', $getpost = null) {
+  public function main(mmRequest $request = null) {
     $this->context = new mmContext('__mdInputPopup__'); //nom unique, on a qu'un popup ouvert a la fois
     
-    $resultat = $this->initForm($getpost);
+    $resultat = $this->initForm($request);
     if ($resultat == false)
     {
       echo mmErrorMessage('Aucun parametre fournis');

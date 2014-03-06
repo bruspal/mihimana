@@ -62,7 +62,7 @@ class pGestionBase extends mmProg {
         echo "OK<h1>Creation de la base si inexistante</h1>";
         Doctrine_Core::createDatabases();
         echo "OK<h1>Generation du model</h1>";
-        Doctrine_Core::generateModelsFromYaml(CONFIG_DIR . '/schema_param.yml', MODELS_DIR, array('generateTableClasses' => true));
+        Doctrine_Core::generateModelsFromYaml(MM_CONFIG_DIR . '/schema_param.yml', MODELS_DIR, array('generateTableClasses' => true));
         echo "OK<h1>Generation des table de la base</h1>";
         Doctrine_Core::createTablesFromModels(MODELS_DIR);
         echo "OK<h1>Termin&eacute;</h1>";
@@ -103,7 +103,7 @@ class pGestionBase extends mmProg {
             throw new mmExceptionRessource("Impossible d'ouvrir le fichier $nomFichier");
         }
         //On importe les parametres de base (le fichier schema_param.yml)
-        $configInitiale = file_get_contents(CONFIG_DIR . '/schema_param.yml') . "\n##Description des fichiers a partir des données utilisateurs\n";
+        $configInitiale = file_get_contents(MM_CONFIG_DIR . '/schema_param.yml') . "\n##Description des fichiers a partir des données utilisateurs\n";
 
         if (fwrite($fichierTemp, $configInitiale) === false) {
             throw new mmExceptionRessource("Erreur d'ecriture dans le fichier $nomFichier");
@@ -324,7 +324,7 @@ class pGestionBase extends mmProg {
             $importYaml = APPLICATION_DIR.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'model.yml';
             //On construit le nouveau fichier yaml en mixant le fichier importer avec la base standard
             //parsing des fichier sources: le fichier de base de mihimana + le fichier uploadé
-            $mihimanaDBArray = sfYaml::load(CONFIG_DIR.DIRECTORY_SEPARATOR.'schema_param.yml');
+            $mihimanaDBArray = sfYaml::load(MM_CONFIG_DIR.DIRECTORY_SEPARATOR.'schema_param.yml');
             $sourceArray =  sfYaml::load($importYaml);
             //merge des tableau et ecriture du fichier temporaire
             $resultArray = array_merge($mihimanaDBArray, $sourceArray);

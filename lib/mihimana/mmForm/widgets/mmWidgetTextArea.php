@@ -39,9 +39,6 @@ class mmWidgetTextArea extends mmWidget {
 
     public function render($extraAttributes = array(), $replace = false) {
 
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
-
         //Pour la futur gestion des droits
         // si ecriture, edition, visu, delete
         // Pour le moment on fais rien de particulier
