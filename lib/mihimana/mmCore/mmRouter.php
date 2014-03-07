@@ -28,14 +28,6 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
-//le temps du dev
-$route = array( // exemple de route pour tester
-    '/login'    => '/:module=pLogin:/:action=login:',
-    '/*'        => '/:module:/:action=index:',
-    '/*/*'      => '/:module:/:action:',
-    '/'         => '/:module=main:/:action=index:'
-);
-
 class mmRouter extends mmObject {
     // Attributes
     //Public
@@ -124,6 +116,12 @@ class mmRouter extends mmObject {
         if (file_exists($routesFile)) {
             require $routesFile;
             $_routes = array_merge($_routes, $routes);
+        }
+        // to ensure that default routing still working moving */* and * to the end of array
+        foreach(array('*/*', '*') as $key) {
+            $cell = $_routes[$key];
+            unset($_routes[$key]);
+            $_routes[$key] = $cell;
         }
         // first check empty uri
         if (empty($this->cleanedReqUri)) {

@@ -392,6 +392,7 @@ class mmWidget extends mmObject {
         if ($this->edit && $this->enabled) {
             $this->addResultClass();
             $result = sprintf('<input type="%s" name="%s" value="%s" %s />', $this->attributes['type'], sprintf($this->nameFormat, $this->attributes['name']), $this->attributes['value'], $this->generateAttributes($extraAttributes, $replace));
+// to test            $result = sprintf('<span><input type="%s" name="%s" value="%s" %s />%s</span>', $this->attributes['type'], sprintf($this->nameFormat, $this->attributes['name']), $this->attributes['value'], $this->generateAttributes($extraAttributes, $replace), $this->renderErrors());
         } else {
             if ($this->view || ($this->edit && !$this->enabled)) {
                 $result = sprintf('<span %s>%s</span>', $this->generateAttributes($extraAttributes, $replace), $this->attributes['value']);
@@ -513,13 +514,15 @@ class mmWidget extends mmObject {
     }
 
     public function renderErrors() {
-        $result = '<span class="errors" id="er_' . $this->getId() . '">';
         if (count($this->errors)) {
+            $result = '<span class="mmErrorsLabel" id="er_' . $this->getId() . '">';
+            $errStr = '';
             foreach ($this->errors as $error) {
-                $result .= sprintf('%s<br />', $error);
+                $errStr .= sprintf('<br>%s', $error);
             }
+            return $result.substr($errStr, 4).'</span>'; //removing first <br>
         }
-        return $result.='</span>';
+        return '';
     }
 
     /**
@@ -723,13 +726,13 @@ class mmWidget extends mmObject {
     }
 
     /**
-     * Ajoute le nom de class mdError en cas d'erreur ou mdOk si pas d'erreur
+     * Ajoute le nom de class mmError en cas d'erreur ou mdOk si pas d'erreur
      * 
      * @param type $class class a ajouter en cas d'erreur 'error' par default
      */
     protected function addResultClass() {
 
-        $class = $this->isValid() ? '' : 'mdError';
+        $class = $this->isValid() ? '' : 'mmError';
 
         if (isset($this->attributes['class']) && $this->attributes['class']) {
             //la class existe deja et pas vide on ajoute

@@ -32,17 +32,11 @@
  * Dispatching
  */
 try { //On protege contre les erreurs ce qui se trouve dans le try { }
-//    //Recuperation des parametres fournis en URL et parametrage pour l'execution des modules
-//    $request = new \mmRequest();
-//
-//    
-//
     /*
-     * Router test
+     * Routing
      */
     $router = new \mmRouter();
     $request = $router->getRequest();
-    
 
     $module = $request->get('module', MODULE_DEFAUT);
     $action = $request->get('action', ACTION_DEFAUT);
