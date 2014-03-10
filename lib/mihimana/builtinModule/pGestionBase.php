@@ -364,7 +364,43 @@ class pGestionBase extends mmProg {
     }
     
     public function executeFillParamBaseFromYaml (mmRequest $request) {
+        $uniqId = uniqid();
+        $currentModelYaml = sys_get_temp_dir().DIRECTORY_SEPARATOR."currentModel_$uniqId.yml";
         
+        Doctrine_Core::generateYamlFromModels($currentModelYaml, MODELS_DIR);
+        $arrayYaml = sfYaml::load($currentModelYaml);
+        
+        echo "<pre>".print_r($arrayYaml, true)."</pre>";
+        foreach($arrayYaml as $tableName => $tableChamps) {
+            $tableUtilisateur = new TableUtilisateur();
+            $tableUtilisateur['nom_table'] = $tableName;
+            $tableUtilisateur['emplacement'] = $tableChamps['connection'];
+            $tableUtilisateur['nom_table_base'] = $tableName;
+            $tableUtilisateur->save();
+            
+            foreach ($tableChamps['columns'] as $nomChamp => $paramChamp) {
+                $champsTableUtilisateur = new ChampsTableUtilisateur();
+                $champsTableUtilisateur['nom_table'] = $tableName;
+                $champsTableUtilisateur['nom_champ'] = $nomChamp;
+                if (is_array($paramChamp)){
+                    $typeChamp = $paramChamp['type'];
+                    if (isset($paramChamp['autoincrement']) && $paramChamp['autoincrement'] == '1') $champsTableUtilisateur['est_autoincrement'] = 1;
+                    if (isset($paramChamp['primary']) && $paramChamp['primary'] == '1') $champsTableUtilisateur['est_primary'] = 1;
+                    if (isset($paramChamp['notnull']) && $paramChamp['notnull'] == '1') $champsTableUtilisateur['est_notnull'] = 1;
+                } else {
+                    $typeChamp = $paramChamp;
+                }
+                if (preg_match('#(\w+)\((\w*(, *\w)?)\)#', $typeChamp, $arParseType)) {
+                    $champsTableUtilisateur['type_champ'] = $arParseType[1];
+                    $champsTableUtilisateur['option_type_champ'] = $arParseType[2];
+                } else {
+                    $champsTableUtilisateur['type_champ'] = 'string';
+                    $champsTableUtilisateur['option_type_champ'] = '45';
+                }
+                $champsTableUtilisateur->save();
+            }
+        }
+                
     }
     
     public function executeNettoyerModel(mmRequest $request) {
