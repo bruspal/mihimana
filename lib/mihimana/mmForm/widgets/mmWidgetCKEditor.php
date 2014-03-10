@@ -48,9 +48,6 @@ class mmWidgetCKEditor extends mmWidget {
 
         $this->addJavascript('__runCKEditor__', $script);
 
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
-
         //Pour la futur gestion des droits
         // si ecriture, edition, visu, delete
         // Pour le moment on fais rien de particulier

@@ -67,7 +67,7 @@ class mmScreen extends mmForm {
         //destination de cet ecran, ecran ou impression
         $this->destination = $this->ecran['destination'];
         //On initialise le formulaire
-        $this->action = '?module=' . MODULE_COURANT . '&action=' . ACTION_COURANTE;
+        $this->action = url(MODULE_COURANT.'/'.ACTION_COURANTE);
         $this->method = 'post';
         //On stock les eventuelles variables supplémentaire
         foreach ($variablesExtra as $nomExtra => $extraCourant) {
@@ -876,7 +876,7 @@ class mmScreen extends mmForm {
     public function render($addFormMarkup = true) {
         $this->compile($addFormMarkup);
         if (mmUser::superAdmin() && $this->destination == 'scr') {
-            $btEdit = new mmWidgetButtonGoPage('Editer ecran ' . $this->name, '?module=pEcran&action=editEcran&ecran=' . $this->name, false, '', array('style' => 'font-size: 10px'));
+            $btEdit = new mmWidgetButtonGoPage('Editer ecran ' . $this->name, url('pEcran/edit?ecran='.$this->name), false, '', array('style' => 'font-size: 10px'));
             $interface = $btEdit->render();
             $htmlEdit = sprintf('<div class="adminBox"><span onclick="$(\'div.adminBox > div\').fadeOut();$(\'#isa_%s\').show()">Menu ecran</span><div style="display: none;" id=isa_%s><span onclick="$(\'div.adminBox > div\').fadeOut()">fermer<span><br />%s</div></div>', $this->getId(), $this->getId(), $interface);
         } else {

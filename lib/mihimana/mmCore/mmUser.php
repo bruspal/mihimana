@@ -422,7 +422,18 @@ class mmUser extends mmSession {
         $user['actif'] = $actif;
         $user['super_admin'] = $superAdmin;
         $user['registration_date'] = date("Y-m-d H:i:s");
-        $user->save();
+        try {
+            $user->save();
+        }
+        catch (Exception $e) {
+            echo "<h1>Erreur de création de l'utilisateur</h1>";
+            if (DEBUG) {
+                echo $e->getMessage();
+                echo '<br>';
+                echo $e->getCode();
+                
+            }
+        }
     }
 
     public static function doLogout() {

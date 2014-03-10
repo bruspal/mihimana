@@ -68,46 +68,17 @@ class pEcranAssign extends mmProgProcedural {
         }
     }
 
-//  /**
-//   * Permet de recupérer la description d'un champ de la table utilisateur pour mettre a jour l'interface utilisateur
-//   * TODO: A finir pour renvoyer un json + html des champs
-//   */
-//  protected function descriptionChamp($parametres)
-//  {
-//    $nomEcran = User::get('__editionNomEcran__', false);
-//    if ( ! $nomEcran)
-//    {
-//      //On a pas d'ecran de travail, c'est une erreur
-//      $resultat = array('succes'=>false, 'message'=>'Le nom de la table utilisateur n\'est pas disponible');
-////        e
-//    }
-//    $nomChamp = $parametres->getParam('champ', false);
-//    if ( ! $nomChamp)
-//    {
-//      //On a pas d'ecran de travail, c'est une erreur
-//      $resultat = array('succes'=>false, 'message'=>'Le nom du champ n\'est pas disponible');
-//    }
-//    
-//    
-//  }
-
     protected function ajout($parametres) {
-        $nomEcran = User::get('__editionNomEcran__');
+        $nomEcran = mmUser::get('__editionNomEcran__');
 
-//    $listeChamps = Doctrine_Core::getTable('ChampsEcranUtilisateur')->createQuery()->where('nom_ecran = ?', $nomEcran)->execute();
-//    foreach ($listeChamps as $champ)
-//    {
-//      $tableauTravail[$champ['numero_ordre']] = $champ;
-//    }
         //on recupere les infos ou on en cré de nouvelle
-        $operation = $parametres->getParam('o', 'i');
+        $operation = $parametres->get('o', 'i');
         if ($operation == 'e') {
             //On est dans le cas d'une edition
-            $nomChamp = $parametres->getParam('champ', false);
+            $nomChamp = $parametres->get('champ', false);
             if ($nomChamp) {
                 $champsEcran = Doctrine_Core::getTable('ChampsEcranUtilisateur')->createQuery()->where('nom_ecran = ? AND nom_champ = ?', array($nomEcran, $nomChamp))->fetchOne();
                 if (!$champsEcran) {
-//          echo "<h1>info:  cette variable existe pas creation automatique par defaut</h1>";
                     $champsEcran = new ChampsEcranUtilisateur();
                     $champsEcran['type_champ'] = 'anc';
                     $champsEcran['nom_ecran'] = $nomEcran;
@@ -125,7 +96,6 @@ class pEcranAssign extends mmProgProcedural {
             if (!$ecran) {
                 mmErrorMessage("L'écran associé est introuvable");
                 return false;
-//<---------- on sort du programme avec un message d'erreur
             }
             $nomTable = $ecran['table_liee'];
             if (trim($nomTable) == '') {
@@ -163,7 +133,7 @@ class pEcranAssign extends mmProgProcedural {
             //premier appel (c'est a dire on affiche les champs pour la première fois)
             $this->afficheFormulaire();
         } else {
-            $donneesSaisie = $parametres->getParam('champs_ecran_utilisateur');
+            $donneesSaisie = $parametres->get('champs_ecran_utilisateur');
 
             //traitement en fonction des type de champs
             switch ($donneesSaisie['type_champ']) {
@@ -249,7 +219,7 @@ class pEcranAssign extends mmProgProcedural {
                     if ($operation == 'e') {
                         echo '<script type="text/javascript">$("#__mmDialog").jqmHide();</script>';
                     } else {
-                        printf('<script type="text/javascript">CKEDITOR.instances.template_id.insertText("$%s");$("#__mmDialog").jqmHide();</script>', $donneesSaisie['nom_champ']);
+                        printf('<script type="text/javascript">CKEDITOR.instances.ecran_utilisateur_template_id.insertText("$%s");$("#__mmDialog").jqmHide();</script>', $donneesSaisie['nom_champ']);
                     }
                 }
                 return true;
@@ -264,7 +234,7 @@ class pEcranAssign extends mmProgProcedural {
 //  protected function supprime($parametres)
 //  {
 //    $nomEcran = User::get('__editionNomEcran__');
-//    $this->numVariable = $parametres->getParam('n', false);
+//    $this->numVariable = $parametres->get('n', false);
 //    if (! $this->numVariable)
 //    {
 //      echo mdErrorMessage('Aucun numero de variable fournis.'.new mdWidgetButtonClose());
@@ -303,7 +273,8 @@ class pEcranAssign extends mmProgProcedural {
         //creation du formulaire standard
         $form = new mmForm($champsEcran);
         //personnalisation du formulaire
-        $form->setAction(sprintf('?module=pEcranAssign&o=%s&champ=%s', $operation, $champsEcran['nom_champ']));
+        $form->setAction(url("pEcranAssign?o=$operation&champ={$champsEcran['nom_champ']}"));
+//                sprintf('?module=pEcranAssign&o=%s&champ=%s', $operation, $champsEcran['nom_champ']));
 
         unset($form['numero_ordre']);
         $form->addWidget(new mmWidgetHidden('op', ''));
@@ -345,7 +316,7 @@ class pEcranAssign extends mmProgProcedural {
         }
 
         //On gere le nom du champ, c'est une combo si on a une table lié + un champ de saisie pour le champs libre
-        $nomEcran = User::get('__editionNomEcran__', false);
+        $nomEcran = mmUser::get('__editionNomEcran__', false);
         $ecran = Doctrine_Core::getTable('EcranUtilisateur')->find($nomEcran);
         if ($ecran) {
             if (trim($ecran['table_liee']) != false) {
@@ -391,7 +362,7 @@ $('#type_champ_id').change(function()
   majAffichage();
 });";
             $form->addJavascript('majAffichage', $script);
-            $form->addJavascript('dblClikVar', "$('#nom_champ_id').dblclick(function(){ $('#valider_champ_id').click() })");
+            $form->addJavascript('dblClikVar', "$('#".$form['nom_champ']->getId()."').dblclick(function(){ $('#valider_champ_id').click() })");
             $this->afficheChoixSource = true;
         } else {
             $colonnes = array();
@@ -434,7 +405,7 @@ $('#type_champ_id').change(function()
                 switch(type_champ)
                 {
                     case 'var':
-                        $('#nom_champ_id').show();
+                        $('#<?php echo $this->form['nom_champ']->getId() ?>').show();
                         $('#nom_champ_txt_id').hide();
                         $('#t_type_widget_id').show();
                         $('#t_nom_champ_id').show();
@@ -448,7 +419,7 @@ $('#type_champ_id').change(function()
                         break;
                     case 'val':
                         $('#nom_champ_txt_id').show();
-                        $('#nom_champ_id').hide();
+                        $('#<?php echo $this->form['nom_champ']->getId() ?>').hide();
                         $('#t_type_widget_id').show();
                         $('#t_nom_champ_id').hide();
                         $('#t_libelle_id').show();
@@ -461,7 +432,7 @@ $('#type_champ_id').change(function()
                         break;
                     case 'lbr':
                         $('#nom_champ_txt_id').show();
-                        $('#nom_champ_id').hide();
+                        $('#<?php echo $this->form['nom_champ']->getId() ?>').hide();
                         $('#t_type_widget_id').show();
                         $('#t_nom_champ_id').hide();
                         $('#t_libelle_id').show();
@@ -474,7 +445,7 @@ $('#type_champ_id').change(function()
                         break;
                     case 'anc':
                         $('#nom_champ_txt_id').show();
-                        $('#nom_champ_id').hide();
+                        $('#<?php echo $this->form['nom_champ']->getId() ?>').hide();
                         $('#t_type_widget_id').hide();
                         $('#t_nom_champ_id').hide();
                         $('#t_libelle_id').hide();
@@ -541,13 +512,13 @@ $('#type_champ_id').change(function()
                     }
                 });
                 resultat = resultat.substring(1);
-                $('#option_type_widget_id').val(resultat);
+                $('#<?php echo $this->form['type_widget']->getId() ?>').val(resultat);
             }
 
             function initialiseOptions()
             {
-                var type_widget = $('#type_widget_id').val();
-                var valOptions = coupeOptions($('#option_type_widget_id').val());
+                var type_widget = $('#<?php echo $this->form['type_widget']->getId() ?>').val();
+                var valOptions = coupeOptions($('#<?php echo $this->form['type_widget']->getId() ?>').val());
                 var listeOptions = ['largeur'];
                 $('#table_options').empty();
                 switch (type_widget)
@@ -638,12 +609,12 @@ $('#type_champ_id').change(function()
                 if (listeOptions !== false)
                 {
                     cont = creerTableauOptions(listeOptions, valOptions);
-                    $('#option_type_widget_id').hide();
+                    $('#<?php echo $this->form['option_type_widget']->getId() ?>').hide();
                 }
                 else
                 {
                     cont = '';
-                    $('#option_type_widget_id').show();
+                    $('#<?php echo $this->form['option_type_widget']->getId() ?>').show();
                 }
                 $('#table_options').append(cont);
             }
@@ -692,7 +663,7 @@ $('#type_champ_id').change(function()
         </fieldset>
         -->
         
-        <?php echo $this->form->renderFormHeader() ?>
+        <?php echo $this->form->start() ?>
         <table class="formulaire">
         </table>
         <table>
@@ -833,7 +804,7 @@ $('#type_champ_id').change(function()
         </div>
 
         <?php echo $this->form->renderButtons() . $this->form['op']; ?>
-        </form>
+        <?php echo $this->form->stop() ?>
 
         
         <?php
@@ -843,7 +814,7 @@ $('#type_champ_id').change(function()
         <script type="text/javascript">
             $(document).ready(function()
             {
-                $('#option_type_widget_id').keydown(function(event){
+                $('#<?php echo $this->form['option_type_widget']->getId() ?>').keydown(function(event){
                     if (event.which == 112)
                     {
                         openWindow('aide/aideWidget.php');
@@ -851,7 +822,7 @@ $('#type_champ_id').change(function()
                         event.preventDefault();
                     }
                 });
-                $('#type_widget_id').change(function(){
+                $('#<?php echo $this->form['type_widget']->getId() ?>').change(function(){
                     initialiseOptions();
                 });
                 majAffichage();

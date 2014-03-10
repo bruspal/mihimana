@@ -59,11 +59,11 @@ class mmRouter extends mmObject {
     }
     
     public function getUriString() {
-
+        return $this->uriString;
     }
     
     public function getUriArray() {
-        
+        return $this->uriArray;
     }
     
     public function getRequest() {
@@ -85,7 +85,10 @@ class mmRouter extends mmObject {
             $reqUri = substr($reqUri, strlen(dirname($_SERVER['SCRIPT_NAME']))); // remove it
         }
         //cleaning start of string
-        while(strncmp('?', $reqUri, 1) == 0 || strncmp('/', $reqUri, 1) == 0) {
+        if(strncmp('?/', $reqUri, 2) == 0 || strncmp('/?', $reqUri, 2) == 0) {
+            $reqUri = substr($reqUri, 2);
+        }
+        while(strncmp('/', $reqUri, 1) == 0) {
             $reqUri = substr($reqUri, 1);
         }
         
@@ -95,22 +98,32 @@ class mmRouter extends mmObject {
     protected function explodeRoute() {
         if ( ! empty($this->uriString)) { //there is somethinf to parse ?
             //first doing separation between uri and parameters
-            $fragments = explode('?', $this->uriString);
-            $this->cleanedReqUri = $fragments[0];
-            $this->uriArray = explode('/', $fragments[0]);
-            $this->getRequest = $_GET;
-            $this->postRequest = $_POST;
+            if (strpos($this->uriString, '?') === false) {
+                $this->cleanedReqUri = $this->uriString;
+            } else {
+                $fragments = explode('?', $this->uriString);
+                $this->cleanedReqUri = $fragments[0];
+            }
+            $this->uriArray = explode('/', $this->cleanedReqUri);
+        } else {
+            $this->cleanedReqUri = '';
+            $this->uriArray = array();
         }
+        $this->getRequest = $_GET;
+        $this->postRequest = $_POST;
     }
     
     protected function parseRoute() {
         $_routes = array( //default routes for generique purpose
-            'login'     =>  'module=pLoginStd&action=login',
-            'logout'    =>  'module=pLoginStd&action=logout',
-            'subscribe' =>  'module=pLoginStd&action=subscribe',
-            'sass/*'    =>  'module=pSass&scss=$1',
-            '*/*'       =>  'module=$1&action=$2',
-            '*'         =>  'module=$1&action=index',
+            'login'           =>  'module=pLoginStd&action=login',
+            'logout'          =>  'module=pLoginStd&action=logout',
+            'subscribe'       =>  'module=pLoginStd&action=subscribe',
+            'sass/*'          =>  'module=pSass&scss=$1',
+            'pEcran/edit/*'   =>  'module=pEcran&action=edit&ecran=$1',
+            'pEcran/*'        =>  'module=pEcran&action=$1',
+            'pEcran'          =>  'module=pEcran',
+            '*/*'             =>  'module=$1&action=$2',
+            '*'               =>  'module=$1&action=index',
         );
         $routesFile = CONFIG_DIR.DIRECTORY_SEPARATOR.'routes.php';
         if (file_exists($routesFile)) {

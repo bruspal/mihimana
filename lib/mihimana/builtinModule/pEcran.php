@@ -41,7 +41,7 @@ class pEcran extends mmProg {
     public function preExecute(mmRequest $request) {
         if (!mmUser::superAdmin()) {
             mmUser::flashError('Vous ne pouvez pas acceder à cet écran');
-            $this->redirect('?');
+            $this->redirect('@home');
         }
     }
 
@@ -49,47 +49,45 @@ class pEcran extends mmProg {
         //On recupere la liste des ecrans
 
         mmSession::remove('__editionNomEcran__');
-        $this->redirect('?module=pEcran&action=editEcran');
-//<--- nettoyage puis sortie vers l'edition
+        $this->redirect(url('pEcran/edit'));
     }
 
-    public function executeNouvelEcran(mmRequest $request) {
+    public function executeCreate(mmRequest $request) {
         //On defini quel fond d'ecran html on veux utiliser
-        $this->setTemplate('html_pEcran_editEcran');
+        $this->setTemplate('view_pEcran_editEcran');
         //On charge en memoire un nouveau champ vide de la ecran 'Tables' (appelée T101 dans la base)
         $ecran = new EcranUtilisateur();
         //Initialisation du formulaire
         $this->initFormEcran($ecran);
-        //Apres ce point la page html_pEcran_editEcran.php va etre executée
     }
 
     public function executeCreerEcran(mmRequest $request) {
-        $this->executeNouvelEcran($request);
+        $this->executeCreate($request);
         $this->enregistreEcran($request);
     }
 
     public function executeSupprimeEcran(mmRequest $request) {
-        User::flashInfo('LE CODE DE SUPRESSION DE TABLE EST APPELE');
+        mmUser::flashInfo('LE CODE DE SUPRESSION DE TABLE EST APPELE');
         //On charge l'enregistrement
-        $nomEcran = $request->getParam('ecran', false);
+        $nomEcran = $request->get('ecran', false);
         if ($nomEcran) {
             $ecran = Doctrine_Core::getTable('EcranUtilisateur')->find($nomEcran);
             $champsEcran = $ecran->get('ChampsEcranUtilisateur');
             $champsEcran->delete();
             $ecran->delete();
-            User::flashSuccess('Suppresion OK');
+            mmUser::flashSuccess('Suppresion OK');
         } else {
-            User::flashError('Aucun nom d\'ecran fournis');
+            mmUser::flashError('Aucun nom d\'ecran fournis');
         }
-        $this->redirect("?module=pEcran");
+        $this->redirect(url('pEcran'));
     }
 
-    public function executeEditEcran(mmRequest $request) {
+    public function executeEdit(mmRequest $request) {
         //On defini quel fond d'ecran html on veux utiliser
-        $this->setTemplate('html_pEcran_editEcran');
+        $this->setTemplate('view_pEcran_editEcran');
         //On verifie si le nom de ecran exist dans la cession. dans ce cas la on le prend, sinon on prend celui fournis en parametre
 
-        $nomEcran = $request->getParam('ecran', false);
+        $nomEcran = $request->get('ecran', false);
         if (!$nomEcran) {
             $nomEcran = mmSession::get('__editionNomEcran__', false);
             if (!$nomEcran) {
@@ -98,42 +96,39 @@ class pEcran extends mmProg {
 //        throw new mdExceptionControl("Aucun ecran de travail definie");
             }
         } else {
-            User::set('__editionNomEcran__', $nomEcran);
+            mmUser::set('__editionNomEcran__', $nomEcran);
         }
         //on charge la ligne de description de la ecran utilisateur depuis la base
         //on a pas d'ecran on prend le premier sinon on prend celui defini par nomEcran
         if ($nomEcran === false) {
             $ecran = Doctrine_Core::getTable('EcranUtilisateur')->createQuery()->limit(1)->fetchOne();
             if (!$ecran) {
-                User::flashError('Aucune écran n\'a été créé. Vous avez été positionné sur la création');
-                $this->redirect('?module=pEcran&action=nouvelEcran');
-//<--- on sort du programme ici en allant a le programme de création d'un nouvel ecran        
+                mmUser::flashError('Aucune écran n\'a été créé. Vous avez été positionné sur la création');
+                $this->redirect(url('pEcran/create'));
             } else {
                 $nomEcran = $ecran['nom_ecran'];
-                User::set('__editionNomEcran__', $nomEcran);
+                mmUser::set('__editionNomEcran__', $nomEcran);
             }
         } else {
             $ecran = Doctrine_Core::getTable('EcranUtilisateur')->find($nomEcran);
         }
 
         if (!$ecran) {
-            User::flashError("L'ecran $nomEcran est introuvable");
-            $this->redirect('?module=pEcran&action=nouvelEcran');
-//<--- on a pas d'ecran on sort vers la saisie d'un nouvel ecran      
+            mmUser::flashError("L'ecran $nomEcran est introuvable");
+            $this->redirect(url('pEcran/create'));
         }
 
         //Initialisation du formulaire
         $this->initFormEcran($ecran);
-        //Apres ce point la page html_pEcran_editEcran.php va etre executée
     }
 
     public function executeMajEcran(mmRequest $request) {
-        $this->executeEditEcran($request);
+        $this->executeEdit($request);
         $this->enregistreEcran($request);
     }
 
     public function enregistreEcran(mmRequest $request) {
-        $dataRecut = $request->getParam($this->form->getName(), false);
+        $dataRecut = $request->get($this->form->getName(), false);
 
         if ($dataRecut) {
             //On a recut des données ? dans ce cas la on enregistre
@@ -157,7 +152,7 @@ class pEcran extends mmProg {
                         execute();
                 //on a fini on rappel la page d'edition pour afficher le formulaire a jour
                 mmUser::set('__editionNomEcran__', $ecran['nom_ecran']);
-                $this->redirect("?module=pEcran&action=editEcran");
+                $this->redirect(url('pEcran/edit'));
 //<----- on sort en allant a la page index.php?module=pEcran&action=editEcran       
             } else {
                 // y'a des erreur
@@ -226,14 +221,14 @@ class pEcran extends mmProg {
             foreach ($listeEcransBase as $ecranCourant) {
                 $listeEcranSelect[$ecranCourant['nom_ecran']] = $ecranCourant['nom_ecran'];
             }
-            $this->form->addWidget(new mmWidgetSelect($this->form['nom_ecran'], $listeEcranSelect, '', array('onchange' => "goPage('?module=pEcran&action=editEcran&ecran='+$(this).val())")));
-            $this->form->addWidget(new mmWidgetButtonGoPage('Creer un ecran', '?module=pEcran&action=nouvelEcran'), false, 'nouveau');
+            $this->form->addWidget(new mmWidgetSelect($this->form['nom_ecran'], $listeEcranSelect, '', array('onchange' => "goPage('".url('pEcran/edit')."/'+$(this).val())")));
+            $this->form->addWidget(new mmWidgetButtonGoPage('Creer un ecran', url('pEcran/create')), false, 'nouveau');
             $this->form->addWidget(new mmWidgetButton('supprimer', "supprimer l'écran"));
 //      $this->form->addWidget(new mdWidgetButton('supprimer', "supprimer l'écran", array('onclick'=>"if (confirm('Voulez vous supprimer cet ecran ?')) goPage('?module=pEcran&action=supprimeEcran&ecran=".$ecran['nom_ecran']."')")));
 //      $this->form->addWidget(new mdWidgetButtonAjaxPopup('Générer le programme', '?module=pEcranGenereCRUD', 'genere'));
-            $this->form->addWidget(new mmWidgetButtonHtmlPopup('Editer javascript', '?module=pEcranJS&action=editer&b=nom_ecran=' . $ecran['nom_ecran'], 'editJS'));
-            $this->form->addWidget(new mmWidgetButtonHtmlPopup('Editer déclaration', '?module=pEcranDec&action=editer&b=nom_ecran=' . $ecran['nom_ecran'], 'editDec'));
-            $this->form->addWidget(new mmWidgetButtonAjaxPopup('Copier l\'écran', '?module=pEcranCopie&a=' . $ecran['nom_ecran'], 'copieEcran'));
+            $this->form->addWidget(new mmWidgetButtonHtmlPopup('Editer javascript', url('pEcranJS/editer?nomEcran='.$ecran['nom_ecran']), 'editJS'));
+            $this->form->addWidget(new mmWidgetButtonHtmlPopup('Editer déclaration', url('pEcranDec/editer?nomEcran='.$ecran['nom_ecran']), 'editDec'));
+            $this->form->addWidget(new mmWidgetButtonAjaxPopup('Copier l\'écran', url('pEcranCopie?a='.$ecran['nom_ecran']), 'copieEcran'));
         } else {
             // c'est un nouvel ecran, on met une zone de saisie
             $this->form->addWidget(new mmWidgetText($this->form['nom_ecran']));
@@ -280,7 +275,7 @@ class pEcran extends mmProg {
 //      
 //    }
         //Gestion du choix du mode d'entree
-        $this->form->addWidget(new mmWidgetSelect($this->form['mode_rendu'], array('txt' => 'LIMA', 'htm' => 'HTML', 'src' => 'Code Source')));
+        $this->form->addWidget(new mmWidgetSelect($this->form['mode_rendu'], array('txt' => 'SIMPLE', 'htm' => 'HTML', 'src' => 'Code Source')));
         //Ajout de la destination
         $this->form->addWidget(new mmWidgetSelect($this->form['destination'], array('scr' => 'Ecran', 'imp' => 'Impression')));
         //Bouton qui ouvre une popup

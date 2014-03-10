@@ -40,9 +40,6 @@ class mmWidgetList extends mmWidgetSelect {
 
     public function render($extraAttributes = array(), $replace = false) {
 
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
-
         if ($replace) {
             $attributes = $extraAttributes;
         } else {

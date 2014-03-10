@@ -45,9 +45,6 @@ class mmWidgetSelect extends mmWidget {
 
     public function render($extraAttributes = array(), $replace = false) {
 
-        //on met a jour par rapport au portefeuille
-        $this->setDroitsParPortefeuilles();
-
         if ($replace) {
             $attributes = $extraAttributes;
         } else {
@@ -57,20 +54,9 @@ class mmWidgetSelect extends mmWidget {
         if ($this->edit && $this->enabled) {
             $result = sprintf('<select name="%s" %s>', sprintf($this->nameFormat, $this->attributes['name']), $this->generateAttributes($extraAttributes, $replace));
             $result .= $this->computeSelectValues($this->values, $this->attributes['value']);
-//      foreach ($this->values as $key => $label) {
-//        if ($key == $this->attributes['value']) {
-//          $result .= sprintf('<option value="%s" selected>%s</option>', $key, $label);
-//        }
-//        else {
-//          $result .= sprintf('<option value="%s">%s</option>', $key, $label);
-//        }
-//      }
             $result .= '</select>';
         } else {
             if ($this->view || ($this->edit && !$this->enabled)) {
-//        $result = sprintf('<span %s>%s - %s</span>', $this->generateAttributes($extraAttributes, $replace),
-//                $this->attributes['value'],
-//                isset($this->values[$this->attributes['value']])?$this->values[$this->attributes['value']]:'');
                 $result = sprintf('<span %s>%s</span>', $this->generateAttributes($extraAttributes, $replace), isset($this->values[$this->attributes['value']]) ? $this->values[$this->attributes['value']] : $this->attributes['value']);
             } else {
                 $result = '';

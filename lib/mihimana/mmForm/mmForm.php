@@ -123,7 +123,7 @@ class mmForm extends mmObject implements ArrayAccess {
         }
         $widget->setContainer($this);
         $widget->postAddWidget();
-        if ($this->getId()) {
+        if ($this->getId() && ! $widget->isOverridden()) {
             $widget->setId($this->getId().'_'.$widget->getId());
         }
         $this->widgetList[$name] = $widget;

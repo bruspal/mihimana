@@ -53,6 +53,12 @@ class mmWidget extends mmObject {
     public $rendered = false;
     protected $ignorePortefeuille = false;
 
+    private
+            /**
+             * flag. that means the widget as been created using another widget as reference
+             */
+            $overridden = false; 
+    
     /**
      * Cree un nouveau widget
      * 
@@ -63,6 +69,7 @@ class mmWidget extends mmObject {
      */
     public function __construct($name, $type = 'input', $value = '', $attributes = array(), $options = array()) {
         if (is_string($name)) {
+            $this->overridden = false;
             $this->default = $value;
             //TODO: mettre tous les attribut name, type, value dans la list des attribut
             $this->attributes['name'] = $name;
@@ -74,6 +81,7 @@ class mmWidget extends mmObject {
             return $this;
         }
         if ($name instanceof mmWidget) {
+            $this->overridden = true;
             $class = $this->attributes['class'];
             $this->default = $name->default;
             $this->attributes = array_merge($name->attributes, $attributes);
@@ -131,6 +139,10 @@ class mmWidget extends mmObject {
 
     public function isEnabled() {
         return $this->enabled && !isset($this->attributes['disabled']);
+    }
+    
+    public function isOverridden() {
+        return $this->overridden;
     }
 
     /**
