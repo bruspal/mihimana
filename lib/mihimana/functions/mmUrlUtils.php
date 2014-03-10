@@ -28,7 +28,7 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
-function url($url = false) {
+function url($url) {
     switch ($url) {
         case '@home':
             return $_SERVER['SCRIPT_NAME'];
@@ -36,12 +36,16 @@ function url($url = false) {
             break;
 
         default:
-            if (preg_match('#http[s]?://#', $url)) {
+            if (preg_match('#https?://#', $url)) {
                 return $url;
             }
             return $_SERVER['SCRIPT_NAME'].'/'.$url;
             break;
     }
+}
+
+function assets($url, $global = false) {
+    return $global ? WEB_CONTEXT.'/'.$url : WEB_CONTEXT.'/'.APPLICATION.'_assets/'.$url;
 }
 
 /**
