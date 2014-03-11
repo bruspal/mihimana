@@ -2,3 +2,5 @@
     USER LEVEL (anonymous, ressource, admin,...)
     ...
 * Hooks
+*add 404, 302,... support
+*cleanup mmForm mmWidget and mmScreen

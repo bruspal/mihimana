@@ -28,7 +28,23 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
+/**
+ * Format the input URL to the correct format regarding mihimana.<br>
+ * if $url is absolute, nothing will be changed while relatives will be adapted to internal mihimana url<br>
+ * There is some reserved words, all of them starts with '@'
+ * <ul>
+ * <li>@home : Url for home page</li>
+ * <li>@module :  the current module</li>
+ * <li>@action : the current action </li>
+ * </ul>
+ * 
+ * 
+ * @param string $url the input url
+ * @return string the well formated URL
+ */
 function url($url) {
+    
+    $url = str_replace(array('@module', '@action'), array(MODULE_COURANT, ACTION_COURANTE), $url);
     switch ($url) {
         case '@home':
             return $_SERVER['SCRIPT_NAME'];

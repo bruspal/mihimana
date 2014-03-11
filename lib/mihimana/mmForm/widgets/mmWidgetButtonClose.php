@@ -39,7 +39,7 @@ class mmWidgetButtonClose extends mmWidgetButton {
         //soit on rafraichis la dialoguebox
         if (AJAX_REQUEST) {
             //C'est un appel ajax, on met a jour la sous fenetre
-            $attributes['onclick'] = "$('#__mdDialog').jqmHide()";
+            $attributes['onclick'] = "$('#__mmDialog').jqmHide()";
         } else {
             $attributes['onclick'] = "window.close()";
         }

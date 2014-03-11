@@ -43,6 +43,10 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     //cleanup the request object : removing module and action
     $request->remove('module');
     $request->remove('action');
+    //On declare les module et action courant dans des constante pour pouvoir les recuperer facilement dans les modules et scripts.
+    define('MODULE_COURANT', $module);
+    define('ACTION_COURANTE', $action);
+    
 
     /**************************/
     // TODO : revoir le mécanisme de forcage de reponse JSON
@@ -81,10 +85,6 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     } else {
         define('HTTPS', false);
     }
-    //On declare les module et action courant dans des constante pour pouvoir les recuperer facilement dans les modules et scripts.
-    define('MODULE_COURANT', $module);
-    define('ACTION_COURANTE', $action);
-
 
     //ici deux choix : soit le fichier php existe. On le charge et l'execute. Sinon on charge et execute le programme générique d'extension
     $dispatcher_fichierProgramme = false;
@@ -137,6 +137,8 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         //En mode production on affiche une erreur generaliste
         $sortieProgramme = "<h1>Une erreur critique a eu lieu. Veuillez contacter le service informatique.</h1>";
     }
-    include APPLICATION_DIR . '/templates/layout.php';
+    if ( ! AJAX_REQUEST) {
+        include APPLICATION_DIR . '/templates/layout.php';
+    }
 }
 ?>

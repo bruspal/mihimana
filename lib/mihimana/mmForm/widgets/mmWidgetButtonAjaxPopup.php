@@ -39,7 +39,7 @@ class mmWidgetButtonAjaxPopup extends mmWidgetButton {
     {
       $url = genereUrlProtege($url);
     }
-    $attributs['onclick'] = "mdAjaxHtmlDialog('$url')";
+    $attributs['onclick'] = "mmAjaxHtmlDialog('$url')";
     parent::__construct($name, $libelle, $attributs);
   }
   
