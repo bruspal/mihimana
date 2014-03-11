@@ -1,0 +1,1 @@
+Models used as base for module creation

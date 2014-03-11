@@ -30,21 +30,21 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
-//entete classic pour un programme
-
+/**
+ * 
+ */
 class pEcran extends mmProg {
 
-    /**
-     * Liste de selection des ecrans existante dans le model
-     * @param type $request 
-     */
     public function preExecute(mmRequest $request) {
         if (!mmUser::superAdmin()) {
             mmUser::flashError('Vous ne pouvez pas acceder à cet écran');
-            $this->redirect('@home');
+            $this->redirect(url('@home'));
         }
     }
-
+    /**
+     * Nettoyage de la session et redirection vers l'editeur
+     * @param mmRequest $request
+     */
     public function executeIndex(mmRequest $request) {
         //On recupere la liste des ecrans
 
@@ -229,6 +229,7 @@ class pEcran extends mmProg {
             $this->form->addWidget(new mmWidgetButtonHtmlPopup('Editer javascript', url('pEcranJS/editer?nomEcran='.$ecran['nom_ecran']), 'editJS'));
             $this->form->addWidget(new mmWidgetButtonHtmlPopup('Editer déclaration', url('pEcranDec/editer?nomEcran='.$ecran['nom_ecran']), 'editDec'));
             $this->form->addWidget(new mmWidgetButtonAjaxPopup('Copier l\'écran', url('pEcranCopie?a='.$ecran['nom_ecran']), 'copieEcran'));
+            $this->form->addWidget(new mmWidgetButtonAjaxPopup('Genere le programme', url('pModuleGenerator?sn='.$ecran['nom_ecran']), 'generateModule'));
         } else {
             // c'est un nouvel ecran, on met une zone de saisie
             $this->form->addWidget(new mmWidgetText($this->form['nom_ecran']));
