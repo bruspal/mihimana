@@ -41,7 +41,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  * @author bruno
  */
 class pEcranGenereCRUD extends mmProgProcedural{
-  public function main($request = null) {
+  public function main($action, $request = null) {
     //On va creer le fichier source pour creer le CRUD lié a l'écran
     
     //Recuperation des parametres en parametres ou en session

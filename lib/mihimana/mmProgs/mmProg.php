@@ -39,7 +39,8 @@ class mmProg extends mmObject {
             $layout,
             $templateModuleAction, //template associé a un module + action
             $templateModule, //template associé a un module
-            $parametresProgramme;
+            $parametresProgramme,
+            $headers = array();
     public
             $variables;
 
@@ -57,8 +58,8 @@ class mmProg extends mmObject {
      * @param array $request
      * @return boolean 
      */
-    public function execute(mmRequest $request) {
-        $action = ACTION_COURANTE;
+    public function execute($action, mmRequest $request) {
+//        $action = ACTION_COURANTE;
         //On sauvegarde les parametres passé au programme
         $this->parametresProgramme = $request;
         //On definie quelle action a executer
@@ -73,7 +74,7 @@ class mmProg extends mmObject {
         if (method_exists($this, $methodAction)) {
             $codeSortie = $this->$methodAction($request);
         } else {
-            throw new mmExceptionRessource("unknown action : $action");
+            throw new mmExceptionHttp(mmExceptionHttp::NOT_FOUND);
         }
         $this->postExecute($request);
         //recuperation du buffer de sortie
@@ -101,12 +102,16 @@ class mmProg extends mmObject {
         }
         //affichage de l'ecran
 
-        $this->genereHtmlFinal($sortieFinale);
+        $this->renderHtml($sortieFinale);
 
         return true;
     }
 
-    public function genereHtmlFinal($html) {
+    public function renderHtml($html) {
+        //headers
+        foreach ($this->headers as $header) {
+            header($header[0], $header[1]);
+        }
         if (!DEBUG) { // si on est pas en mode debug on vire tous les espace blanc saut de ligne et etc
             echo preg_replace('/\s/', ' ', $html);
         } else {
@@ -175,7 +180,24 @@ class mmProg extends mmObject {
             return false;
         }
     }
-
+    /**
+     * add an header to the module
+     * @param type see php::header()
+     * @param type see php::header()
+     */
+    protected function addHeader($strHeader, $replace = true) {
+        $this->headers[] = array($strHeader, $replace);
+    }
+    
+    protected function outputAsJson() {
+        $this->setLayout(false);
+        $this->addHeader('Content-Type: application/json');
+    }
+    
+    protected function outputAsHtml() {
+        $this->addHeader('Content-Type: text/html');
+    }
+    
     /**
      * effectue un redirect
      * @param type $url

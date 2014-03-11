@@ -31,7 +31,7 @@
 
 class pTestFormule extends mmProgProcedural {
 
-    public function principale($action = '', $parametres = null) {
+    public function main($action = '', $parametres = null) {
         //test de decoupage
 //    $exp = 'si(1 =18*15+2-(15/3)?10*(18+(15-8))/5:func(42.25, 18, "toto,tata,zubub"))+int(28.12)';//__chargeExpression('11532');
 //    $exp = '(1+("2"+3)*4)+5*-6+8/3';

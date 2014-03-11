@@ -8,8 +8,8 @@ contact@bmp-studio.com
 
 -------------------------------------
 @package : lib
-@module: builtinModule
-@file : pSass.php
+@module: mmException
+@file : mmExceptionHttp.php
 -------------------------------------
 
 This file is part of Mihimana.
@@ -28,12 +28,26 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
-class pSass extends mmProgProcedural {
-    public function main($action, mmRequest $request) {
-        $this->setLayout(false);
-        require MM_PLUGINS_DIR.DIRECTORY_SEPARATOR.'scssphp'.DIRECTORY_SEPARATOR.'scss.inc.php';
-        $pathToScss = ASSETS_DIR.DIRECTORY_SEPARATOR.'scss';
-        $_GET['p'] = $request['scss'];
-        scss_server::serveFrom($pathToScss);
+class mmExceptionHttp extends mmException{
+    const NOT_FOUND     = 404;
+    const FORBIDDEN     = 403;
+    
+    public function __construct($code = null, $previous = null) {
+        $message = '';
+        switch ($code) {
+            case self::NOT_FOUND:
+                $message = '<h1>404 - Not Found</h1>'.new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
+                header('HTTP/1.0 404 Not Found');
+                break;
+            case self::FORBIDDEN:
+                $message = '<h1>Acces interdit</h1>'.new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
+                header('HTTP/1.0 403 Forbidden');
+                break;
+            default:
+                $message = "<h1>Erreur HTTP $code inconnue.</h1>".new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
+                header('HTTP/1.0 404 Not Found');
+                break;
+        }
+        parent::__construct($message, $code, $previous);
     }
 }

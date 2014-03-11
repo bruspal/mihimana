@@ -37,7 +37,7 @@ class mmProgProcedural extends mmProg {
      * @param mmRequest $request
      * @return boolean 
      */
-    public function execute(mmRequest $request) {
+    public function execute($action, mmRequest $request) {
         //On sauvegarde les parametres passé au programme
         $this->parametresProgramme = $request;
         //demarage du buffer
@@ -47,7 +47,7 @@ class mmProgProcedural extends mmProg {
         if (method_exists($this, 'principale')) {
             throw new mmExceptionDev("la methode 'principale n'est plus authorisé. utiliser main et adapter le source");
         }
-        $codeSortie = $this->main($request);
+        $codeSortie = $this->main($action, $request);
         //recuperation du buffer de sortie
         $sortieProgramme = ob_get_clean();
         //Application du layout de l'ecran si un layout existe
@@ -67,7 +67,7 @@ class mmProgProcedural extends mmProg {
             $sortieFinale = $sortieProgramme;
         }
         //affichage de l'ecran
-        $this->genereHtmlFinal($sortieFinale);
+        $this->renderHtml($sortieFinale);
 
         return true;
     }

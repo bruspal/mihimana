@@ -31,7 +31,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 class pJpegSQL extends mmProgProcedural
 {
-  public function principale($action = '', $parametres = null) {
+  public function main($action = '', $parametres = null) {
     $optionsDefaut = array(
         'table'=>'ficged',        //table dans laquel se trouve le champ
         'cle'=>'id',              //cle unique de l'enregistrement

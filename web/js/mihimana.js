@@ -62,7 +62,7 @@ $.ajaxSetup({
     dataType: "json"
 });
 
-function mmAjxSubmit(formObject, resultContainer) {
+function mmAjaxSubmit(formObject, resultContainer) {
     if (resultContainer == undefined)
     {
         resultContainer = mmGetModalContainer('__mmDialog');
@@ -80,9 +80,6 @@ function mmAjxSubmit(formObject, resultContainer) {
 
 function mmAjaxChangeAction(formObject, nvAction) {
     formObject.attr('action', nvAction);
-    toto = '';
-    tata = '';
-    tutu = '';
 }
 
 

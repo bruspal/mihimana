@@ -32,7 +32,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 class pEcranCopie extends mmProgProcedural
 {
-  public function main(mmRequest $request) {
+  public function main($action, mmRequest $request) {
     if ( ! $this->initForm($request))
     {
       return false;

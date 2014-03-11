@@ -33,7 +33,7 @@ class pWidgetAjax extends mmProgProceduralWebService {
     //
     // TODO: transformer en appel objet standard
     //
-    public function principale($action = '', $parametres = null) {
+    public function main($action = '', $parametres = null) {
         //On traite les differentsParametre
         $ancien = error_reporting(0);
         switch ($action) {

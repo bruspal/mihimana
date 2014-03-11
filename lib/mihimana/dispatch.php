@@ -108,7 +108,7 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             //creation en memoire du programme
             $dispatcher_programmePhp = new $module();
             //on execute l'action du programme avec les parametres fournis au script par l'url
-            $dispatcher_programmePhp->execute($request);
+            $dispatcher_programmePhp->execute($action, $request);
         } else {
             //on recupère le buffer PHP car le code contenu dans le module a deja été exécuté lors du require
             //on affiche ce buffer dans le template en faisant un require du layout
@@ -116,15 +116,19 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             include APPLICATION_DIR . '/templates/layout.php';
         }
     } else {
-        throw new \mmExceptionControl("<h1>$module : Module inexistant</h1>");
+        throw new \mmExceptionHttp(\mmExceptionHttp::NOT_FOUND);
     }
-} catch (\mmExceptionControl $e) {
+} catch (\mmExceptionControl $e) { //exception de controle
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
     include APPLICATION_DIR . '/templates/layout.php';
-} catch (\mmExceptionRessource $e) {
+} catch (\mmExceptionHttp $e) { //exception HHTP
+    $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
+    if (DEBUG)
+    include APPLICATION_DIR . '/templates/layout.php';
+} catch (\mmExceptionRessource $e) { //Exception de ressources
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
     include APPLICATION_DIR . '/templates/layout.php';
-} catch (\Exception $e) {
+} catch (\Exception $e) { //tous les autres cas
     //Si une erreur non gerée se produit on affiche le message d'erreur detaillé si on est en mode DEBUG, sinon on fais autre chose (genre log, mail, etc)
     //TODO: voir comment gerer les erreurs critique en production
     $sortieProgramme = ob_get_clean();

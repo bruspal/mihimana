@@ -34,12 +34,12 @@
  */
 class mmProgWebService extends mmProg {
 
-    public function execute(\mmRequest $request) {
+    public function execute($action, \mmRequest $request) {
         if (AJAX_REQUEST || DEBUG) {
-            parent::execute($request);
+            parent::execute($action, $request);
         } else {
             //Ici on ne fais rien, si on tente d'executer un service web en mode standard on renvois un ecran vide.
-            header('HTTP/1.1 403 Forbidden'); //on ecrit acces refusé standard            
+            $this->addHeader('HTTP/1.1 403 Forbidden'); //on ecrit acces refusé standard            
         }
     }
 

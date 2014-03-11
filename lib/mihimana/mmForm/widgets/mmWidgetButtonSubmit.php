@@ -55,7 +55,7 @@ class mmWidgetButtonSubmit extends mmWidgetButton {
     public function render($extraAttributes = array(), $replace = false) {
         // Dans ce cas la on effectue l'affectation du javascript au moment du rendu car dans le constructeur on ne connais pas encore le containerForm
         if (AJAX_REQUEST) {
-            $parameters = array('onclick' => sprintf("%smmAjxSubmit($('form#%s'))", $this->preSubmit, $this->containerForm->getId()));
+            $parameters = array('onclick' => sprintf("%smmAjaxSubmit($('form#%s'))", $this->preSubmit, $this->containerForm->getId()));
         } else {
             $parameters = array('onclick' => sprintf("%ssubmit()", $this->preSubmit));
 //            $parameters = array('type' => 'submit');

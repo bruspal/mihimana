@@ -49,9 +49,9 @@ class pEcranAssign extends mmProgProcedural {
                 'anc' => 'Ancrage'
     );
 
-    public function main(mmRequest $request) {
+    public function main($action, mmRequest $request) {
         $this->verifDroits();
-        switch (ACTION_COURANTE) {
+        switch ($action) {
             case 'index':
                 $this->ajout($request);
                 break;

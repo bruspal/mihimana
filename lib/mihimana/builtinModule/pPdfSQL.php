@@ -31,7 +31,7 @@
 
 class pPdfSQL extends mmProgProcedural {
 
-    public function principale($action = '', $parametres = null) {
+    public function main($action = '', $parametres = null) {
         $optionsDefaut = array(
             'table' => 'ficged',
             'cle' => 'id',

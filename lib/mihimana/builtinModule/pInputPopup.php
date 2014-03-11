@@ -30,7 +30,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
 class pInputPopup extends mmProgProceduralWebService{
-  public function main(mmRequest $request = null) {
+  public function main($action, mmRequest $request = null) {
     $this->context = new mmContext('__mdInputPopup__'); //nom unique, on a qu'un popup ouvert a la fois
     
     $resultat = $this->initForm($request);
