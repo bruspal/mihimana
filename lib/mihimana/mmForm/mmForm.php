@@ -36,7 +36,8 @@ class mmForm extends mmObject implements ArrayAccess {
             $formsList = array(),
             $enctype = 'application/x-www-form-urlencoded',
             $controlList = array(); //probablement a virer
-    protected $nameFormat = '%s',
+    protected
+            $nameFormat = '%s',
             $prefixName = '',
             $record = null,
             $valid = true,
@@ -54,7 +55,8 @@ class mmForm extends mmObject implements ArrayAccess {
             $method = 'post',
             $action = '',
             $id = '',
-            $modified;
+            $modified,
+            $errors = array();
 
     public function __construct(Doctrine_Record $record = null, $options = array()) {
         $this->new = true;
@@ -313,6 +315,10 @@ class mmForm extends mmObject implements ArrayAccess {
         return $widget;
     }
 
+    /*
+     * Methodes d'operation sur les widget
+     */
+    
     /**
      * Met a jour l'objet avec les valeurs fournis en parametre au format de la base de donnees
      * ignore les champs manquant et supplementaires
@@ -336,9 +342,10 @@ class mmForm extends mmObject implements ArrayAccess {
     /**
      * set values to the form, $values is a associative array 'field_name' => 'value'
      * @param array $values
+     * @param mixed $compulsory true: all fields but mmWidgetButton,... instances are compulsory<br>otherwise an array of compulsory fields. If ommited there is no fields compulsory
      * @return boolean true if all fields are validated false otherwise
      */
-    public function setValues($values = array()) {
+    public function setValues($values = array(), $compulsory = false) {
         $this->valid = true;
         /*
          * Because of the behaviour of foreach regarding arrayAccess implementation, mmVarHolder is internally turned to an array (BUG #34445 : https://bugs.php.net/bug.php?id=34445)
@@ -348,6 +355,27 @@ class mmForm extends mmObject implements ArrayAccess {
         } else {
             $_values = & $values;
         }
+        //Check if if compulsory fields are presents
+        if ($compulsory !== false) {
+            if ($compulsory === true) {
+                foreach ($this->widgetList as $wName => $widgetInstance) {
+                    if ($widgetInstance instanceof mmWidgetButton) continue;
+                    if ( ! isset($_values[$wName])) {
+                        $this->valid = false;
+                        $this->addError('missing field '.$wName);
+                    }
+                }
+            } else {
+                $compulsory = (array)$compulsory;
+                foreach($compulsory as $cField) {
+                    if ( ! isset($_values[$cField])) {
+                        $this->valid = false;
+                        $this->addError('missing field '.$cFields);
+                    }
+                }
+            }
+        }
+        // do affectation to all fields provided in values
         foreach ($_values as $name => $value) {
             if (isset($this->widgetList[$name])) {
                 try {
@@ -506,7 +534,7 @@ class mmForm extends mmObject implements ArrayAccess {
             if (($wn == 'id' && $widget instanceof mmWidgetHidden) || $widget instanceof mmWidgetHidden) { //TODO: ameliorer le filtre pour rendre par automatique les champs index invisible
                 $result .= '<tr style="display: none;"><td colspan="2">' . $widget->render() . '</td></tr>';
             } else {
-                if (!is_a($widget, 'mdWidgetButton')) {
+                if ( ! ($widget instanceof mmWidgetButton)) {
                     $result .= $widget->renderRow();
                 }
             }
@@ -525,12 +553,27 @@ class mmForm extends mmObject implements ArrayAccess {
         if (trim($result) != '') {
             $result = '<table class="form" id="' . $this->name . '_form_id">' . $result . '</table>';
         }
+        //on ajoute le rendu des erreurs global
+        $result .= $this->renderErrors();
         //On ajoute les balise <form> si l'action a ete definie
         if ($this->action) {
             $result = $this->start().$result.$this->stop();
         }
         $result .= $this->renderJavascript($fieldList);
         return $result;
+    }
+    
+    
+    public function getErrors($deep = false) {
+        $result = array();
+        if ($deep) {
+            foreach ($this->widgetList as $wName => $wInstance) {
+                if ( ! $wInstance->isValid()) $result['widgets'][$wName] = $wInstance->getErrors();
+            }
+            $result['form'] = $this->errors;
+        } else {
+            return $this->errors;
+        }
     }
 
     /**
@@ -693,6 +736,14 @@ class mmForm extends mmObject implements ArrayAccess {
         return $result;
     }
 
+    public function renderErrors($bloc = 'div', $line = 'p') {
+        if (count($this->errors)>0) { //there is errors
+            $errorsLine = implode("</$line><$line>", $this->errors);
+            return "<$bloc id=\"mmFormError_{$this->getId()}\" class=\"mmFormError\"><$line>$errorsLine</$line></$bloc>";
+        } else {
+            return '';
+        }
+    }
     public function addJavascript($name, $script) {
         $this->javascripts[$name] = array('script' => $script, 'rendered' => false);
     }
@@ -872,15 +923,20 @@ class mmForm extends mmObject implements ArrayAccess {
      * Gestion des erreur du formulaire
      */
 
-    public function addError($libelle, $widgetName = '') {
-        //TODO: implemente les erreurs globale au formulaire
-        if (!isset($this->widgetList[$widgetName])) {
-            throw new mmException("Le widget $widgetName n'existe pas");
-        }
-        try {
-            $this->widgetList[$widgetName]->addError($libelle);
-        } catch (mmExceptionWidget $e) {
+    public function addError($libelle, $widgetName = false) {
+        if ($widgetName === false) {
+            $this->errors[] = $libelle;
             $this->valid = false;
+        } else {
+            //TODO: implemente les erreurs globale au formulaire
+            if (!isset($this->widgetList[$widgetName])) {
+                throw new mmException("Le widget $widgetName n'existe pas");
+            }
+            try {
+                $this->widgetList[$widgetName]->addError($libelle);
+            } catch (mmExceptionWidget $e) {
+                $this->valid = false;
+            }
         }
     }
 
