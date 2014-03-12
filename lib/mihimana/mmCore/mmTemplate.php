@@ -45,5 +45,4 @@ class mmTemplate extends mmObject {
 
         return $result;
     }
-
 }

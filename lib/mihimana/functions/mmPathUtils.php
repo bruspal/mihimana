@@ -68,3 +68,7 @@ function getTemplatesPath() {
 function getTemplate() {
     
 }
+
+function getPartialPath() {
+    return PARTIALS_DIR;
+}
