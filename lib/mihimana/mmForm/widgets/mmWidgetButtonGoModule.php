@@ -54,7 +54,7 @@ class mmWidgetButtonGoModule extends mmWidgetButtonGoPage {
             $url .= "?".http_build_query($parametres);
         }
         //pour l'encodage de l'url on laisse ca au parent
-        parent::__construct($libelle, $url, $replace, $name, $attributs);
+        parent::__construct($libelle, url($url), $replace, $name, $attributs);
     }
 
 }

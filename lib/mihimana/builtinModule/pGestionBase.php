@@ -45,11 +45,13 @@ class pGestionBase extends mmProg {
             echo new mmWidgetButton('creerDB', 'Creer la base de données de parametres', array('onclick' => "if (confirm('CECI VA DETRUIRE LA BASE ETES VOUS SUR DE VOULOIR CONTINUER ?')) goPage('".url('pGestionBase/createDBParam')."')")) . '<br />';
             echo new mmWidgetButtonGoModule('Dumper les data de la base de parametres', 'pGestionBase', 'dumpData') . '<br />';
             echo new mmWidgetButtonGoModule('Charger les data de la base de parametres', 'pGestionBase', 'loadData') . '<br />';
-            echo new mmWidgetButtonGoModule('Importer modele depuis une base existante', 'pGestionBase', 'importFromDB').'<br />';
         }
         echo new mmWidgetButtonGoModule('Genere la base de données utilisateur', 'pGestionBase', 'genereBaseUtilisateur').'<br />';
-        echo new mmWidgetButtonGoModule('Migrer depuis un fichier Yaml', 'pGestionBase', 'migrateFromYaml').'<br />';
         echo new mmWidgetButtonGoModule('Importer le fichier yaml dans la base de parametre', 'pGestionBase', 'fillParamBaseFromYaml');
+        echo '<hr>';
+        echo new mmWidgetButtonGoModule('genere Yaml depuis une base existante', 'pGestionBase', 'importFromDB').'<br />';
+        echo new mmWidgetButtonGoModule('Migrer depuis un fichier Yaml', 'pGestionBase', 'migrateFromYaml').'<br />';
+        echo new mmWidgetButtonGoModule('Migrer depuis la base', 'pGestionBase', 'migrateFromDb').'<br />';
     }
 
     public function executeCreateDBParam(mmRequest $request) {
@@ -340,6 +342,7 @@ class pGestionBase extends mmProg {
             Doctrine_Core::generateYamlFromModels($currentModelYaml, MODELS_DIR);
             //generation des classes de migration
             Doctrine_Core::generateMigrationsFromDiff(MIGRATION_DIR, $currentModelYaml, $newModelYaml);
+            
             //On fait la migration du model
             mmEmptyDirectory(MODELS_DIR.DIRECTORY_SEPARATOR.'generated');
             Doctrine_Core::generateModelsFromYaml($newModelYaml, MODELS_DIR, array('generateTableClasses' => true));
@@ -362,7 +365,10 @@ class pGestionBase extends mmProg {
         
         
     }
-    
+    public function executeMigrateFromDb(mmRequest $request) {
+        echo '<h1>A faire</h1>';
+        //generer le modele depuis la connection courante
+    }
     public function executeFillParamBaseFromYaml (mmRequest $request) {
         $uniqId = uniqid();
         $currentModelYaml = sys_get_temp_dir().DIRECTORY_SEPARATOR."currentModel_$uniqId.yml";
