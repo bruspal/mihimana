@@ -65,6 +65,14 @@ function getTemplatesPath() {
     }
 }
 
+function getViewsPath() {
+    if (PROGRAMME_STANDARD) {
+        return MIHIMANA_DIR . '/builtinModule/templates';
+    } else {
+        return VIEWS_DIR;
+    }
+}
+
 function getTemplate() {
     
 }

@@ -51,9 +51,14 @@ class mmProgProcedural extends mmProg {
         //recuperation du buffer de sortie
         $sortieProgramme = ob_get_clean();
         //Application du layout de l'ecran si un layout existe
-        if ($this->templateModule && file_exists(getTemplatesPath() . '/' . $this->templateModule)) {
+        $templateToParse = file_exists(getViewsPath() . DIRECTORY_SEPARATOR . $this->templateModuleAction) ?
+                                   $this->templateModuleAction :
+                           (file_exists(getViewsPath() . DIRECTORY_SEPARATOR . $this->templateModule) ?
+                                   $this->templateModule : false);
+        
+        if ($templateToParse) {
             //y'a un template, on le parse
-            $sortieLayout = mmTemplate::renderTemplate($this->templateModule, $this->variables, getTemplatesPath());
+            $sortieLayout = mmTemplate::renderTemplate($templateToParse, $this->variables, getViewsPath());
         } else {
             //pas de templates associe, on a une chaine vide
             $sortieLayout = '';

@@ -86,10 +86,14 @@ class mmProg extends mmObject {
         // view_NOMDUMODULE.NOMDELACTION.php ou view_NOMDUMODULE.php
         // la premiere ecriture est prioritaire sur la deuxieme. ainsi on peut definir que view_MODULE#ACTION.php sera executé lors de l'appel de ce module et de cet action, pour tous les autre cas ce sera view_MODULE.php
         if ($this->templateModuleAction) {
-            $templateToParse = file_exists(getTemplatesPath() . '/' . $this->templateModuleAction) ? $this->templateModuleAction : (file_exists(getTemplatesPath() . '/' . $this->templateModule) ? $this->templateModule : false);
+            $templateToParse = file_exists(getViewsPath() . DIRECTORY_SEPARATOR . $this->templateModuleAction) ?
+                                       $this->templateModuleAction :
+                               (file_exists(getViewsPath() . DIRECTORY_SEPARATOR . $this->templateModule) ?
+                                       $this->templateModule : false);
+            
             if ($templateToParse) {
                 //y'a un template, on le parse
-                $templateContent = mmTemplate::renderTemplate($templateToParse, $this->variables, getTemplatesPath());
+                $templateContent = mmTemplate::renderTemplate($templateToParse, $this->variables, getViewsPath());
             }
         }
         //on chaine le layout au sortie brute du programme
