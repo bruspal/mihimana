@@ -39,7 +39,23 @@ class mmSQL extends mmObject {
         if ($qm == null) {
             $qm = Doctrine_Manager::getInstance()->getCurrentConnection();
         }
-        return $qm->execute($query)->fetch();
+        return $qm->execute($query)->fetchAll();
+    }
+    /**
+     * Quick qnd dirty method to execute native SQL
+     * @param string $query
+     * @param ressource $conn mysql connection
+     */
+    public static function _query($query, $conn = null) {
+        
+        $conn = new PDO('mysql:host='.MMSQL_HOST.';dbname='.MMSQL_DB.';charset=utf8', MMSQL_USER, MMSQL_PASSWD);
+        $stmt = $conn->query($query);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result = array();
+        foreach($stmt->fetch() as $ligne) {
+            $result[] = $ligne;
+        }
+        return $result;
     }
 
     /**
