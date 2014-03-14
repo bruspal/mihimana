@@ -59,9 +59,32 @@ function url($url) {
             break;
     }
 }
+/**
+ * Echoing an url @see url
+ * @param type $url
+ */
+function renderUrl($url) {
+    echo url($url);
+}
 
-function assets($url, $global = false) {
+/**
+ * Generate the url to assets.
+ * A directory called web_root/APPLICATION_assets must be set in the webserver that point to the APPLICATION/assets directory in the filesystem<br>
+ * On *ix system a symbolic link to APPLICATION/assets nammed APPLICATION_assets can be created in the web root directory<br>
+ * @param string $url the relative URI to the asset
+ * @param boolean $global if FALSE (default) use the application's specific assets. Otherwise this will point to global assets sits in the web directory
+ * @return string
+ */
+function asset($url, $global = false) {
     return $global ? WEB_CONTEXT.'/'.$url : WEB_CONTEXT.'/'.APPLICATION.'_assets/'.$url;
+}
+/**
+ * echoing an asset URI @see asset
+ * @param string $url the relative URI to the asset
+ * @param boolean $global if FALSE (default) use the application's specific assets. Otherwise this will point to global assets sits in the web directory
+ */
+function renderAsset($url, $global = false) {
+    echo asset($url, $global);
 }
 
 /**
