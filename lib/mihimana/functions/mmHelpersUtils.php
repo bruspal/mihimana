@@ -27,16 +27,21 @@
   You should have received a copy of the GNU Lesser General Public License
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
-
+/**
+ * Load the helper named $helperName. First looks in the HELPERS_DIR (sits in the lib/helpers directory of the application) then in the standard MM_HELPERS_DIR for standard helpers. Throw an exception if helper not found.<br>
+ * @param string $_helperName the helper name without extension
+ * @throws mmExceptionDev
+ */
 function loadHelper($helperName) {
-    $helperName = 'mmHelper'.ucfirst($helperName).'.php';
-    if (file_exists(HELPERS_DIR.DIRECTORY_SEPARATOR.$helperName)) {
-        require_once HELPERS_DIR.DIRECTORY_SEPARATOR.$helperName;
+    $_helperName = $helperName.'.php';
+    if (file_exists(HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName)) {
+        require_once HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName;
     } else {
-        if (file_exists(MM_HELPERS_DIR.DIRECTORY_SEPARATOR.$helperName)) {
-            require_once MM_HELPERS_DIR.DIRECTORY_SEPARATOR.$helperName;
+        $_helperName = 'mmHelper'.ucfirst($_helperName);
+        if (file_exists(MM_HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName)) {
+            require_once MM_HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName;
         } else {
-            throw new mmExceptionDev("echec du chargement du helper $helperName<br>Verifier que ce fichier se trouve dans ".HELPERS_DIR." ou ".MM_HELPERS_DIR);
+            throw new mmExceptionDev("echec du chargement du helper $helperName<br>Verifier que ".HELPERS_DIR."/$helperName.php ou ".MM_HELPERS_DIR."/$_helperName existe");
         }
     }
 }
