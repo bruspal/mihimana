@@ -29,8 +29,6 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
-
-
 /*
   function mdErrorMessage($message, $titre = 'Erreur')
   {
@@ -47,38 +45,35 @@
 /**
  * Génére la chaine au format http d'un message d'erreur
  * @param string $message message a afficher
- * @param string $titre titre de la zone d'affichage (par defaut 'Erreur')
+ * @param int $errorCode
  * @return string
  */
-function mmErrorMessageHttp($message, $titre = 'Erreur') {
-    $resultat = sprintf('<fieldset class="mdError"><legend>%s</legend>%s<br />%s</fieldset>', $titre, $message, new mmWidgetButtonClose());
+function mmErrorMessageHttp($message, $errorCode = -9999) {
+    $resultat = sprintf('<fieldset class="mdError"><legend>%s - %s</legend>%s<br />%s</fieldset>', 'Erreur', $errorCode, $message, new mmWidgetButtonClose());
     return $resultat;
 }
 
 /**
  * Génére la chaine au format JSON d'un message d'erreur
  * @param string $message message a afficher
- * @param string $titre titre de la zone d'affichage (par defaut 'Erreur')
+ * @param int $errorCode 
  * @return string
  */
-function mmErrorMessageAjax($message, $titre = 'Erreur') {
-    $hl = headers_list();
-
-    return json_encode(array('success' => false, 'message' => $titre . ' : ' . $message));
+function mmErrorMessageAjax($message='Uncategorized error', $errorCode=-9999) {
+    return mmJSON::sendJSON(null, false, $errorCode, $errorMessage);
 }
 
 /**
  * Génére la chaine d'un message d'erreur, renvoi du HTML si on est dans un context standard ou un JSON si on est dans un context AJAX<br />
  * ATTENTION ca reste a tester
  * @param string $message message a afficher
- * @param string $titre titre de la zone d'affichage (par defaut 'Erreur')
+ * @param string $errorCode 
  * @return string
  */
-function mmErrorMessage($message, $titre = 'Erreur') {
-    $hl = headers_list();
+function mmErrorMessage($message, $errorCode = -9999) {
     if (AJAX_RESPONSE == true) {
-        mmErrorMessageAjax($message, $titre);
+        mmErrorMessageAjax($message, $errorCode);
     } else {
-        mmErrorMessageHttp($message, $titre);
+        mmErrorMessageHttp($message, $errorCode);
     }
 }
