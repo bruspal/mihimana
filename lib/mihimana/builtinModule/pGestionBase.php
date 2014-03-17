@@ -51,7 +51,7 @@ class pGestionBase extends mmProg {
         echo '<hr>';
         echo new mmWidgetButtonGoModule('genere Yaml depuis une base existante', 'pGestionBase', 'importFromDB').'<br />';
         echo new mmWidgetButtonGoModule('Migrer depuis un fichier Yaml', 'pGestionBase', 'migrateFromYaml').'<br />';
-        echo new mmWidgetButtonGoModule('Migrer depuis la base', 'pGestionBase', 'migrateFromDb').'<br />';
+        echo new mmWidgetButtonGoModule('Migrer depuis la base', 'pGestionBase', 'modelFromDb').'<br />';
     }
 
     public function executeCreateDBParam(mmRequest $request) {
@@ -365,9 +365,21 @@ class pGestionBase extends mmProg {
         
         
     }
-    public function executeMigrateFromDb(mmRequest $request) {
-        echo '<h1>A faire</h1>';
-        //generer le modele depuis la connection courante
+    public function executeModelFromDb(mmRequest $request) {
+        //premiere chose on cre les classe de migration afin de garder un trace de la mise a jour.
+        try {
+            Doctrine_Core::generateMigrationsFromDb(MIGRATION_DIR);
+            //on genere le model depuis la base
+            Doctrine_Core::generateModelsFromDb(MODELS_DIR);
+            mmUser::flashSuccess('Le model a été mis a jour');
+            $this->executeIndex($request);
+        }
+        catch (Exception $e) {
+            echo "<h1>Erreur lors de la mise a jour du model</h1>";
+            echo "<div>err N° : ".$e->getCode()."</div>";
+            echo "<div>".$e->getMessage()."</div>";
+            echo "<div><pre>".$e->getTraceAsString()."</pre></div>";
+        }
     }
     public function executeFillParamBaseFromYaml (mmRequest $request) {
         $uniqId = uniqid();
