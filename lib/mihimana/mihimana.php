@@ -77,7 +77,15 @@ foreach ($liste as $fichier) {
         require_once $fichier->getPathname();
     }
 }
-
+//On ajoute les fonction de l'utilisateur
+if (is_dir(FUNCTIONS_DIR)) {
+    $liste = new DirectoryIterator(FUNCTIONS_DIR);
+    foreach ($liste as $fichier) {
+        if ($fichier->isFile()) {
+            require_once $fichier->getPathname();
+        }
+    }
+}
 //chargemet de Doctrine et autoload des classe doctrine
 //et bootstrapping (config initiale)
 require_once MM_DOCTRINE_DIR . '/Doctrine.php';
@@ -120,7 +128,7 @@ function mdAutoload($className) {
     $trouve = __autoloadScanRepertoire($className, MIHIMANA_DIR);
     if (!$trouve) {
         //On cherche dans le repertoire de l'application courante.
-        $trouve = __autoloadScanRepertoire($className, APPLICATION_DIR);
+        $trouve = __autoloadScanRepertoire($className, CLASSES_DIR);
     }
     //trouve ou pas en renvoie le resultat
     return $trouve;
