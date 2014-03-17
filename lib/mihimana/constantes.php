@@ -42,6 +42,7 @@ define('MM_CONFIG_DIR', MM_LIB_DIR.'/config');
 //define('SQLITE_DIR', MM_LIB_DIR.'/sqlite');
 define('MM_PLUGINS_DIR', MM_LIB_DIR.'/plugins');
 define('MM_DOCTRINE_DIR', MM_PLUGINS_DIR.'/Doctrine-1.2.4');
+define('MM_HELPERS_DIR', MIHIMANA_DIR.DIRECTORY_SEPARATOR.'helpers');
 
 /*
  * Constantes de chemin vers les dir spécifique a l'application
@@ -58,6 +59,7 @@ define('VIEWS_DIR', TEMPLATES_DIR.DIRECTORY_SEPARATOR.'views');
 define('PARTIALS_DIR', TEMPLATES_DIR.DIRECTORY_SEPARATOR.'partials');
 define('FUNCTIONS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'functions');
 define('CLASSES_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'classes');
+define('HELPERS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'helpers');
 /*
  * Constante URI
  */

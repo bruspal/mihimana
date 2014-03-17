@@ -72,7 +72,7 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     if (!\mmUser::isAuthenticated($module, $action)) {
         //Si on est en ajax on affiche le message et un bouton
         if (AJAX_REQUEST) {
-            echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>');
+            echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>', 1);
             die;
         }
         //on fait une redirection vers la page de login
@@ -95,6 +95,20 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         if (file_exists(MIHIMANA_DIR . '/builtinModule/' . $module . '.php')) {
             $dispatcher_fichierProgramme = MIHIMANA_DIR . '/builtinModule/' . $module . '.php';
             define('PROGRAMME_STANDARD', true);
+        }
+    }
+    
+    //chargment du tableau des helpers
+    $_helpers = array(
+        'links'
+    );
+    foreach ($_helpers as $helper) {
+        loadHelper($helper);
+    }
+    if (isset($helpers)) { //on a rajouté des helpers dans le fichier de config
+        $helpers = (array)$helpers;
+        foreach ($_helpers as $helper) {
+            loadHelper($helper);
         }
     }
 
