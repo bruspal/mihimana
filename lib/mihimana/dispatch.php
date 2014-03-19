@@ -134,14 +134,13 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     }
 } catch (\mmExceptionControl $e) { //exception de controle
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
-    include APPLICATION_DIR . '/templates/layout.php';
+    echoErreur($sortieProgramme);
 } catch (\mmExceptionHttp $e) { //exception HHTP
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
-    if (DEBUG)
-    include APPLICATION_DIR . '/templates/layout.php';
+    echoErreur($sortieProgramme);
 } catch (\mmExceptionRessource $e) { //Exception de ressources
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
-    include APPLICATION_DIR . '/templates/layout.php';
+    echoErreur($sortieProgramme);
 } catch (\Exception $e) { //tous les autres cas
     //Si une erreur non gerée se produit on affiche le message d'erreur detaillé si on est en mode DEBUG, sinon on fais autre chose (genre log, mail, etc)
     //TODO: voir comment gerer les erreurs critique en production
@@ -155,7 +154,17 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         //En mode production on affiche une erreur generaliste
         $sortieProgramme = "<h1>Une erreur critique a eu lieu. Veuillez contacter le service informatique.</h1>";
     }
-    if ( ! AJAX_REQUEST) {
+    echoErreur($sortieProgramme);
+//    if ( ! AJAX_REQUEST) {
+//        include APPLICATION_DIR . '/templates/layout.php';
+//    }
+}
+
+function echoErreur($contenu) {
+    $sortieProgramme = $contenu;
+    if (AJAX_REQUEST) {
+        echo $sortieProgramme;
+    } else {
         include APPLICATION_DIR . '/templates/layout.php';
     }
 }
