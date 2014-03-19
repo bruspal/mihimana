@@ -35,7 +35,7 @@ class mmJSON extends mmObject{
     /**
      * Send json message to the client. Content-type is automacally set to 'application/json'<br>
      * if $success is true, datas are sended otherwise errorCode and errorMessage are sended
-     * @param mixed $data data sended to the client
+     * @param mixed $data data sended to the client, if null and $success = true the method will only send a simple {"success": true} message
      * @param boolean $success set status of the json message. TRUE it's a succesfull result, false otherwise
      * @param integer $errorCode error code
      * @param string $errorMessage error message
@@ -43,7 +43,11 @@ class mmJSON extends mmObject{
     public static function sendJSON($data, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
         header('Content-Type: application/json');
         if ($success) {
-            echo json_encode(array('success' => true, 'data' => $data));
+            if ( ! is_null($data)) {
+                echo json_encode(array('success' => true, 'data' => $data));
+            } else {
+                echo json_encode(array('success' => true));
+            }
         } else {
             echo json_encode(array('success' => false, 'errorCode' => $errorCode, 'errorMessage' => $errorMessage));
         }
