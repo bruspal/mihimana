@@ -53,5 +53,14 @@ class mmJSON extends mmObject{
         }
     }
     
+    public static function sendJSONP($data, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
+        if ( ! empty($_GET['callback'])) {
+            echo $_GET['callback'].' (';
+            self::sendJSON($data, $success, $errorCode, $errorMessage);
+            echo ');';
+        } else {
+            self::sendJSON(null, false, -9999, 'Appel a JSONP sans parametre calback');
+        }
+    }
     
 }
