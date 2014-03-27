@@ -52,7 +52,13 @@ class mmJSON extends mmObject{
             echo json_encode(array('success' => false, 'errorCode' => $errorCode, 'errorMessage' => $errorMessage));
         }
     }
-    
+    /**
+     * Send JSONP message @see sendJSON
+     * @param type $data
+     * @param type $success
+     * @param type $errorCode
+     * @param type $errorMessage
+     */
     public static function sendJSONP($data, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
         if ( ! empty($_GET['callback'])) {
             echo $_GET['callback'].' (';
@@ -60,6 +66,18 @@ class mmJSON extends mmObject{
             echo ');';
         } else {
             self::sendJSON(null, false, -9999, 'Appel a JSONP sans parametre calback');
+        }
+    }
+    
+    /**
+     * Return an associative array of a JSON post call
+     * @return array an associative array of received data, return false if no data has been received.
+     */
+    public static function getPost() {
+        if ($input = file_get_contents('php://input')) {
+            return json_decode($input, true);
+        } else {
+            return false;
         }
     }
     
