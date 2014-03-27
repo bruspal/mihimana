@@ -40,7 +40,7 @@ class mmJSON extends mmObject{
      * @param integer $errorCode error code
      * @param string $errorMessage error message
      */
-    public static function sendJSON($data, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
+    public static function sendJSON($data = null, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
         header('Content-Type: application/json');
         if ($success) {
             if ( ! is_null($data)) {
@@ -59,7 +59,7 @@ class mmJSON extends mmObject{
      * @param type $errorCode
      * @param type $errorMessage
      */
-    public static function sendJSONP($data, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
+    public static function sendJSONP($data = null, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
         if ( ! empty($_GET['callback'])) {
             echo $_GET['callback'].' (';
             self::sendJSON($data, $success, $errorCode, $errorMessage);
