@@ -1,0 +1,1 @@
+Here comes application images and assets
