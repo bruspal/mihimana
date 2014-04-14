@@ -41,6 +41,13 @@ class mmSQL extends mmObject {
         }
         return $qm->execute($query)->fetchAll();
     }
+    
+    public static function queryOne($query, $qm = null) {
+        if ($qm == null) {
+            $qm = Doctrine_Manager::getInstance()->getCurrentConnection();
+        }
+        return $qm->execute($query)->fetchOne();
+    }
     /**
      * Quick qnd dirty method to execute native SQL
      * @param string $query
