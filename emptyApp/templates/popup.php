@@ -6,7 +6,6 @@
     </head>
     <body class="popup" <?php if ( ! DEBUG ): ?>onblur="close()"<?php endif; ?>>
       <div id="content">
-      <?php if( false && strpos(__FILE__, '_dev')): ?><h1 style="color: red; background-color: yellow; text-align: center;">ATTENTION VERSION DE TEST ne pas utiliser pour des saisies reelles</h1><?php endif; ?>
       <?php if (User::isAuthenticated()): ?>
         <?php echo User::renderFlashs() ?>
         <?php echo $sortieProgramme ?>
