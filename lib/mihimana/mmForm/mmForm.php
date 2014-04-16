@@ -131,6 +131,21 @@ class mmForm extends mmObject implements ArrayAccess {
         $this->widgetList[$name] = $widget;
     }
 
+    public function addValidator($widgetName, $validatorName, $params) {
+        if (isset($this->widgetList[$widgetName])) {
+            $this->widgetList[$widgetName]->addValidator($validatorName, $params);
+        } else {
+            throw new mmException(__CLASS__.'::'.__METHOD__. " : tentative d'ajout d'un validateur sur un widget inexistant");
+        }
+    }
+    
+    /**
+     * Add a sub form
+     * @param mmForm $subForm
+     * @param type $includeName
+     * @param type $index
+     * @throws mmExceptionDev
+     */
     public function addForms($subForm, $includeName, $index = false) {
         if ($subForm instanceof mmForm) {
             if ($includeName) {
