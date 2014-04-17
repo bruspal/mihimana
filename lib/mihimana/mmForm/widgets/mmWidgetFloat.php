@@ -29,11 +29,12 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
-class mmWidgetFloat extends mmWidgetText {
+class mmWidgetFloat extends mmWidgetNumeric {
 
     public function __construct($name, $value = 0, $attributes = array()) {
-        $this->addAttribute('class', 'float');
         parent::__construct($name, $value, $attributes);
+        $this->addCssClass('float');
+        $this->addValidator('float');
     }
 
 }

@@ -10,7 +10,7 @@
   -------------------------------------
   @package : lib
   @module: mmForm/widgets
-  @file : mmWidgetInteger.php
+  @file : mmWidgetNumeric.php
   -------------------------------------
 
   This file is part of Mihimana.
@@ -29,21 +29,15 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
-class mmWidgetInteger extends mmWidgetNumeric {
 
-    public function __construct($name, $value = 0, $attributes = array()) {
-        parent::__construct($name, $value, $attributes);
-        $this->addValidator('integer');
-        $this->addCssClass('integer');
-    }
+/*
+ * Root class for numeric input fields
+ */
+class mmWidgetNumeric extends mmWidget {
 
-    public function clean() {
-        parent::clean();
-        $value = $this->attributes['value'];
-        //est ce un entier ?
-        if ((int) $value != $value) {
-            $this->addError('La valeur doit etre un entier', 0);
-        }
+    public function __construct($name, $value = '', $attributes = array()) {
+        parent::__construct($name, 'text', $value, $attributes);
+        $this->addCssClass('numeric');
     }
 
 }
