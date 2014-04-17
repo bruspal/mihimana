@@ -778,15 +778,22 @@ class mmWidget extends mmObject {
     }
 
     public function php_validator_integer() {
-        if ( ! filter_var($this->attributes['value'], FILTER_VALIDATE_INT)) {
+        if( ! preg_match('#[0-9]*#', $this->attributes['value'])) {
             $this->addError('Le champ doit etre un entier', 0);
         }
+        
+//        if ( ! filter_var($this->attributes['value'], FILTER_VALIDATE_INT, )) {
+//            $this->addError('Le champ doit etre un entier', 0);
+//        }
     }
 
-    public function php_validator_real() {
-        if ( ! filter_var($this->attributes['value'], FILTER_VALIDATE_FLOAT)) {
+    public function php_validator_float() {
+        if ( ! empty($this->attributes['value']) && ! is_numeric($this->attributes['value'])) {
             $this->addError('Le champ doit etre une valeur numerique', 0);
         }
+//        if ( ! filter_var($this->attributes['value'], FILTER_VALIDATE_FLOAT)) {
+//            $this->addError('Le champ doit etre une valeur numerique', 0);
+//        }
     }
     
     public function php_validator_email() {
@@ -815,7 +822,7 @@ class mmWidget extends mmObject {
 //        $this->addJavascript('__integer', "$('#{$this->attributes['id']}').change(function(){mmJsCheckInteger($(this))});\n");
     }
 
-    public function js_validator_real($rule) {
+    public function js_validator_float() {
 //        $this->addJavascript('__real', "mmJsCheckReal($('#{$this->attributes['id']}'));\n");
 //        $this->addJavascript('__real', "$('#{$this->attributes['id']}').change(function(){mmJsCheckReal($(this))});\n");
     }

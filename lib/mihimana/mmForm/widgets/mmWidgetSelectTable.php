@@ -40,7 +40,7 @@ class mmWidgetSelectTable extends mmWidgetSelect {
         $this->table = $table;
 
         parent::__construct($name, $values, $value, $attributes);
-        if (get_class($this) == 'mdWidgetSelectTable') {
+        if (get_class($this) == 'mmWidgetSelectTable') {
             unset($this->attributes['size']);
         }
     }

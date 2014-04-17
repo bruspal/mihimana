@@ -140,29 +140,30 @@ class mmForm extends mmObject implements ArrayAccess {
     }
     
     /**
-     * Add a sub form
-     * @param mmForm $subForm
+     * Add a subform 
+     * @param mixed $subForm can be a mmForm instance or an array of mmForm instances
      * @param type $includeName
-     * @param type $index
+     * @param mixed $rowIndex the row index gave to the included form, mainly used when an array of subForm is used this parameter can be used for hacking toi form subform name format
      * @throws mmExceptionDev
      */
-    public function addForms($subForm, $includeName, $index = false) {
+    public function addForms($subForm, $includeName, $rowIndex = false) {
         if ($subForm instanceof mmForm) {
             if ($includeName) {
-                if ($index === false) {
+                $subForm->setName($this->name.'['.$includeName.']');
+                if ($rowIndex === false) {
                     $subForm->setNameFormat(sprintf('%s[%s][%%s]', $this->name, $includeName));
                     $baseId = $includeName;
                 } else {
-                    $subForm->setNameFormat(sprintf('%s[%s][%s][%%s]', $this->name, $includeName, $index));
-                    $baseId = $includeName . '_' . $index;
+                    $subForm->setNameFormat(sprintf('%s[%s][%s][%%s]', $this->name, $includeName, $rowIndex));
+                    $baseId = $includeName . '_' . $rowIndex;
                 }
                 //$subForm->setAdminMenu(false);
                 foreach ($subForm->widgetList as $wn => $w) {
                     $w->setId($baseId . '_' . $w->getId());
                     //$w->setAdminMenu(false);
                 }
-                if ($index !== false) {
-                    $this->formsList[$includeName][$index] = $subForm;
+                if ($rowIndex !== false) {
+                    $this->formsList[$includeName][$rowIndex] = $subForm;
                 } else {
                     $this->formsList[$includeName] = $subForm;
                 }
@@ -170,7 +171,7 @@ class mmForm extends mmObject implements ArrayAccess {
 //      $this->formsList[$includeName] = $subForm;
         } else {
             if (is_array($subForm)) {
-                if (trim($includeName) == '') {
+                if (empty($includeName)) {
                     throw new mmExceptionDev('Formulaire imbriqu&eacute; : Dans le cas d\'imbrication de tableau de formulaire, $includeName doit etre fournis');
                 }
                 //on a fournis un tableau de formulaire
@@ -178,26 +179,18 @@ class mmForm extends mmObject implements ArrayAccess {
                     if (!$sf instanceof mmForm) {
                         throw new mmExceptionDev('Formulaire imbriqu&eacute; : le tableau de formulaire imbrique contien une donn&eacute;e de type non mdForm');
                     }
+                    $sf->setName("{$this->name}[$includeName][$k]");
                     $sf->setNameFormat(sprintf('%s[%s][%s][%%s]', $this->name, $includeName, $k));
                     //$sf->setAdminMenu(false);
                     foreach ($sf->widgetList as $wn => $w) {
                         $w->setId($includeName . '_' . $k . '_' . $w->getId());
                     }
                 }
-                $this->formsList[$includeName] = $subform;
+                $this->formsList[$includeName] = $subForm;
             } else {
                 throw new mmExceptionDev('Formulaire imbriqu&eacute; : seul un mdForm ou un tableau de mdForm peut etre imbriqu&eacute;');
             }
         }
-//    if ($includeName)
-//    {
-//      $this->formsList[$includeName] = $subForm;
-//    }
-//    else
-//    {
-//      $name = strSlugify($subForm->getNameFormat());
-//      $this->formsList[$name] = $subForm;
-//    }
     }
 
     public function setWidgets(array $widgets) {
@@ -245,9 +238,11 @@ class mmForm extends mmObject implements ArrayAccess {
             $widget->setLabel(ucfirst(str_replace('_', ' ', $fieldName)));
 
             //Application des validateur
-            if (isset($field['primary']) && $field['primary']) {
-                $widget->addValidator('notnull');
-            }
+            
+//            if (isset($field['primary']) && $field['primary']) { 
+//                $widget->addValidator('notnull');
+//            }
+            
             if (isset($field['length']) && $widget instanceof mmWidgetText) {
                 $widget->addValidator('length_max', $field['length']);
             }
@@ -396,9 +391,9 @@ class mmForm extends mmObject implements ArrayAccess {
                 try {
                     //On verifie les droits
 //          if (myUser::superAdmin() || isset($this->listDroits[$name]['edit']) && $this->listDroits[$name]['edit']) {
-                    if ($value == "O") {
-                        $rien = $value;
-                    }
+//                    if ($value == "O") {
+//                        $rien = $value;
+//                    }
                     $this->widgetList[$name]->setValue($value);
 //          }
                 } catch (mmExceptionWidget $e) {
@@ -527,6 +522,27 @@ class mmForm extends mmObject implements ArrayAccess {
         foreach ($this->widgetList as $wn => $w) {
             $w->setNameFormat($this->nameFormat);
         }
+/*        
+        //on traite tous les cas des sous formulaire
+        foreach ($this->formsList as $fName => $subForm) {
+            if ($subForm instanceof mmForm) {
+                echo "<h1>subform $fName ".$subForm->getNameFormat()."</h1>";
+            } else {
+                if (is_array($subForm)) {
+                    foreach ($subForm as $forRow => $subFormRow) {
+                        if ($subFormRow instanceof mmForm) {
+                            echo "<h1>subform[$forRow] $fName ".$subFormRow->getNameFormat()."</h1>";
+                        } else {
+                            throw new mmExceptionDev('array de sous forme contenant un truc pas legal');
+                        }
+                    }
+                } else {
+                    throw new mmExceptionDev('pas mmForm et pas array');
+                }
+            }
+            
+        }
+*/
     }
 
     public function getNameFormat() {
@@ -542,7 +558,7 @@ class mmForm extends mmObject implements ArrayAccess {
      * type de rendu:<ul><li>table (default): rend le formulaire comme une table html</li><li>fieldset: rend le formulaire comme avec renderFieldset</li><li>row: rend le formulaire dans une table horizontale</li></ul>
      * @return type 
      */
-    public function render($fieldList = null, $subFormsSetting = null) {
+    public function render($fieldList = null, $subFormsSetting = false) {
         $fieldList = $this->generateFieldsList($fieldList);
         $result = '';
         foreach ($fieldList as $wn => $widget) {
@@ -608,7 +624,6 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
     public function renderFormHeader() {
-        deprecatedMethode(__CLASS__, __METHOD__, 'start');
         throw new mmExceptionDev('Method renderFormHeader desuete. Utiliser start()');
     }
 
@@ -639,7 +654,7 @@ class mmForm extends mmObject implements ArrayAccess {
         return sprintf('<table><thead><tr>%s</tr></thead><tbody><tr>%s</tr>%s</tbody></table>', $head, $result, $strSubForms) . $this->renderJavascript($fieldList);
     }
 
-    public function renderFieldset($legend = '', $fieldList = null, $subFormsSetting = null) {
+    public function renderFieldset($legend = '', $fieldList = null, $subFormsSetting = false) {
         if ($legend == '') {
             $legend = $this->label;
         }
@@ -654,37 +669,57 @@ class mmForm extends mmObject implements ArrayAccess {
      * rendu des formulaires imbriques
      * @param type $subFormsSetting 
      */
-    protected function renderSubForms($subFormsSetting = null) {
-        if ($subFormsSetting == null)
+    public function renderSubForms($subFormsSetting = false) {
+        if ($subFormsSetting === null) // if strictly null no render
             return'';
 
         $result = '';
-        // rendu des formulaires imbrique
-        foreach ($this->formsList as $form) {
-            $internalName = $form->getName();
-            if (isset($subFormsSetting[$internalName])) {
-                $params = $subFormsSetting[$internalName];
-                $subFieldList = isset($params['fieldList']) ? $params['fieldList'] : null;
-                if (isset($params['renderType'])) {
-                    switch ($params['renderType']) {
-                        case 'table':
-                            $result .= $form->render($subFieldList);
-                            break;
-                        case 'fieldset':
-                            $label = isset($params['label']) ? $params['label'] : '';
-                            $result .= $form->renderFieldset($label, $subFieldList);
-                            break;
-                        case 'row':
-                            $result .= $form->renderRow($subFieldList);
-                            break;
-                        default:
-                            break;
+        //no subform settings ? do render simplier
+        if ($subFormsSetting === false) {
+            foreach ($this->formsList as $formName => $form) {
+                if ($form instanceof mmForm) { //le formulaire imbriqué est une instance de mmForm ? on fait un rendu standard
+                    $result .= $form->renderFieldset($formName);
+                } else {
+                    if (is_array($form)) {
+                        foreach ($form as $formRow) {
+                            if ( ! $formRow instanceof mmForm) {
+                                throw new mmExceptionDev('le tableau de formulaire impriqué ne peux contenir que des instance de mmForm');
+                            }
+                            $result .= $formRow->renderRow();
+                        }
+                    } else {
+                        throw new mmExceptionDev('le formulaire imbriqué n\'est ni un tableau de mmForm ni un mmForm');
+                    }
+                }
+            }
+        } else {
+            // rendu des formulaires imbrique
+            foreach ($this->formsList as $form) {
+                $internalName = $form->getName();
+                if (isset($subFormsSetting[$internalName])) {
+                    $params = $subFormsSetting[$internalName];
+                    $subFieldList = isset($params['fieldList']) ? $params['fieldList'] : null;
+                    if (isset($params['renderType'])) {
+                        switch ($params['renderType']) {
+                            case 'table':
+                                $result .= $form->render($subFieldList);
+                                break;
+                            case 'fieldset':
+                                $label = isset($params['label']) ? $params['label'] : '';
+                                $result .= $form->renderFieldset($label, $subFieldList);
+                                break;
+                            case 'row':
+                                $result .= $form->renderRow($subFieldList);
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        $result .= $form->render($subFieldList);
                     }
                 } else {
-                    $result .= $form->render($subFieldList);
+                    $result .= $form->render();
                 }
-            } else {
-                $result .= $form->render();
             }
         }
         return $result;
