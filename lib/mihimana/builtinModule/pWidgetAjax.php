@@ -35,7 +35,8 @@ class pWidgetAjax extends mmProgProceduralWebService {
     //
     public function main($action = '', $parametres = null) {
         //On traite les differentsParametre
-        $ancien = error_reporting(0);
+        $this->outputAsJson();
+        if ( ! DEBUG) $ancien = error_reporting(0);
         switch ($action) {
             case 'pg': //Gestion du changement de page dans la liste
                 echo $this->pagerListe($parametres);
@@ -52,7 +53,7 @@ class pWidgetAjax extends mmProgProceduralWebService {
             default:
                 break;
         }
-        error_reporting($ancien);
+        if ( ! DEBUG) error_reporting($ancien);
     }
 
     /*
@@ -65,8 +66,8 @@ class pWidgetAjax extends mmProgProceduralWebService {
      */
     public function pagerListe(mmRequest $parametres) {
         $resultat = array();
-        $o = $parametres->getParam('o', false);
-        $nomListe = $parametres->getParam('l', false);
+        $o = $parametres->get('o', false);
+        $nomListe = $parametres->get('l', false);
         $liste = new mmWidgetRecordList($nomListe);
         //en fonction de l'ordre on met a jour la liste
         if (is_numeric($o)) {
@@ -86,7 +87,15 @@ class pWidgetAjax extends mmProgProceduralWebService {
         }
         $htmlWidget = $liste->render();
 
-        return json_encode(array('success' => true, 'html' => $htmlWidget));
+        $result = json_encode(array('success' => true, 'html' => $htmlWidget));
+        if ( ! $result) {
+            if (DEBUG)
+                $result = json_encode(array('success' => false, 'error' =>  json_last_error(), 'errorMessage' => json_last_error_msg()));
+            else
+                $result = json_encode(array('success' => false, 'error' =>  json_last_error(), 'errorMessage' => ''));
+        }
+        
+        return $result;
     }
 
     public function popupSelectTable(mmRequest $request) {
@@ -130,7 +139,7 @@ class pWidgetAjax extends mmProgProceduralWebService {
 
     public function chercheParCle($parametres) {
         $optionsDefaut = array();
-        $o = $parametres->getParam('o', '');
+        $o = $parametres->get('o', '');
         $options = new mmOptions($o, $optionsDefaut);
         $nomTable = $options['table'];
         $actionCible = "goPage('" . $options['actionListe'] . "')";

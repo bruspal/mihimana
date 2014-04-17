@@ -34,7 +34,7 @@ class mmWidgetInteger extends mmWidgetText {
     public function __construct($name, $value = 0, $attributes = array()) {
         $this->addAttribute('class', 'integer');
         parent::__construct($name, $value, $attributes);
-        $this->addValidation('integer');
+        $this->addValidator('integer');
     }
 
     public function clean() {

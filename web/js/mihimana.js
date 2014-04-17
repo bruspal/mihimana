@@ -169,7 +169,7 @@ function mmAjaxSubWindow(idSubWindow, remote)
     });
 }
 
-function pageRecordListe(nom, id, ordre)
+function _pageRecordListe(nom, id, ordre)
 {
     $.ajax({
         url: '?module=pWs&action=pg&o=' + ordre + '&l=' + nom,

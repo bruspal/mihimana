@@ -60,7 +60,7 @@ class mmWidgetRecordList extends mmWidget {
      * <ul>
      * <li><b>lines :</b> nombre de resultats par page (par defaut 10)</li>
      * <li><b>cols :</b>list des champs affiché sous forme d'un tableau au format array('nom_colonne_table' et/ou 'nom_colonne_table'=>'libellé colonne'). Si omis prend toutes les colonnes</li>
-     * <li><b>urlChgPage :</b>url du code de changement de page. Par defaut pWidgetAjax. au format ?module=pWidgetAjax&action=%s</li>
+     * <li><b>urlChgPage :</b>url du code de changement de page. Par defaut pWidgetAjax. au format 'pWidgetAjax/%s'</li>
      * <li><b> :</b></li>
      * </ul>
      * @param type $name
@@ -217,6 +217,21 @@ class mmWidgetRecordList extends mmWidget {
         if ($this->firstCall) {
             //Si on est dans un context de la creation du widget on genere le html avec le container
             $result = sprintf('<div id="%s"><table class="%s" style="width: %s">%s%s%s</table>%s</div>', $this->getId(), $this->getAttribute('class'), $largeurTotale, $header, $body, $footer, $htmlNavigation);
+            $result .= "<script>
+            function pageRecordListe(nom, id, ordre) {
+                $.ajax({
+                    url: '".url('pWidgetAjax/pg')."?o=' + ordre + '&l=' + nom,
+                    success: function(data) {
+                        if (data.success) {
+                            $('#' + id + '').html(data.html);
+                        } else {
+                            mmPopup('Impossible de recupérer la liste<br>Erreur : '+data.error+' : '+data.errorMessage);
+                        }
+                    }
+                });
+            }
+            </script>";
+            
         } else {
             //sinon on met a jour que le contenu
             $result = sprintf('<table class="%s" style="width: %s">%s%s%s</table>%s', $this->getAttribute('class'), $largeurTotale, $header, $body, $footer, $htmlNavigation);

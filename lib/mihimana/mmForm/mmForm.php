@@ -131,7 +131,7 @@ class mmForm extends mmObject implements ArrayAccess {
         $this->widgetList[$name] = $widget;
     }
 
-    public function addValidator($widgetName, $validatorName, $params) {
+    public function addValidator($widgetName, $validatorName, $params = array()) {
         if (isset($this->widgetList[$widgetName])) {
             $this->widgetList[$widgetName]->addValidator($validatorName, $params);
         } else {
@@ -246,13 +246,13 @@ class mmForm extends mmObject implements ArrayAccess {
 
             //Application des validateur
             if (isset($field['primary']) && $field['primary']) {
-                $widget->addValidation('notnull');
+                $widget->addValidator('notnull');
             }
             if (isset($field['length']) && $widget instanceof mmWidgetText) {
-                $widget->addValidation('length_max', $field['length']);
+                $widget->addValidator('length_max', $field['length']);
             }
             if (isset($field['notnull']) && $field['notnull']) {
-                $widget->addValidation('notnull', $field['notnull']);
+                $widget->addValidator('notnull', $field['notnull']);
 //        $widget->setLabel('<strong>*</strong> '.$widget->getLabel());
             }
             if (isset($field['default'])) {

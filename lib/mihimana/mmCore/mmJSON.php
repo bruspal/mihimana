@@ -9,8 +9,8 @@
 
   -------------------------------------
   @package : lib
-  @module: mmJSON
-  @file : mmIndice.php
+  @module: mmCore
+  @file : mmJSON.php
   -------------------------------------
 
   This file is part of Mihimana.

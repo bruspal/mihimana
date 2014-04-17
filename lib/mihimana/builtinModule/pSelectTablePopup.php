@@ -64,43 +64,7 @@ class pSelectTablePopup extends mmProgCRUD {
         echo "</fieldset>";
     }
 
-    public function _executeIndex(mmRequest $request) {
-        //On recupere le nom du parametre sur lequel on va travailler depuis l'url ou la session. Si y'a pas: erreur
-        $tablesTravail = $this->recupParametre($request);
-        if (!$tablesTravail) {
-            return false;
-        }
-        //chargement des enregistrement + affichage
-        $listeTables = Doctrine_Core::getTable('Tables')->findByIdTable($tablesTravail);
-        //generation html ici
-        ?>
-        <fieldset>
-            <legend>Edition de la table de parametres <?php echo $tablesTravail ?></legend>
-            <table class="list">
-                <thead>
-                    <tr>
-                        <th>Cl&eacute;</th>
-                        <th>Libell&eacute;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($listeTables as $ligneTable): ?>
-                        <tr onclick="goPage('<?php echo genereUrlProtege('?module=pSelectTablePopup&action=editer&id=' . $ligneTable['id']) ?>')">
-                            <td><?php echo $ligneTable['nom'] ?></td>
-                            <td><?php echo $ligneTable['valeur'] ?></td>
-                        </tr>
-                    <?php endforeach; ?> 
-                </tbody>
-            </table>
-        </fieldset>
-        <div class="navigate">
-            <?php echo new mmWidgetButtonClose() ?>
-            <?php echo new mmWidgetButtonGoPage('Nouveau', genereUrlProtege('?module=' . MODULE_COURANT . '&action=nouveau')) ?>
-        </div>
-        <?php
-    }
-
-    public function executeNouveau(mmRequest $request, $afficherFormulaire = true) {
+    public function executeNew(mmRequest $request, $afficherFormulaire = true) {
         $tablesTravail = $this->recupParametre($request);
         if (!$tablesTravail) {
             return false;
@@ -121,15 +85,15 @@ class pSelectTablePopup extends mmProgCRUD {
     }
 
     protected function recupParametre($request) {
-        $tablesTravail = $request->getParam('id', false);
+        $tablesTravail = $request->get('id', false);
         if (!$tablesTravail) {
-            $tablesTravail = User::get('__idEditionTablesChoix__', false);
+            $tablesTravail = mmUser::get('__idEditionTablesChoix__', false);
             if (!$tablesTravail) {
                 echo mmErrorMessage('Le nom du parametre de travail est manquant');
                 return false;
             }
         } else {
-            User::set('__idEditionTablesChoix__', $tablesTravail);
+            mmUser::set('__idEditionTablesChoix__', $tablesTravail);
         }
         //On verifie que le parametre est non vide
         if (trim($tablesTravail) == '') {

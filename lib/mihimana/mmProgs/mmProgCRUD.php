@@ -47,14 +47,6 @@ class mmProgCRUD extends mmProg {
             $ecran;
 
     public function __construct() {
-//    $this->options = array (
-//        'genereIndex' => true,
-//        'genereDelete' => true,
-//        'autoHtml' => true
-//    );
-//    $this->nomTable = false;
-//    $this->nomEcran = false;
-
         parent::__construct();
     }
 
@@ -78,14 +70,14 @@ class mmProgCRUD extends mmProg {
             if ($this->table) {
                 //On construit le formulaire par defaut
                 $form = new mmForm();
-                $liste = new mmWidgetRecordList('listeCRUD', $this->tableName, "goPage('?module=" . MODULE_COURANT . "&action=editer&b=%s')", $this->options['condition'], array(
+                $liste = new mmWidgetRecordList('listeCRUD', $this->tableName, "goPage('" . url('@module/edit?b=%s') . "')", $this->options['condition'], array(
                     'lines' => 10,
                     'cols' => $this->options['cols'],
                     'nom' => 'listeCRUD'
                 ));
                 $form->addWidget($liste);
-                $form->addWidget(new mmWidgetButtonGoPage('Nouveau', genereUrlProtege('?module=' . MODULE_COURANT . '&action=nouveau')));
-                $form->addWidget(new mmWidgetButtonGoModule('Retour'));
+                $form->addWidget(new mmWidgetButtonGoPage('Nouveau', url('@module/new')));
+                $form->addWidget(new mmWidgetButtonClose());
                 echo $form->renderButtons();
                 echo $form['listeCRUD'];
             } else {
@@ -102,7 +94,7 @@ class mmProgCRUD extends mmProg {
         }
     }
 
-    public function executeNouveau(mmRequest $request, $afficherFormulaire = true) {
+    public function executeNew(mmRequest $request, $afficherFormulaire = true) {
         $this->initEcranTable();
 
         $nomTable = $this->tableName;
@@ -118,24 +110,21 @@ class mmProgCRUD extends mmProg {
         }
     }
 
-    public function executeCreer(mmRequest $request) {
-        $this->executeNouveau($request, false);
-        $this->enregistrer($request);
+    public function executeCreate(mmRequest $request) {
+        $this->executeNew($request, false);
+        $this->save($request);
     }
 
     public function executeEdit(mmRequest $request, $afficherFormulaire = true) {
         $this->initEcranTable();
 
         if ($this->tableName) {
-//      $nomIndex = Doctrine_Core::getTable($this->nomTable)->getIdentifierColumnNames();
-            $chaineIndex = $request->getParam('b', false);
+            $chaineIndex = $request->get('b', false);
             if ($chaineIndex == false) {
                 throw new mmExceptionControl("Cle de recherche non fournie");
             }
             $index = mmSQL::genereIndex($chaineIndex);
             $this->table = Doctrine_Core::getTable($this->tableName)->find($index);
-//      $this->table = Doctrine_Core::getTable($this->nomTable)->find($request->getParam($nomIndex[0], false));
-//      $this->table = Doctrine_Core::getTable($this->nomTable)->find($request->getParam('id', false));
         }
         $this->initForm($this->table, false);
         if ($afficherFormulaire) {
@@ -145,7 +134,7 @@ class mmProgCRUD extends mmProg {
 
     public function executeUpdate(mmRequest $request) {
         $this->executeEdit($request, false);
-        $this->enregistrer($request);
+        $this->save($request);
     }
 
     public function initForm(Doctrine_Record $table, $nouveau) {
@@ -156,71 +145,77 @@ class mmProgCRUD extends mmProg {
             //C'est un formulaire standard
             $form = new mmForm($table);
             $form->addWidget(new mmWidgetButtonSubmit('Enregistrer'), true);
-            $form->addWidget(new mmWidgetButtonGoPage('Precedent', genereUrlProtege('?module=' . MODULE_COURANT)), true);
+            $form->addWidget(new mmWidgetButtonGoPage('Precedent', url('@module/index')), true);
             if ($this->options['addDelete'] === true && !$form->isNew()) {
                 $cleEnreg = mmSQL::genereChaineIndex($this->table);
                 $form->addWidget(new mmWidgetButton('supp', 'Supprimmer', array(
-                    'onclick' => "if(alert('Voulez vous supprimer cet enregistrement ?')) goPage('?module=" . MODULE_COURANT . "&action=delete&b=$cleEnreg')"
+                    'onclick' => "if(confirm('Voulez vous supprimer cet enregistrement ?')) goPage('" . url("@module/delete?b=$cleEnreg") . "')"
                 )));
             }
         }
 
         if ($nouveau) {
-            $form->setAction(genereUrlProtege('?module=' . MODULE_COURANT . '&action=creer'));
+            $form->setAction(url('@module/create'));
         } else {
             $chaineCle = $this->genereChaineIndex($form->getRecord());
-            $form->setAction(genereUrlProtege('?module=' . MODULE_COURANT . '&action=maj&b=' . $chaineCle));
+            $form->setAction(url("@module/update?b=$chaineCle"));
         }
 
 
         $this->form = $form;
-
-//    $this->nouveau = $nouveau;
     }
 
-    public function delete(mmRequest $request) {
+    public function executeDelete(mmRequest $request) {
         if ($this->options['addDelete'] === true) {
-            $chaineIndex = $request->getParam('b', false);
+            $chaineIndex = $request->get('b', false);
             if ($chaineIndex == false) {
                 mmUser::flashError("Cle non fournie");
-                $this->redirect('?module=' . MODULE_COURANT . '&action=index');
+                $this->redirect(url('@module/index'));
             }
             $index = mmSQL::genereIndex($chaineIndex);
             $this->table = Doctrine_Core::getTable($this->tableName)->find($index);
             if ($this->table === false) {
                 mmUser::flashError("Enregistrement non trouvé");
-                $this->redirect('?module=' . MODULE_COURANT . '&action=index');
+                $this->redirect(url('@module/index'));
             }
             $this->table->delete();
-            $this->redirect('?module=' . MODULE_COURANT . '&action=index');
+            $this->redirect(url('@module/index'));
         }
     }
 
-    public function enregistrer(mmRequest $request) {
+    public function save(mmRequest $request) {
         //On recupere les données du formulaires
-        $data = $request->getParam($this->form->getName(), false);
-        //On effectue l'assignation et la verification des données saisies
-        if ($this->form->setValues($data)) {
-            //Effectation OK on peux sauver
-            $enregistrement = $this->form->save();
-            User::flashSuccess('Enregistrement effectué');
-            if ($this->options['genereIndex']) {
-                //On a l'action index ? on retourne sur l'index
-                $this->redirect('?module=' . MODULE_COURANT);
+        $data = $request->get($this->form->getName(), false);
+        if ($data) {
+            if ($this->form->isNew()) {
+                unset($data['id']);
+            }
+            //On effectue l'assignation et la verification des données saisies
+            if ($this->form->setValues($data)) {
+                //Effectation OK on peux sauver
+                $enregistrement = $this->form->save();
+                mmUser::flashSuccess('Enregistrement effectué');
+                if ($this->options['genereIndex']) {
+                    //On a l'action index ? on retourne sur l'index
+                    $this->redirect(url('@module/index'));
+                } else {
+                    //sinon on reviens sur la page de l'edition
+                    //On commence par recuperer l'index de la table et redirige vers l'edition
+                    $chaineIndex = $this->genereChaineIndex($enregistrement);
+                    $result = $this->postSave();
+                    if ($resultat !== false && $resultat !== true) {
+                        throw new mmExceptionDev(get_class() . "::postSave() : cette methode doit renvoyer 'true' ou 'false'.");
+                    }
+                    if ($result !== false) {
+                        $this->redirect(url("@module/edit?$chaineIndex"));
+                    }
+                }
             } else {
-                //sinon on reviens sur la page de l'edition
-                //On commence par recuperer l'index de la table et redirige vers l'edition
-                $chaineIndex = $this->genereChaineIndex($enregistrement);
-                $result = $this->postSave();
-                if ($resultat !== false && $resultat !== true) {
-                    throw new mmExceptionDev(get_class() . "::postSave() : cette methode doit renvoyer 'true' ou 'false'.");
-                }
-                if ($result !== false) {
-                    $this->redirect('?module=' . MODULE_COURANT . '&action=editer&' . $chaineIndex);
-                }
+                mmUser::flashError('Erreur lors de la saisie');
+                $this->afficheFormulaire();
             }
         } else {
-            User::flashError('Erreur lors de la saisie');
+            mmUser::flashError('Aucune don&eacute;es re&cedil;ues');
             $this->afficheFormulaire();
         }
     }
@@ -259,10 +254,10 @@ class mmProgCRUD extends mmProg {
 
         $renduEcran = new mmScreen($this->screenName, $this->table);
         if ($this->nouveau) {
-            $renduEcran->setAction(genereUrlProtege('?module=' . MODULE_COURANT . '&action=creer'));
+            $renduEcran->setAction(url('@module/create'));
         } else {
             $chaineCle = $this->genereChaineIndex($this->form->getRecord());
-            $renduEcran->setAction(genereUrlProtege('?module=' . MODULE_COURANT . '&action=maj&' . $chaineCle));
+            $renduEcran->setAction(url("@module/update?$chaineCle"));
         }
         echo $renduEcran->render();
         echo "</fieldset>";
@@ -271,10 +266,10 @@ class mmProgCRUD extends mmProg {
     protected function afficheFormulaireStandard() {
         echo '<fieldset><legend>Edition</legend>';
         if ($this->nouveau) {
-            printf('<form action="%s" method="post">', genereUrlProtege('?module=' . MODULE_COURANT . '&action=creer'));
+            $this->form->setAction(url('@module/create'));
         } else {
             $chaineCle = $this->genereChaineIndex($this->form->getRecord());
-            printf('<form action="%s" method="post">', genereUrlProtege('?module=' . MODULE_COURANT . '&action=maj&' . $chaineCle));
+            $this->form->setAction(url("@module/create?$chaineCle"));
         }
         echo $this->form;
         echo "</form></fieldset>";

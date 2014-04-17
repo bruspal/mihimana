@@ -51,8 +51,8 @@ class mmWidgetSelectTable extends mmWidgetSelect {
     }
 
     public function popupTable() {
-        if (User::superAdmin()) {
-            return sprintf('<input type="button" style="font-size: 8px; width: 15px; padding: 0px; opacity: 0.4; position: obsolute; background-color: #FF8F00;" value="#" id="et_%s" style="min-width: 20px;" onclick="openWindow(\'%s\', \'table\')"', $this->getId(), genereUrlProtege('?module=pSelectTablePopup&id=' . $this->table));
+        if (mmUser::superAdmin()) {
+            return sprintf('<input type="button" style="font-size: 8px; width: 15px; padding: 0px; opacity: 0.4; position: obsolute; background-color: #FF8F00;" value="#" id="et_%s" style="min-width: 20px;" onclick="openWindow(\'%s\', \'table\')"', $this->getId(), url('pSelectTablePopup?id=' . $this->table));
 //      return sprintf('<input type="button" value="#" id="et_%s" style="min-width: 20px;" onclick="alert(\'a implementer\')"', $this->getId());
         } else {
             return '';

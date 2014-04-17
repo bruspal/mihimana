@@ -559,7 +559,12 @@ class mmWidget extends mmObject {
     }
 
     //Code de verification
-    public function addValidation($name, $params = array()) {
+    /**
+     * Add a validator to a widget
+     * @param type $name
+     * @param type $params
+     */
+    public function addValidator($name, $params = array()) {
 //        if (!method_exists($this, $name . '_php') || !method_exists($this, $name . '_js'))
 //            ; {
 //            throw new mdExceptionControl("le validateur $name n'est pas définie");
@@ -581,7 +586,7 @@ class mmWidget extends mmObject {
             }
         }
     }
-
+    
     /**
      * Genere le script associe au widget
      * 

@@ -116,11 +116,11 @@ class pLoginStd extends mmProg {
         $signinForm->addWidget(new mmWidgetPassword('password', '', array('placeholder' => 'password')));
         $signinForm->addWidget(new mmWidgetButtonSubmit('Sign In'));
         //validator
-        $signinForm['login']->addValidation('notnull');
+        $signinForm->addValidator('login', 'notnull');
         if (REGISTER_MODE == REGISTER_BY_EMAIL) {
-            $signinForm['login']->addValidation('email');
+            $signinForm->addValidator('login', 'email');
         }
-        $signinForm['password']->addValidation('notnull');
+        $signinForm->addValidator('password', 'notnull');
         //make it availlable for template
         $this->signinForm = $signinForm;
 
@@ -134,11 +134,11 @@ class pLoginStd extends mmProg {
         $registerForm->addWidget(new mmWidgetPassword('password', '', array('placeholder' => 'Password')));
         $registerForm->addWidget(new mmWidgetButtonSubmit("Register"));
         //validator
-        $registerForm['login']->addValidation('notnull');
+        $registerForm->addValidator('login', 'notnull');
         if (REGISTER_MODE == REGISTER_BY_EMAIL) {
-            $registerForm['login']->addValidation('email');
+            $registerForm->addValidator('login', 'email');
         }
-        $registerForm['password']->addValidation('notnull');
+        $registerForm->addValidator('password', 'notnull');
         //make it availlable for template
         $this->registerForm = $registerForm;
     }
