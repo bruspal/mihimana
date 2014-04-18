@@ -41,16 +41,8 @@ class mmJSON extends mmObject{
      * @param string $errorMessage error message
      */
     public static function sendJSON($data = null, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
-        header('Content-Type: application/json');
-        if ($success) {
-            if ( ! is_null($data)) {
-                echo json_encode(array('success' => true, 'data' => $data));
-            } else {
-                echo json_encode(array('success' => true));
-            }
-        } else {
-            echo json_encode(array('success' => false, 'errorCode' => $errorCode, 'errorMessage' => $errorMessage));
-        }
+        mmOutputJson();
+        echo self::encodeJson($data, $success, $errorCode, $errorMessage);
     }
     /**
      * Send JSONP message @see sendJSON
@@ -62,13 +54,32 @@ class mmJSON extends mmObject{
     public static function sendJSONP($data = null, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
         if ( ! empty($_GET['callback'])) {
             echo $_GET['callback'].' (';
-            self::sendJSON($data, $success, $errorCode, $errorMessage);
+            echo self::encodeJson($data, $success, $errorCode, $errorMessage);
             echo ');';
         } else {
-            self::sendJSON(null, false, -9999, 'Appel a JSONP sans parametre calback');
+            echo self::encodeJson(null, false, -9999, 'Appel a JSONP sans parametre calback');
         }
     }
     
+    private static function encodeJson($data, $success, $errorCode, $errorMessage) {
+        //encode json regarding parameters
+        if ($success) {
+            if ( ! is_null($data)) {
+                $json = json_encode(array('success' => true, 'data' => $data));
+            } else {
+                $json = json_encode(array('success' => true));
+            }
+        } else {
+            $json = json_encode(array('success' => false, 'errorCode' => $errorCode, 'errorMessage' => $errorMessage));
+        }
+        //Check if well formed json and send it otherwise send feedback
+        if ($json) return $json;    //everythings OK
+        //here comes troubles
+        if (DEBUG)
+            return json_encode(array('success' => false, 'errorCode' =>  -9999, 'errorMessage' => 'JSON error :'.json_last_error().' : '.json_last_error_msg()));
+        else
+            return json_encode(array('success' => false, 'errorCode' =>  -9999, 'errorMessage' => 'JSON error :'.json_last_error()));
+    }
     /**
      * Return an associative array of a JSON post call
      * @return array an associative array of received data, return false if no data has been received.
