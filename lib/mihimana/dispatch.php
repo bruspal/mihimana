@@ -111,6 +111,8 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             loadHelper($helper);
         }
     }
+    //On force l'encodage des pages
+    mmOutputHtml();
 
     if ($dispatcher_fichierProgramme) {
         //fichier PHP personnalisé

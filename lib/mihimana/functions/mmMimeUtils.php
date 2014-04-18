@@ -58,3 +58,11 @@ function mmOutputJpeg($content, $forceDownload = false) {
 
     echo $content;
 }
+
+function mmOutputHtml() {
+    header("Content-Type: text/html; charset=".APP_CHAR_ENCODING);
+}
+
+function mmOutputJson() {
+    header('Content-Type: application/json');
+}
