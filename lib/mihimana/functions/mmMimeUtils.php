@@ -29,6 +29,11 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
+/**
+ * Output $content as PDF file
+ * @param buffer $content file content to send to the client
+ * @param boolean $forceDownload if true force the client to download the file
+ */
 function mmOutputPdf($content, $forceDownload = false) {
     header("Content-type: application/pdf");
     header("Content-Length: " . (string) strlen($content));
@@ -44,6 +49,11 @@ function mmOutputPdf($content, $forceDownload = false) {
     echo $content;
 }
 
+/**
+ * Output $content as Jpeg file
+ * @param buffer $content file content to send to the client
+ * @param boolean $forceDownload if true force the client to download the file
+ */
 function mmOutputJpeg($content, $forceDownload = false) {
     header("Content-type: image/jpeg");
     header("Content-Length: " . (string) strlen($content));
@@ -59,10 +69,25 @@ function mmOutputJpeg($content, $forceDownload = false) {
     echo $content;
 }
 
-function mmOutputHtml() {
-    header("Content-Type: text/html; charset=".APP_CHAR_ENCODING);
+/**
+ * Set output as HTML
+ * @param string $encoding if ommited the APP_DEFAULT_ENCODING defined in APP/config/config.php will be used 
+ */
+function mmOutputHtml($encoding = APP_DEFAULT_ENCODING) {
+    header("Content-Type: text/html; charset=$encoding");
+    $this->addHeader("charset: $encoding");
 }
 
+/**
+ * Set output as JSON
+ */
 function mmOutputJson() {
     header('Content-Type: application/json');
+}
+
+/**
+ * Set output as JSON
+ */
+function mmOutputJsonp() {
+    header('Content-Type: application/javascript');
 }
