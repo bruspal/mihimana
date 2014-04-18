@@ -828,13 +828,13 @@ class mmWidget extends mmObject {
     }
     
     public function js_validator_email() {
-//        $this->addJavascript('__email', "mmJsCheckEmail($('#{$this->attributes['id']}'));\n");
-//        $this->addJavascript('__email', "$('#{$this->attributes['id']}').change(function(){mmJsCheckEmail($(this))});\n");
-        if ($this instanceof mmWidgetEmail) {
-            $this->addAttribute('required', 'required');
-        } else {
-            //add regexp for email
-        }
+////        $this->addJavascript('__email', "mmJsCheckEmail($('#{$this->attributes['id']}'));\n");
+////        $this->addJavascript('__email', "$('#{$this->attributes['id']}').change(function(){mmJsCheckEmail($(this))});\n");
+//        if ($this instanceof mmWidgetEmail) {
+//            $this->addAttribute('required', 'required');
+//        } else {
+//            //add regexp for email
+//        }
     }
 
 }
