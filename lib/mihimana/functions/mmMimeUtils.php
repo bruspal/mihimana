@@ -75,7 +75,7 @@ function mmOutputJpeg($content, $forceDownload = false) {
  */
 function mmOutputHtml($encoding = APP_DEFAULT_ENCODING) {
     header("Content-Type: text/html; charset=$encoding");
-    $this->addHeader("charset: $encoding");
+    header("charset: $encoding");
 }
 
 /**
