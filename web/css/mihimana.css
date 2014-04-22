@@ -187,6 +187,19 @@ div.adminBox > div {
     background-color: white;
     display: inline-block;
 }
+/* formatage des liste */
+table.list {
+    border: 1px solid black;
+}
+
+table.list tr:nth-child(odd) {
+    background-color: #dee;
+}
+
+table.list tr:nth-child(even) {
+    background-color: #eef;
+}
+
 /* Background iframe styling for IE6. Prevents ActiveX bleed-through (<select> form elements, etc.) */
 /* iframe.jqm {position:absolute;top:0;left:0;z-index:-1;
 	width: expression(this.parentNode.offsetWidth+'px');

@@ -105,6 +105,7 @@ $mdManager->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL
 try {
     $mmConnData = Doctrine_Manager::connection(DATABASE, 'data');
     $mmConnData->setAttribute(Doctrine_Core::ATTR_QUOTE_IDENTIFIER, true);
+//    $mmConnData->setAttribute(Doctrine_Core::ATTR_CASCADE_SAVES, false);
 } catch (Doctrine_Manager_Exception $e) {
     die($e->getMessage());
 }

@@ -794,6 +794,46 @@ class mmForm extends mmObject implements ArrayAccess {
             return '';
         }
     }
+
+    /**
+     * Rener all widget's error
+     */
+    public function renderWidgetErrors() {
+        $result = '<table class="errors">';
+        //widgets
+        foreach ($this->widgetList as $wn => $widget) {
+            if ( ! $widget->isValid()) {
+                $errors = $widget->getErrors();
+                foreach($errors as $ligne) {
+                    $result.="<tr><th>$wn</th><td>$ligne</td></tr>";
+                }
+            }
+        }
+        //embeded forms
+        foreach ($this->formsList as $fn => $form) {
+            if ($form instanceof mmForm) {
+                $result .= '<tr><th colspan="2">Subform : '.$fn.'</th></tr>';
+                $result .= '<tr><td colspan="2">'.$form->renderWidgetErrors().'</td></tr>';
+            } else {
+                if (is_array($form)) {
+                    foreach ($form as $afn => $aform) {
+                        if ($aform instanceof mmForm) {
+                            $result .= '<tr><th colspan="2">Subform : '.$afn.'</th></tr>';
+                            $result .= '<tr><td colspan="2">'.$aform->renderWidgetErrors().'</td></tr>';
+                        } else {
+                            throw new mmExceptionDev('le tableau de formulaire impriqué ne peux contenir que des instance de mmForm');
+                        }
+                    }
+                } else {
+                    throw new mmExceptionDev('le formulaire imbriqué n\'est ni un tableau de mmForm ni un mmForm');
+                }
+            }
+        }
+        $result .= '</table>';
+        return $result;
+    }
+    
+    
     public function addJavascript($name, $script) {
         $this->javascripts[$name] = array('script' => $script, 'rendered' => false);
     }
@@ -837,6 +877,11 @@ class mmForm extends mmObject implements ArrayAccess {
         return $this->new;
     }
 
+    /**
+     * 
+     * @return type
+     * @throws mmExceptionDev
+     */
     public function updateRecord() {
         if ($this->record) {
             // on a un enregistrement lié on sauve
@@ -888,21 +933,21 @@ class mmForm extends mmObject implements ArrayAccess {
             }
         }
 
-        //Le formulaire n'as pas d'enregistrement associé mais peut etre que ses eventuel sous formulaire en ont.
-        //Dans ce cas la on effectue une sauvegarde
-        foreach ($this->formsList as $form) {
-            if ($form instanceof mmForm) {
-                $form->save($conn);
-            } else {
-                if (is_array($form)) {
-                    foreach ($form as $sf) {
-                        $sf->save();
-                    }
-                } else {
-                    throw new mmExceptionDev('mdForm::save: Formulaire imbrique doit etre du type mdForm ou array');
-                }
-            }
-        }
+//        //Le formulaire n'as pas d'enregistrement associé mais peut etre que ses eventuel sous formulaire en ont.
+//        //Dans ce cas la on effectue une sauvegarde
+//        foreach ($this->formsList as $form) {
+//            if ($form instanceof mmForm) {
+//                $form->save($conn);
+//            } else {
+//                if (is_array($form)) {
+//                    foreach ($form as $sf) {
+//                        $sf->save();
+//                    }
+//                } else {
+//                    throw new mmExceptionDev('mdForm::save: Formulaire imbrique doit etre du type mdForm ou array');
+//                }
+//            }
+//        }
 
         return $this->record;
     }
@@ -915,6 +960,13 @@ class mmForm extends mmObject implements ArrayAccess {
         return $this->record;
     }
 
+    /**
+     * Return the record updated with the form values
+     * @return type
+     */
+    public function getUpdatedRecord() {
+        return $this->updateRecord();
+    }
     /*
      * Gestion des droits
      */
@@ -986,6 +1038,7 @@ class mmForm extends mmObject implements ArrayAccess {
                 $this->widgetList[$widgetName]->addError($libelle);
             } catch (mmExceptionWidget $e) {
                 $this->valid = false;
+                $this->errors[] = "$widgetName : $libelle";
             }
         }
     }
