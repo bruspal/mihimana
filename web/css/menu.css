@@ -70,7 +70,7 @@
  float: none;
 }
 #nav li ul li {
-    opacity: 0.8;
+/*    opacity: 0.8; */
 }
 #nav li ul li {
  _display: inline; /* for IE6 */

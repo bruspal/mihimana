@@ -51,6 +51,7 @@ class mmWidget extends mmObject {
     protected $min = null, $max = null;
     public $containerForm = null;
     public $rendered = false;
+    public $ignoreRender = false;
     protected $ignorePortefeuille = false;
 
     private
@@ -127,6 +128,7 @@ class mmWidget extends mmObject {
         if ($hardDisable) {
             $this->enabled = false;
         }
+        $this->ignoreRender = true;
     }
 
     /**
@@ -135,6 +137,7 @@ class mmWidget extends mmObject {
     public function enable() {
         $this->delAttribute('disabled');
         $this->enabled = true;
+        $this->ignoreRender = false;
     }
 
     public function isEnabled() {
@@ -398,7 +401,7 @@ class mmWidget extends mmObject {
         // si ecriture, edition, visu, delete
         // Pour le moment on fais rien de particulier
         //Gestion de 'laffichage ou non
-        if ($this->rendered)
+        if ($this->rendered && ! $this->ignoreRender)
             return '';
 
         if ($this->edit && $this->enabled) {
@@ -423,7 +426,7 @@ class mmWidget extends mmObject {
         // si ecriture, edition, visu, delete
         // Pour le moment on fais rien de particulier
         //Gestion de 'laffichage ou non
-        if ($this->rendered)
+        if ($this->rendered && ! $this->ignoreRender)
             return '';
 
         if ($this->view || $this->edit) {
@@ -494,7 +497,7 @@ class mmWidget extends mmObject {
      */
     public function renderRow($option = array(), $renderRow = false) {
 
-        if ($this->rendered)
+        if ($this->rendered && ! $this->ignoreRender)
             return '';
         $result = '';
         //rendu
@@ -593,7 +596,7 @@ class mmWidget extends mmObject {
      */
     public function renderJavascript($inDocumentReady = false, $forceRender = false) {
 //    if ( (! $this->rendered && ! $forceRender) || ! $forceRender)
-        if (!$this->rendered) {
+        if (!$this->rendered && ! $this->ignoreRender) {
             //Le widget n'a pas été rendu a l'écran ? on ne rend pas le script. sauf si on le force
             return '';
         }

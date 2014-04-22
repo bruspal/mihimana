@@ -1048,12 +1048,69 @@ class mmForm extends mmObject implements ArrayAccess {
      */
 
     /**
-     * Met en disabled l'ensemble des champs
+     * disable all field of the form
+     * @param boolean $butButton doesn't disable buttons if true (default)
+     * @param boolean $deep disable sub form if true (default)
      */
-    public function disable($saufBouton = true) {
+    public function disable($butButton = true, $deep = true) {
+        //widget
         foreach ($this->widgetList as $w) {
-            if (!$w instanceof mmWidgetButton || !$saufBouton) {
+            if (!$w instanceof mmWidgetButton || !$butButton) {
                 $w->disable();
+            }
+        }
+        //on traite les sous formulaires
+        if ($deep) {
+            foreach ($this->formsList as $form) {
+                if ($form instanceof mmForm) {
+                    $form->disable($butButton);
+                } else {
+                    if (is_array($form)) {
+                        foreach($form as $subForm) {
+                            if ($subForm instanceof mmForm) {
+                                $subForm->disable($butButton);
+                            } else {
+                                throw new mmExceptionDev('array de sous forme contenant un truc pas legal');
+                            }
+                        }
+                    } else {
+                        throw new mmExceptionDev('pas mmForm et pas array');
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * enable all field of the form
+     * @param boolean $butButton doesn't disable buttons if true (default)
+     * @param boolean $deep disable sub form if true (default)
+     */
+    public function enable($butButton = true, $deep = true) {
+        //widget
+        foreach ($this->widgetList as $w) {
+            if (!$w instanceof mmWidgetButton || !$butButton) {
+                $w->enable();
+            }
+        }
+        //on traite les sous formulaires
+        if ($deep) {
+            foreach ($this->formsList as $form) {
+                if ($form instanceof mmForm) {
+                    $form->enable($butButton);
+                } else {
+                    if (is_array($form)) {
+                        foreach($form as $subForm) {
+                            if ($subForm instanceof mmForm) {
+                                $subForm->enable($butButton);
+                            } else {
+                                throw new mmExceptionDev('array de sous forme contenant un truc pas legal');
+                            }
+                        }
+                    } else {
+                        throw new mmExceptionDev('pas mmForm et pas array');
+                    }
+                }
             }
         }
     }
