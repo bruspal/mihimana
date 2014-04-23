@@ -102,14 +102,14 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     $_helpers = array(
         'links'
     );
-    foreach ($_helpers as $helper) {
-        loadHelper($helper);
-    }
+    //foreach ($_helpers as $helper) {
+        loadHelper($_helpers);
+    //}
     if (isset($helpers)) { //on a rajouté des helpers dans le fichier de config
         $helpers = (array)$helpers;
-        foreach ($_helpers as $helper) {
-            loadHelper($helper);
-        }
+//        foreach ($_helpers as $helper) {
+            loadHelper($helpers);
+//        }
     }
     //On force l'encodage des pages
     mmOutputHtml();
