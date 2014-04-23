@@ -29,19 +29,23 @@
   ------------------------------------------------------------------------------ */
 /**
  * Load the helper named $helperName. First looks in the HELPERS_DIR (sits in the lib/helpers directory of the application) then in the standard MM_HELPERS_DIR for standard helpers. Throw an exception if helper not found.<br>
- * @param string $_helperName the helper name without extension
+ * Moreover while user helpers can be freely named in the HELPERS_DIR (but extension still .php) mihimana helpers will start by 'mmHelper'.$helperName
+ * @param mixed $helperName a string or an array of strings helper name without extension
  * @throws mmExceptionDev
  */
 function loadHelper($helperName) {
-    $_helperName = $helperName.'.php';
-    if (file_exists(HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName)) {
-        require_once HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName;
-    } else {
-        $_helperName = 'mmHelper'.ucfirst($_helperName);
-        if (file_exists(MM_HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName)) {
-            require_once MM_HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName;
+    $helperName = (array)$helperName; //tuen parameter to array if not
+    foreach ($helperName as $currentName) {
+        $_helperName = $currentName.'.php';
+        if (file_exists(HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName)) {
+            require_once HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName;
         } else {
-            throw new mmExceptionDev("echec du chargement du helper $helperName<br>Verifier que ".HELPERS_DIR."/$helperName.php ou ".MM_HELPERS_DIR."/$_helperName existe");
+            $_helperName = 'mmHelper'.ucfirst($_helperName);
+            if (file_exists(MM_HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName)) {
+                require_once MM_HELPERS_DIR.DIRECTORY_SEPARATOR.$_helperName;
+            } else {
+                throw new mmExceptionDev("echec du chargement du helper $helperName<br>Verifier que ".HELPERS_DIR."/$helperName.php ou ".MM_HELPERS_DIR."/$_helperName existe");
+            }
         }
     }
 }
