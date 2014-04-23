@@ -41,7 +41,6 @@ class mmForm extends mmObject implements ArrayAccess {
             $prefixName = '',
             $record = null,
             $valid = true,
-            $options = array(),
             $renderWidgetList = null,
             $listDroits = array(),
             $name = 'form',
@@ -57,14 +56,42 @@ class mmForm extends mmObject implements ArrayAccess {
             $id = '',
             $modified,
             $errors = array();
-
+    protected //default options, see constructor phpdoc for details
+            $options = array(
+                'deep' => false,    
+                'auto-ng-model' => false,
+            );
+            
+    
+    /**
+     * Create a new form<br>
+     * options is array of 'option_name'=>'value':
+     * <ul>
+     * <li>'deep' => (boolean) : performe an automated subform hydratation based on $record (default false). If no record defined this option will be ignored.</li>
+     * <li>'auto-ng-model' => (boolean) : if true auto add ng-model attribute to all included widget (default false)</li>
+     * </ul>
+     * @param Doctrine_Record $record
+     * @param array $options an array of options, see description for availlable options
+     */
     public function __construct(Doctrine_Record $record = null, $options = array()) {
         $this->new = true;
+        //check if exists unknown option
+        if ( $diffArray = array_diff_key($options, $this->options) ) {
+            throw new mmExceptionDev('mmForm: unknowns option '.$diffArry[0]);
+        }
+        
+        $this->options = array_merge($this->options, $options);
+        
+        //manage options
+        if ($this->options['deep']) {
+            $this->setSubFormFromRecord($record);
+        }
+        
+        //fill in the form regarding the $record
         if ($record) {
             $this->setWidgetFromRecord($record);
-            $this->new = !$this->record->exists();
+            $this->new = ! $this->record->exists();
         }
-        $this->option = $options;
 //    if (myUser::superAdmin() && $this->adminMenu) {
 //      $this->addJavascript('admin_menu', mdTemplate::renderTemplate('jsAdmin.js', array('baseUrl'=>$_SERVER['SCRIPT_NAME'].'/Droits/', 'screen' => '')));
 //    }
@@ -117,17 +144,35 @@ class mmForm extends mmObject implements ArrayAccess {
      * @param mmWidget $widget widget
      */
     public function addWidget(mmWidget $widget, $ignoreNameFormat = false) {
+        
         $name = $widget->getName();
+        
         //Mise a jour auto du label
         $widget->setLabel(ucfirst(str_replace('_', ' ', $name)));
+        //format de nom
         if (!$ignoreNameFormat) {
             $widget->setNameFormat(sprintf($this->nameFormat, $name));
         }
+        
+        //ajoute le formulaire courant comme formulaire contenant
         $widget->setContainer($this);
+        
+        //hook d'apres ajout
         $widget->postAddWidget();
+        
+        //ajout des parametre supplémentaire
+        //ng-model
+        if ($this->options['auto-ng-model']) {
+            $ngModel = sprintf($this->nameFormat, $name);
+            $ngModel = str_replace(array('[', ']'), array('.', ''), $ngModel);
+            $widget->addAttribute('ng-model', $ngModel);
+        }
+        
+        //revoir ce que ca fait
         if ($this->getId() && ! $widget->isOverridden()) {
             $widget->setId($this->getId().'_'.$widget->getId());
         }
+        
         $this->widgetList[$name] = $widget;
     }
 
@@ -199,7 +244,12 @@ class mmForm extends mmObject implements ArrayAccess {
         }
 //    $this->widgetList = $widgets;
     }
-
+    /**
+     * Setup form regarding $record
+     * @param Doctrine_Record $record
+     * @param type $nameFormat
+     * @return type
+     */
     public function setWidgetFromRecord(Doctrine_Record $record, $nameFormat = '') {
         // variabled utiles
         $ouiNon = array('0' => 'Non', '1' => 'Oui');
@@ -262,6 +312,25 @@ class mmForm extends mmObject implements ArrayAccess {
         return $this->valid;
     }
 
+        
+    public function setSubFormFromRecord(Doctrine_Record $record) {
+        $arrayRelation = $record->getReferences();
+        foreach($arrayRelation as $relationName => $relation) {
+            $dataRelation = $relation['data'];
+            if (is_array($dataRelation)) {
+                $arraySubform = array();
+                foreach ($dataRelation as $subRecordIdx => $subRecord) {
+                    $subForm = new mmForm($subRecord, $this->options);
+                    $arraySubform[] = $subForm;
+                }
+                $this->addForms($arraySub, $relationName);
+            } else {
+                $subForm = new mmForm ($dataRelation, $this->options);
+                $this->addForms($subForm, $relationName);
+            }
+        }
+    }
+    
     protected function creerWidgetDepuisTypeChamp($fieldName, $field) {
         // variables utiles
         $ouiNon = array('0' => 'Non', '1' => 'Oui');
@@ -519,8 +588,17 @@ class mmForm extends mmObject implements ArrayAccess {
     public function setNameFormat($format) {
         $this->nameFormat = $format;
         //On applique le nouveau nameFormat a tous les widgetAssocie
-        foreach ($this->widgetList as $wn => $w) {
-            $w->setNameFormat($this->nameFormat);
+        if ($this->options['auto-ng-model']) {
+            foreach ($this->widgetList as $wn => $w) {
+                $w->setNameFormat($this->nameFormat);
+                $ngModel = sprintf($this->nameFormat, $wn);
+                $ngModel = str_replace(array('[', ']'), array('.', ''), $ngModel);
+                $w->addAttribute('ng-model', $ngModel);
+            }
+        } else {
+            foreach ($this->widgetList as $wn => $w) {
+                $w->setNameFormat($this->nameFormat);
+            }
         }
 /*        
         //on traite tous les cas des sous formulaire
@@ -609,10 +687,15 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * start form
+     * @param array $extraAttributes array of extra attributes added to the form header
      * @return string
      */
-    public function start() {
-        return sprintf('<form action="%s" method="%s" %s enctype="%s">', $this->action, $this->method, $this->id == '' ? '' : 'id="'.$this->id.'"', $this->enctype);
+    public function start($extraAttributes = array()) {
+        $strExtraAttr = '';
+        foreach($extraAttributes as $aName => $aValue) {
+            $strExtraAttr .= "$aName=\"$aValue\" ";
+        }
+        return sprintf('<form action="%s" method="%s" %s enctype="%s" %s>', $this->action, $this->method, $this->id == '' ? '' : 'id="'.$this->id.'"', $this->enctype, $strExtraAttr);
     }
 
     /**
