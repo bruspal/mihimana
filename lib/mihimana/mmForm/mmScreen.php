@@ -1063,7 +1063,7 @@ class mmScreen extends mmForm {
                 $widget->setInfo($descriptionChamp['info_bulle']);
             }
             if (!empty($descriptionChamp['est_notnull'])) {
-                $widget->addValidation('notnull');
+                $widget->addValidator('notnull');
             }
             if (!empty($descriptionChamp['jsclick'])) {
                 $javascript = "$('#" . $widget->getId() . "').click(function(){" . $descriptionChamp['click'] . "});\n";
@@ -1093,13 +1093,13 @@ class mmScreen extends mmForm {
             if ($field) {
                 //Application des validateur par defaut inerant au type dans la base de données
                 if (isset($field['primary']) && $field['primary']) {
-                    $widget->addValidation('notnull');
+                    $widget->addValidator('notnull');
                 }
                 if (isset($field['length']) && $widget instanceof mmWidgetText) {
-                    $widget->addValidation('length_max', $field['length']);
+                    $widget->addValidator('length_max', $field['length']);
                 }
                 if (isset($field['notnull']) && $field['notnull']) {
-                    $widget->addValidation('notnull', $field['notnull']);
+                    $widget->addValidator('notnull', $field['notnull']);
                     //        $widget->setLabel('<strong>*</strong> '.$widget->getLabel());
                 }
                 if (isset($field['default'])) {
