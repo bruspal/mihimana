@@ -35,18 +35,18 @@ class mmSQL extends mmObject {
         return self::query($requete, $qm);
     }
 
-    public static function query($query, $qm = null) {
+    public static function query($query, $fetchMode = PDO::FETCH_BOTH, $qm = null) {
         if ($qm == null) {
             $qm = Doctrine_Manager::getInstance()->getCurrentConnection();
         }
-        return $qm->execute($query)->fetchAll();
+        return $qm->execute($query)->fetchAll($fetchMode);
     }
     
-    public static function queryOne($query, $qm = null) {
+    public static function queryOne($query, $fetchMode = PDO::FETCH_BOTH, $qm = null) {
         if ($qm == null) {
             $qm = Doctrine_Manager::getInstance()->getCurrentConnection();
         }
-        return $qm->execute($query)->fetch();
+        return $qm->execute($query)->fetch($fetchMode);
     }
     /**
      * Quick qnd dirty method to execute native SQL
