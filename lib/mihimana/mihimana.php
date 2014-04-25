@@ -113,6 +113,10 @@ try {
 
 Doctrine_Core::loadModels(MODELS_DIR);
 
+//classes cache init
+if ( ! array_key_exists('__classesCache__', $_SESSION)) {
+    $_SESSION['__classesCache__'] = array();
+}
 //AutoLoad de mihimana
 spl_autoload_register('mdAutoload');
 
@@ -125,25 +129,32 @@ require_once 'dispatch.php';
 
 //Fonction de callback pour l'autoload des classes de mihimana
 function mdAutoload($className) {
+    //looking for class in cache
+    if (array_key_exists($className, $_SESSION['__classesCache__'])) {
+        require_once $_SESSION['__classesCache__'][$className];
+        return true;
+    }
     //On cherche dans mihimana
-    $trouve = __autoloadScanRepertoire($className, MIHIMANA_DIR);
-    if (!$trouve) {
+    $found = __autoloadScanRepertoire($className, MIHIMANA_DIR);
+    if (!$found) {
         //On cherche dans le repertoire de l'application courante.
-        $trouve = __autoloadScanRepertoire($className, CLASSES_DIR);
+        $found = __autoloadScanRepertoire($className, CLASSES_DIR);
     }
     //trouve ou pas en renvoie le resultat
-    return $trouve;
+    return $found;
 }
 
 //function de parcourt et de chargement des fichiers automatique
-function __autoloadScanRepertoire($className, $repertoire) {
-    $parcourt = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($repertoire));
-    foreach ($parcourt as $fichier) {
-        $fichierCourant = $fichier->getBasename();
-        if ($className . '.php' == $fichierCourant) {
-            //on a trouver le fichier ?
-            $chemin = $fichier->getPathname();
-            require_once $chemin; //on inclus le fichier et on quite en renvoyant vrai
+function __autoloadScanRepertoire($className, $directory) {
+    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
+    foreach ($iterator as $file) {
+        $currentFile = $file->getBasename();
+        if ($className . '.php' == $currentFile) {
+            //File found ?
+            $filePath = $file->getPathname();
+            //add to session array them require and quit
+            $_SESSION['__classesCache__'][$className] = $filePath;
+            require_once $filePath; 
             return true;
         }
     }
