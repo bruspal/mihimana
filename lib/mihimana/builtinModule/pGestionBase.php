@@ -93,7 +93,9 @@ class pGestionBase extends mmProg {
         /*
          * Pemet de generer le fichier yaml des fichiers utilisateurs
          */
-
+        mmUser::flashSuperAdmin('Desactive pour le moment');
+        $this->redirect(url('@module'));
+        return;
         $uniqueId = md5(uniqid(microtime()) . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
         mmSession::set('migrationUniqueId', $uniqueId);
 
@@ -225,6 +227,9 @@ class pGestionBase extends mmProg {
     }
 
     public function executeMigrate(mmRequest $request) {
+        mmUser::flashSuperAdmin('Desactive pour le moment');
+        $this->redirect(url('@module'));
+        return;
         ob_end_clean();
         echo "<h1>Mise a jour de la base</h1>";
         echo "<div>TODO: genere toutes les tables dans chaque base pas bien. faut différentier les fichier de migration et etc</div><pre>";
@@ -242,6 +247,9 @@ class pGestionBase extends mmProg {
     }
 
     public function executeModel(mmRequest $request) {
+        mmUser::flashSuperAdmin('Desactive pour le moment');
+        $this->redirect(url('@module'));
+        return;
 
         $uniqueId = mmSession::get('migrationUniqueId', false);
         if (!$uniqueId) {
@@ -261,7 +269,7 @@ class pGestionBase extends mmProg {
 
     public function executeImportFromDB(mmRequest $request) {
         $form = new mmForm();
-        $form->setAction('?module=pGestionBase&action=importFromDB');
+        $form->setAction(url('@module/importFromDB'));
         //fields
         $form->addWidget(new mmWidgetText('file_name', 'model.yml'));
         $form->addWidget(new mmWidgetText('db'));
