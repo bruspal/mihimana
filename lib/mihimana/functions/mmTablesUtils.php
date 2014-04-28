@@ -29,24 +29,15 @@
   along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
   ------------------------------------------------------------------------------ */
 
-function mmTableCategorie($categorie = '', $groupe = '') {
-    $result = Doctrine_Core::getTable('Tables')->createQuery('t');
-    if ($categorie !== '') {
-        if (is_string($categorie)) {
-            $categorie = array($categorie);
-        }
-        $result = $result->whereIn('t.id_table', $categorie);
-    } else {
-        $result = $result->where('1 = 0');
-    }
-    if ($groupe) {
-        if (is_string($groupe)) {
-            $groupe = array($groupe);
-        }
-        $result = $result->wherIn('t.groupe', $groupe);
-    }
-
-    $result = $result->orderBy('t.nom')->execute();
+/**
+ * This function return an array of key=>value from the parameters table
+ * @param string $category
+ * @param string $group
+ * @return array
+ */
+function mmTableCategorie($category = false, $group = false) {
+    $query = "SELECT * FROM tables WHERE id_table IN ('".implode("','",(array)$category)."')".($group ? " AND groupe = '".$group."'" : "");
+    $result = mmSQL::query($query);
     return $result;
 }
 
