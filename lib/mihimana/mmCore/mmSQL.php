@@ -31,23 +31,63 @@
 
 class mmSQL extends mmObject {
 
-    public static function requete($requete, $qm = null) {
-        return self::query($requete, $qm);
-    }
-
-    public static function query($query, $params = array(), $fetchMode = PDO::FETCH_BOTH, $qm = null) {
-        if ($qm == null) {
-            $qm = Doctrine_Manager::getInstance()->getCurrentConnection();
+    
+    /**
+     * Execute a query, result is returned as an array of records
+     * @param string $query query string
+     * @param array $params array of query variables
+     * @param int $fetchMode PDO constant to result's format
+     * @param type $connexion PDO connexion
+     * @return array
+     */
+    public static function query($query, $params = array(), $fetchMode = PDO::FETCH_BOTH, $connexion = null) {
+        if ($connexion == null) {
+            $connexion = Doctrine_Manager::getInstance()->getCurrentConnection();
         }
-        return $qm->execute($query, $params)->fetchAll($fetchMode);
+        return $connexion->execute($query, $params)->fetchAll($fetchMode);
     }
     
+    /**
+     * Execute a query, return the first result as PDO record
+     * @param string $query query string
+     * @param array $params array of query variables
+     * @param int $fetchMode PDO constant to result's format
+     * @param type $connexion PDO connexion
+     * @return array
+     */
     public static function queryOne($query, $params = array(), $fetchMode = PDO::FETCH_BOTH, $qm = null) {
         if ($qm == null) {
             $qm = Doctrine_Manager::getInstance()->getCurrentConnection();
         }
         return $qm->execute($query, $params)->fetch($fetchMode);
     }
+    
+    /**
+     * Execute a query, result is returned as a JSON string containing list of records
+     * @param string $query query string
+     * @param array $params array of query variables
+     * @param int $fetchMode PDO constant to result's format
+     * @param type $connexion PDO connexion
+     * @return string
+     */
+    public static function queryJSON($query, $params = array(), $fetchMode = PDO::FETCH_BOTH, $connexion = null) {
+        $resultArray = self::query($query, $params, $fetchMode, $connexion);
+        return mmJSON::sendJSON($resultArray);
+    }
+    
+    /**
+     * Execute a query, result is returned as a JSON string containing the first record
+     * @param string $query query string
+     * @param array $params array of query variables
+     * @param int $fetchMode PDO constant to result's format
+     * @param type $connexion PDO connexion
+     * @return array
+     */
+    public static function queryOneJSON($query, $params = array(), $fetchMode = PDO::FETCH_BOTH, $connexion = null) {
+        $resultArray = self::queryOne($query, $params, $fetchMode, $connexion);
+        return mmJSON::sendJSON($resultArray);
+    }
+
     /**
      * Quick qnd dirty method to execute native SQL
      * @param string $query
