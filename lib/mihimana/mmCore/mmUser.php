@@ -30,17 +30,17 @@
   ------------------------------------------------------------------------------ */
 
 /**
- * Classe permettant de stocker des information propore a l'utilisateur connecté, comme par exemple sont identifiant, les messages derreur ou d'information qui lui sont destiné et etc. 
+ *  User data management (aka session). Including session and useful methodes to communicate with user. Also manage connection and authentification checking.<br>
+ *  By default the session is fuly managed without any parameters however it is also possible to name context in order to retrieve previous session or whatever could be needed.
  */
 class mmUser extends mmSession {
 
-    //Ensemble des methode de gestion du context
     public
             $context,
             $nomContext;
 
-    /*
-     * Procedure de gestion du contexte (sera generalisé par la suite
+    /**
+     * Constructor, create the instance of user
      */
 
     public function __construct($nomContext = false, $forceVide = false) {
@@ -299,16 +299,10 @@ class mmUser extends mmSession {
             }
             $strCredentials = $module . '/' . $action;
             if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
-//                $user = self::createVirtualGuest();
-//                $user = $user->toArray();
-//                self::set('__user__', $user);
                 return true; //ok on est identifié
             }
             $strCredentials = $module;
             if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
-//                $user = self::createVirtualGuest();
-//                $user = $user->toArray();
-//                self::set('__user__', $user);
                 return true; //ok on est identifié
             }
             //si on a pas le droit de venir de manière anonyme ici on se fait jeter
