@@ -56,7 +56,7 @@ class mmProg extends mmObject {
      * Execute l'action $action et affiche le resultat
      * @param string $action
      * @param array $request
-     * @return boolean 
+     * @return boolean
      */
     public function execute($action, mmRequest $request) {
 //        $action = ACTION_COURANTE;
@@ -64,7 +64,7 @@ class mmProg extends mmObject {
         $this->parametresProgramme = $request;
         //On definie quelle action a executer
         $methodAction = 'execute' . ucfirst($action); //action a executer
-        
+
     //demarage du buffer
         ob_clean();
         ob_start();
@@ -90,7 +90,7 @@ class mmProg extends mmObject {
                                        $this->templateModuleAction :
                                (file_exists(getViewsPath() . DIRECTORY_SEPARATOR . $this->templateModule) ?
                                        $this->templateModule : false);
-            
+
             if ($templateToParse) {
                 //y'a un template, on le parse
                 $templateContent = mmTemplate::renderTemplate($templateToParse, $this->variables, getViewsPath());
@@ -124,21 +124,21 @@ class mmProg extends mmObject {
     }
 
     public function configure(mmRequest $request) {
-        
+
     }
 
     /**
      * Code toujours executer avant une action
      */
     public function preExecute(mmRequest $request) {
-        
+
     }
 
     /**
-     * Code toujours executer apres une action 
+     * Code toujours executer apres une action
      */
     public function postExecute(mmRequest $request) {
-        
+
     }
 
     public function executeIndex(mmRequest $request) {
@@ -166,10 +166,21 @@ class mmProg extends mmObject {
         return substr($this->layout, 0, strpos($this->layout, '.php'));
     }
 
-    protected function setTemplate($nomTemplate = false) {
+    /**
+     * Set the template for module/action. Templates are located in the PROJECT_ROOT/templates/views. By default name format is 'view_'.module[#action].php<br>
+     * if #action is ommited this template become the template for all actions. Otherwise the template is used for the particular module/action<br>
+     *
+     * @param string $templateName If ommited or false disable the use of templating.<br>if the string is formated '#action_name' 'action_name' template will be used.
+     * @return string the full name of the previous template name (without extension)
+     */
+    protected function setTemplate($templateName = false) {
         $oldTemplate = substr($this->templateModuleAction, 0, strpos($this->templateModuleAction, '.php'));
-        if ($nomTemplate) {
-            $this->templateModuleAction = $nomTemplate . '.php';
+        if ($templateName) {
+            if ($templateName[0] == '#') {
+                // templateName start with # the template is set to the current module + action mode
+                $templateName = "view_" . MODULE_COURANT . $templateName;
+            }
+            $this->templateModuleAction = $templateName . '.php';
         } else {
             $this->templateModuleAction = false;
         }
@@ -192,26 +203,26 @@ class mmProg extends mmObject {
     protected function addHeader($strHeader, $replace = true) {
         $this->headers[] = array($strHeader, $replace);
     }
-    
+
     protected function outputAsJson() {
         $this->setLayout(false);
         $this->addHeader('Content-Type: application/json');
     }
-    
+
     protected function outputAsJsonp() {
         $this->setLayout(false);
         $this->addHeader('Content-Type: application/javascript');
     }
-    
+
     protected function outputAsHtml($encoding = APP_DEFAULT_ENCODING) {
         $this->addHeader("Content-Type: text/html; charset=$encoding");
         $this->addHeader("charset: $encoding");
     }
-    
+
     /**
      * effectue un redirect
      * @param type $url
-     * @param type $protegeUrl 
+     * @param type $protegeUrl
      */
     public function redirect($url, $protegeUrl = true) {
         redirect($url, $protegeUrl);
@@ -231,7 +242,7 @@ class mmProg extends mmObject {
 
     /*
      * Setter et getter automatique. Permet de stocker les valeurs dans le tableau des variables, utile pour l'interpretation des templates
-     * 
+     *
      */
 
     public function __set($name, $value) {
