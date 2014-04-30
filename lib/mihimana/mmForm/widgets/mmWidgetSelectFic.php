@@ -35,8 +35,20 @@ class mmWidgetSelectFic extends mmWidgetSelect {
             $values,
             $table,
             $colLibelle;
+    /**
+     * Create a new select widget based on data from the database
+     * @param mixed $name if is a string represent the widget name. If an instance of mmWidget return the new widget based on $name properties
+     * @param string $table table name in the database
+     * @param string $key column (in table) used as select value
+     * @param string $value default value
+     * @param string $label column (in table) used as option label
+     * @param string $condition WHERE condition to select subset of results
+     * @param type $attributes extra attribute @mmWidgetSelect
+     * @return \mmWidgetBlank|\mmWidgetSelectFic
+     * @throws Doctrine_Exception
+     */
 
-    public function __construct($name, $table, $cle, $value = '', $colLibelle = '', $condition = '', $attributes = array()) {
+    public function __construct($name, $table, $key, $value = '', $label = '', $condition = '', $attributes = array()) {
 
         //verification des information fournis
         if ($table == '') {
@@ -45,23 +57,29 @@ class mmWidgetSelectFic extends mmWidgetSelect {
         }
 
         try {
-            $values = $this->recupValues($table, $cle, $colLibelle, $condition);
+            $values = $this->recupValues($table, $key, $label, $condition);
         } catch (Doctrine_Exception $e) {
+            if ($name instanceof mmWidget) {
+                $fieldName = $name->getName();
+            } else {
+                $fieldName = $name;
+            }
             $code = $e->getCode();
             switch ($code) {
                 case 0:
-                    mmUser::flashError("$name erreur d'acces aux données: la table $table n'existe pas.");
+                    mmUser::flashError("$fieldName erreur d'acces aux données: la table $table n'existe pas.");
                     break;
                 case 42:
-                    mmUser::flashError("$name nom de colonne inconnue dans le parametre cle ou libelle");
+                    mmUser::flashError("$fieldName nom de colonne inconnue dans le parametre cle ou libelle");
                     break;
                 case 42000:
-                    mmUser::flashError("$name erreur de parametrage de la cle");
+                    mmUser::flashError("$fieldName erreur de parametrage de la cle");
                     break;
                 default:
                     mmUser::flashError("Erreur inconnue code $code");
-                    if (DEBUG)
+                    if (DEBUG) {
                         throw $e;
+                    }
                     break;
             }
             $values = array();
@@ -69,7 +87,7 @@ class mmWidgetSelectFic extends mmWidgetSelect {
         $this->table = $table;
 
         parent::__construct($name, $values, $value, $attributes);
-        if (get_class($this) == 'mdWidgetSelectFic') {
+        if (get_class($this) == 'mmWidgetSelectFic') {
             unset($this->attributes['size']);
         }
 
