@@ -53,8 +53,8 @@ class mmJSON extends mmObject{
      */
     public static function sendJSONP($data = null, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
         if ( ! empty($_GET['callback'])) {
-            echo $_GET['callback'].' (';
             mmOutputJsonp();
+            echo $_GET['callback'].' (';
             echo self::encodeJson($data, $success, $errorCode, $errorMessage);
             echo ');';
         } else {
@@ -63,6 +63,28 @@ class mmJSON extends mmObject{
         }
     }
     
+    /**
+     * Send $data as JSON string
+     * @param array $data
+     */
+    public static function sendRawJSON($data) {
+        mmOutputJson();
+        $data = (array)$data;
+        echo json_encode($data);
+    }
+    
+    /**
+     * Send $data as JSONP string
+     * @param array $data
+     */
+    public static function sendRawJSONP($data) {
+        mmOutputJsonp();
+        $data = (array)$data;
+        echo $_GET['callback'].' (';
+        echo json_encode($data);
+        echo ');';
+        
+    }
     private static function encodeJson($data, $success, $errorCode, $errorMessage) {
         //encode json regarding parameters
         if ($success) {
