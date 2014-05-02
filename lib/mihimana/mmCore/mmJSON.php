@@ -35,7 +35,7 @@ class mmJSON extends mmObject{
     /**
      * Send json message to the client. Content-type is automacally set to 'application/json'<br>
      * if $success is true, datas are sended otherwise errorCode and errorMessage are sended
-     * @param mixed $data data sended to the client, if null and $success = true the method will only send a simple {"success": true} message
+     * @param mixed $data data sended to the client, if null and $success = true (the default values) the method will only send a simple {"success": true, "data": []} message
      * @param boolean $success set status of the json message. TRUE it's a succesfull result, false otherwise
      * @param integer $errorCode error code
      * @param string $errorMessage error message
@@ -54,9 +54,11 @@ class mmJSON extends mmObject{
     public static function sendJSONP($data = null, $success = true, $errorCode = -9999, $errorMessage = 'Uncategorized error') {
         if ( ! empty($_GET['callback'])) {
             echo $_GET['callback'].' (';
+            mmOutputJsonp();
             echo self::encodeJson($data, $success, $errorCode, $errorMessage);
             echo ');';
         } else {
+            mmOutputJson();
             echo self::encodeJson(null, false, -9999, 'Appel a JSONP sans parametre calback');
         }
     }
@@ -67,7 +69,7 @@ class mmJSON extends mmObject{
             if ( ! is_null($data)) {
                 $json = json_encode(array('success' => true, 'data' => $data));
             } else {
-                $json = json_encode(array('success' => true));
+                $json = json_encode(array('success' => true, 'data' => array()));
             }
         } else {
             $json = json_encode(array('success' => false, 'errorCode' => $errorCode, 'errorMessage' => $errorMessage));

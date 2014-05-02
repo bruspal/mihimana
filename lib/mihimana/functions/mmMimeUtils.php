@@ -86,7 +86,7 @@ function mmOutputJson() {
 }
 
 /**
- * Set output as JSON
+ * Set output as JSONP
  */
 function mmOutputJsonp() {
     header('Content-Type: application/javascript');
