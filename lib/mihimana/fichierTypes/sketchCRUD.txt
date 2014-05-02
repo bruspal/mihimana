@@ -1,0 +1,4 @@
+<?php
+class moduleName extends mmProg {
+    public function
+}
