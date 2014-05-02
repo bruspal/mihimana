@@ -34,7 +34,7 @@ namespace mm\helpers\links;
  */
 
 /**
- * Echoing the link to the css file
+ * Echoing the tag to the css file
  * @param string $cssName css filename without extension
  * @param boolean $global
  * @param string $extension filename extension, default .css
@@ -44,20 +44,20 @@ function renderCss($cssName, $global = false, $extension = '.css') {
 }
 
 /**
- * return the link to the css file
+ * return the tag to the css file
  * @param string $cssName css filename without extension
  * @param boolean $global
  * @param string $extension filename extension, default .css
  * @return string 
  */
 function useCss($cssName, $global = false, $extension = '.css') {
-    return '<link rel="stylesheet" type="text/css" media="screen" href="'.asset($cssName.$extension, $global).'"></link>';
+    return '<link rel="stylesheet" type="text/css" media="screen" href="'.useAsset($cssName.$extension, $global).'"></link>';
 }
 
 
 
 /**
- * Echoing the link to the interpreted sass file, sass file root is located in assets/scss directory
+ * Echoing the tag to the interpreted sass file, sass file root is located in assets/scss directory
  * @param string $sassName sass filename
  * @param string $extension file extension, default '.scss'
  */
@@ -66,7 +66,7 @@ function renderSass($sassName, $extension = '.scss') {
 }
 
 /**
- * return the link to the interpreted sass file, sass file root is located in assets/scss directory
+ * return the tag to the interpreted sass file, sass file root is located in assets/scss directory
  * @param string $sassName sass filename
  * @param string $extension file extension, default '.scss'
  * @return string
@@ -77,7 +77,7 @@ function useSass($sassName, $extension = '.scss') {
 
 
 /**
- * return the link to the javascript file
+ * return the tag to the javascript file
  * @param string $jsName script name (without extension)
  * @param boolean $global if false (default) the referenced javascript will be in the assets projetx directory
  * @param string $extension the file extension, by default '.js'
@@ -87,12 +87,12 @@ function renderJavascript($jsName, $global = false, $extension = '.js') {
 }
 
 /**
- * Echoing the link to the css file
+ * Echoing the tag to the css file
  * @param string $jsName script name (without extension)
  * @param boolean $global if false (default) the referenced javascript will be in the assets projetx directory
  * @param string $extension the file extension, by default '.js'
  * @return string
  */
 function useJavascript($jsName, $global = false, $extension = '.js') {
-    return '<script type="text/javascript" src="'.asset($jsName.$extension, $global).'"></script>';
+    return '<script type="text/javascript" src="'.useAsset($jsName.$extension, $global).'"></script>';
 }

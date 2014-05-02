@@ -75,7 +75,7 @@ function renderUrl($url) {
  * @param boolean $global if FALSE (default) use the application's specific assets. Otherwise this will point to global assets sits in the web directory
  * @return string
  */
-function asset($url, $global = false) {
+function useAsset($url, $global = false) {
     return $global ? WEB_CONTEXT.'/'.$url : WEB_CONTEXT.'/'.APPLICATION.'_assets/'.$url;
 }
 /**
@@ -84,7 +84,7 @@ function asset($url, $global = false) {
  * @param boolean $global if FALSE (default) use the application's specific assets. Otherwise this will point to global assets sits in the web directory
  */
 function renderAsset($url, $global = false) {
-    echo asset($url, $global);
+    echo useAsset($url, $global);
 }
 
 /**
