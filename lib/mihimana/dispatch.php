@@ -69,14 +69,17 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     }
 
     //verification de l'authentification
-    if (!\mmUser::isAuthenticated($module, $action)) {
-        //Si on est en ajax on affiche le message et un bouton
-        if (AJAX_REQUEST) {
-            echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>', 1);
-            die;
+    if (!\mmUser::isAuthenticated($module, $action)) { // not identified
+        if( ! \mmUser::isAuthorized($module, $action)) { // nor authorized
+            //if ajax call juste echo error message
+            //TODO: allow JSON response for webservice authentification
+            if (AJAX_REQUEST) {
+                echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>', 1);
+                die;
+            }
+            //on fait une redirection vers la page de login
+            redirect(url('login'));
         }
-        //on fait une redirection vers la page de login
-        redirect(url('login'));
     }
 
     //detection si c'est un appel en clair ou du https

@@ -248,7 +248,7 @@ class mmUser extends mmSession {
      * @param string $action Action sur laquelle faire la vérification
      * @return boolean 
      */
-    public static function isAuthenticated($module=false, $action=false) {
+    public static function isAuthenticated($module = false, $action = false) {
         if (empty($module)) $module = MODULE_COURANT;
         if (empty($action)) $action = ACTION_COURANTE;
         
@@ -286,30 +286,64 @@ class mmUser extends mmSession {
         if ($user !== false && isset($user['auth']) && $user['auth'] == true) {
             return true;
         } else {
-            //Vérification des module/actions auquelles on a acces sans être identifier
-            //list des credentials par defaut, peuvent etre ecrasé par les valeur dans le fichier credentials
-            $credentialsArray = array( 
-                'pLoginStd/subscribe'   => false,
-                'pLoginStd/login'       => false,
-                'pSass'                 => false
-            );
-            if (file_exists(CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php')) {
-                require CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php';
-                $credentialsArray = array_merge($credentialsArray, $credentials);
-            }
-            $strCredentials = $module . '/' . $action;
-            if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
-                return true; //ok on est identifié
-            }
-            $strCredentials = $module;
-            if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
-                return true; //ok on est identifié
-            }
+//            //Vérification des module/actions auquelles on a acces sans être identifier
+//            //list des credentials par defaut, peuvent etre ecrasé par les valeur dans le fichier credentials
+//            $credentialsArray = array( 
+//                'pLoginStd/subscribe'   => false,
+//                'pLoginStd/login'       => false,
+//                'pSass'                 => false
+//            );
+//            if (file_exists(CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php')) {
+//                require CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php';
+//                $credentialsArray = array_merge($credentialsArray, $credentials);
+//            }
+//            $strCredentials = $module . '/' . $action;
+//            if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
+//                return true; //ok on est identifié
+//            }
+//            $strCredentials = $module;
+//            if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
+//                return true; //ok on est identifié
+//            }
             //si on a pas le droit de venir de manière anonyme ici on se fait jeter
             return false;
         }
     }
 
+    /**
+     * This methode will check if client is authorized to access the page
+     */
+    public static function isAuthorized($module = false, $action = false) {
+        $module = $module ? $module : MODULE_COURANT;
+        $action = $action ? $action : ACTION_COURANTE;
+        
+        //check setings about credentials
+        //first set default credentials
+        $credentialsArray = array( 
+            'pLoginStd/subscribe'   => false,
+            'pLoginStd/login'       => false,
+            'pSass'                 => false
+        );
+        //then import user defined ones
+        if (file_exists(CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php')) {
+            require CONFIG_DIR . DIRECTORY_SEPARATOR . 'credentials.php';
+            $credentialsArray = array_merge($credentialsArray, $credentials);
+        }
+        //first check if acces is granted for module and action
+        $strCredentials = $module . '/' . $action;
+        if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
+            return true; //ok authorized
+        }
+        //then check for the module
+        $strCredentials = $module;
+        if (isset($credentialsArray[$strCredentials]) && $credentialsArray[$strCredentials] === false) { // on a le droit d'acceder a ce module/action de manière anonyme
+            return true; //ok authorized
+        }
+        //in all other case we are not authorized
+        return false;
+        
+    }
+    
     private static function createVirtualGuest() {
         $user = new User();
         $user['id'] = false;
