@@ -33,15 +33,14 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 session_name('sess_' . APPLICATION);
 session_start();
 //Lecture des constante
-require_once 'constantes.php';
-require_once APPLICATION_DIR . '/config/config.php';
-//Verification d'usage pour garantire que l'application fonctionnera correctement
-//test des constantes
+require 'constantes.php';
+require CONFIG_DIR . DIRECTORY_SEPARATOR .'config.php';
+// Define default constants value if not defined in config.php or application index file
 if (!defined('APPLICATION')) {
     Die("L'application n'a pas été définie");
 }
 if (!defined('MODULE_DEFAUT')) {
-    Die("Pas de module par defaut défini");
+    define('MODULE_DEFAUT', 'main');
 }
 if (!defined('ACTION_DEFAUT')) {
     define('ACTION_DEFAUT', 'index');
@@ -58,13 +57,16 @@ if (!defined('NO_LOGIN')) {
 if (!defined('SUPER_ADMIN')) {
     define('SUPER_ADMIN', false);
 }
+if (! defined('APP_DEFAULT_ENCODING')) {
+    define('APP_DEFAULT_ENCODING', 'utf-8');
+}
 if (!defined('LOGIN_MODE')) {
     define('LOGIN_MODE', LOGIN_BY_USER);
 }
 if (!defined('REGISTER_MODE')) {
     define ('REGISTER_MODE', REGISTER_BY_USER);
 }
-//Mise en place du niveau de report d'erreur
+//Error reporting
 if (DEBUG) {
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 } else {

@@ -31,10 +31,9 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 //Fichier qui stock et defini les constantes
 /*
- * Constantes de chemins généraux
+ * Constants for general mihimana frameworks directories
  */
 define('MM_BASE_DIR', dirname(dirname(dirname(__FILE__))));
-define('WEB_DIR', MM_BASE_DIR.'/web');
 define('MM_LIB_DIR', MM_BASE_DIR.'/lib');
 //define('FIXTURE_DIR', MM_LIB_DIR.'/fixtures');
 define('MIHIMANA_DIR', MM_LIB_DIR.'/mihimana');
@@ -45,9 +44,14 @@ define('MM_DOCTRINE_DIR', MM_PLUGINS_DIR.'/Doctrine-1.2.4');
 define('MM_HELPERS_DIR', MIHIMANA_DIR.DIRECTORY_SEPARATOR.'helpers');
 
 /*
- * Constantes de chemin vers les dir spécifique a l'application
+ * Constants for application's specific directories
  */
-define('APPLICATION_DIR', MM_BASE_DIR.DIRECTORY_SEPARATOR.APPLICATION);
+if ( !defined('APPLICATION_DIR')) {
+    define('APPLICATION_DIR', MM_BASE_DIR.DIRECTORY_SEPARATOR.APPLICATION);
+}
+if ( ! defined('WEB_DIR')) {
+    define('WEB_DIR', MM_BASE_DIR.'/web');
+}
 define('LIB_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'lib');
 define('MODELS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'models');
 define('CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
@@ -60,8 +64,9 @@ define('PARTIALS_DIR', TEMPLATES_DIR.DIRECTORY_SEPARATOR.'partials');
 define('FUNCTIONS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'functions');
 define('CLASSES_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'classes');
 define('HELPERS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'helpers');
+
 /*
- * Constante URI
+ * Constant URI
  */
 if (array_key_exists('CONTEXT_PREFIX', $_SERVER)) {
     define('WEB_CONTEXT', $_SERVER['CONTEXT_PREFIX']);
