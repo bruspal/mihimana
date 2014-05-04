@@ -101,18 +101,14 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         }
     }
     
-    //chargment du tableau des helpers
+    //Defined defaults helpers
     $_helpers = array(
         'links'
     );
-    //foreach ($_helpers as $helper) {
-        loadHelper($_helpers);
-    //}
+    loadHelper($_helpers);
     if (isset($helpers)) { //on a rajouté des helpers dans le fichier de config
-        $helpers = (array)$helpers;
-//        foreach ($_helpers as $helper) {
-            loadHelper($helpers);
-//        }
+        $helpers = (array) $helpers;
+        loadHelper($helpers);
     }
     //On force l'encodage des pages
     mmOutputHtml();
@@ -139,13 +135,13 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     }
 } catch (\mmExceptionControl $e) { //exception de controle
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
-    echoErreur($sortieProgramme);
+    echoError($sortieProgramme);
 } catch (\mmExceptionHttp $e) { //exception HHTP
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
-    echoErreur($sortieProgramme);
+    echoError($sortieProgramme);
 } catch (\mmExceptionRessource $e) { //Exception de ressources
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
-    echoErreur($sortieProgramme);
+    echoError($sortieProgramme);
 } catch (\Exception $e) { //tous les autres cas
     //Si une erreur non gerée se produit on affiche le message d'erreur detaillé si on est en mode DEBUG, sinon on fais autre chose (genre log, mail, etc)
     //TODO: voir comment gerer les erreurs critique en production
@@ -159,13 +155,13 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         //En mode production on affiche une erreur generaliste
         $sortieProgramme = "<h1>Une erreur critique a eu lieu. Veuillez contacter le service informatique.</h1>";
     }
-    echoErreur($sortieProgramme);
+    echoError($sortieProgramme);
 //    if ( ! AJAX_REQUEST) {
 //        include APPLICATION_DIR . '/templates/layout.php';
 //    }
 }
 
-function echoErreur($contenu) {
+function echoError($contenu) {
     $sortieProgramme = $contenu;
     if (AJAX_REQUEST) {
         echo $sortieProgramme;
