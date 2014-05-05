@@ -31,12 +31,23 @@
 
 class mmWidgetButton extends mmWidget {
 
-    public function __construct($name, $value = '', $attributes = array()) {
+    /**
+     * create a new mmWidgetButton
+     * @param string $name internal name
+     * @param string $label Button's label
+     * @param array $attributes array of extra attributes
+     */
+    public function __construct($name, $label = '', $attributes = array()) {
         $this->addAttribute('class', 'button');
-        parent::__construct($name, 'button', $value, $attributes);
-        $this->setLabel($value);
+        parent::__construct($name, 'button', $label, $attributes);
+        $this->setLabel($label);
     }
 
+    /**
+     * Attach a script to click event (old vanilia javascript style). If $confirm != '' the user will be prompted with $confirm message
+     * @param string $jsClick JS $script
+     * @param string $confirm
+     */
     public function click($jsClick, $confirm = '') {
         if ($confirm) {
             $script = sprintf("if (confirm('%s')) %s", $confirm, $jsClick);
@@ -44,7 +55,6 @@ class mmWidgetButton extends mmWidget {
             $script = $jsClick;
         }
         $this->attributes['onclick'] = $script;
-//    return $this->render(array('onclick'=>$script));
     }
 
     public function render($extraAttributes = array(), $replace = false) {
@@ -59,7 +69,7 @@ class mmWidgetButton extends mmWidget {
     }
 
 //    public function setValue($value, $ignoreControle = 0) {
-//        
+//
 //    }
     protected function generateAttributes($extraAttributes = array(), $replace = false) {
         if ($replace) {
