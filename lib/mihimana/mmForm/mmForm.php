@@ -58,17 +58,19 @@ class mmForm extends mmObject implements ArrayAccess {
             $errors = array();
     protected //default options, see constructor phpdoc for details
             $options = array(
-                'deep' => false,    
+                'deep' => false,
                 'auto-ng-model' => false,
+                'ng-controller' => false
             );
-            
-    
+
+
     /**
      * Create a new form<br>
      * options is array of 'option_name'=>'value':
      * <ul>
      * <li>'deep' => (boolean) : performe an automated subform hydratation based on $record (default false). If no record defined this option will be ignored.</li>
      * <li>'auto-ng-model' => (boolean) : if true auto add ng-model attribute to all included widget (default false)</li>
+     * <li>'ng-controller' => (mixed) : Add ng-controller attribute to the form header. If false do nothing (default), if true use ng-controller=form_name."Ctrl" as controller name for the form, if string use the string as ng-controller name</li>
      * </ul>
      * @param Doctrine_Record $record
      * @param array $options an array of options, see description for availlable options
@@ -77,16 +79,16 @@ class mmForm extends mmObject implements ArrayAccess {
         $this->new = true;
         //check if exists unknown option
         if ( $diffArray = array_diff_key($options, $this->options) ) {
-            throw new mmExceptionDev('mmForm: unknowns option '.$diffArry[0]);
+            throw new mmExceptionForm('mmForm: unknowns option '.$diffArray[0]);
         }
-        
+
         $this->options = array_merge($this->options, $options);
-        
+
         //manage options
         if ($this->options['deep']) {
             $this->setSubFormFromRecord($record);
         }
-        
+
         //fill in the form regarding the $record
         if ($record) {
             $this->setWidgetFromRecord($record);
@@ -139,27 +141,27 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * Ajoute ou remplace le widget identifie par $name
-     * 
+     *
      * @param string $name nom du widget
      * @param mmWidget $widget widget
      */
     public function addWidget(mmWidget $widget, $ignoreNameFormat = false) {
-        
+
         $name = $widget->getName();
-        
+
         //Mise a jour auto du label
         $widget->setLabel(ucfirst(str_replace('_', ' ', $name)));
         //format de nom
         if (!$ignoreNameFormat) {
             $widget->setNameFormat(sprintf($this->nameFormat, $name));
         }
-        
+
         //ajoute le formulaire courant comme formulaire contenant
         $widget->setContainer($this);
-        
+
         //hook d'apres ajout
         $widget->postAddWidget();
-        
+
         //ajout des parametre supplémentaire
         //ng-model
         if ($this->options['auto-ng-model']) {
@@ -167,12 +169,12 @@ class mmForm extends mmObject implements ArrayAccess {
             $ngModel = str_replace(array('[', ']'), array('.', ''), $ngModel);
             $widget->addAttribute('ng-model', $ngModel);
         }
-        
+
         //revoir ce que ca fait
         if ($this->getId() && ! $widget->isOverridden()) {
             $widget->setId($this->getId().'_'.$widget->getId());
         }
-        
+
         $this->widgetList[$name] = $widget;
     }
 
@@ -183,9 +185,9 @@ class mmForm extends mmObject implements ArrayAccess {
             throw new mmException(__CLASS__.'::'.__METHOD__. " : tentative d'ajout d'un validateur sur un widget inexistant");
         }
     }
-    
+
     /**
-     * Add a subform 
+     * Add a subform
      * @param mixed $subForm can be a mmForm instance or an array of mmForm instances
      * @param type $includeName
      * @param mixed $rowIndex the row index gave to the included form, mainly used when an array of subForm is used this parameter can be used for hacking toi form subform name format
@@ -288,11 +290,11 @@ class mmForm extends mmObject implements ArrayAccess {
             $widget->setLabel(ucfirst(str_replace('_', ' ', $fieldName)));
 
             //Application des validateur
-            
-//            if (isset($field['primary']) && $field['primary']) { 
+
+//            if (isset($field['primary']) && $field['primary']) {
 //                $widget->addValidator('notnull');
 //            }
-            
+
             if (isset($field['length']) && $widget instanceof mmWidgetText) {
                 $widget->addValidator('length_max', $field['length']);
             }
@@ -312,7 +314,7 @@ class mmForm extends mmObject implements ArrayAccess {
         return $this->valid;
     }
 
-        
+
     public function setSubFormFromRecord(Doctrine_Record $record) {
         $arrayRelation = $record->getReferences();
         foreach($arrayRelation as $relationName => $relation) {
@@ -330,7 +332,7 @@ class mmForm extends mmObject implements ArrayAccess {
             }
         }
     }
-    
+
     protected function creerWidgetDepuisTypeChamp($fieldName, $field) {
         // variables utiles
         $ouiNon = array('0' => 'Non', '1' => 'Oui');
@@ -397,12 +399,12 @@ class mmForm extends mmObject implements ArrayAccess {
     /*
      * Methodes d'operation sur les widget
      */
-    
+
     /**
      * Met a jour l'objet avec les valeurs fournis en parametre au format de la base de donnees
      * ignore les champs manquant et supplementaires
-     * 
-     * @param array $values 
+     *
+     * @param array $values
      */
     public function setDbValues($values = array()) {
         $this->valid = true;
@@ -600,7 +602,7 @@ class mmForm extends mmObject implements ArrayAccess {
                 $w->setNameFormat($this->nameFormat);
             }
         }
-/*        
+/*
         //on traite tous les cas des sous formulaire
         foreach ($this->formsList as $fName => $subForm) {
             if ($subForm instanceof mmForm) {
@@ -618,7 +620,7 @@ class mmForm extends mmObject implements ArrayAccess {
                     throw new mmExceptionDev('pas mmForm et pas array');
                 }
             }
-            
+
         }
 */
     }
@@ -629,12 +631,12 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * rendu du formulaire
-     * 
+     *
      * @param array $fieldList : $array list des champs a afficher, si omis, affiche tous les champs
      * @param array $subFormsSetting: tableau de paramettrage de rendu des sous-formulaires array(nom_interne =><br />
      * array('fieldList'=>comme $fieldList, 'renderType'=> type de rendu, 'label'=> label a afficher dans le cas du renderType='fieldset'))<br />
      * type de rendu:<ul><li>table (default): rend le formulaire comme une table html</li><li>fieldset: rend le formulaire comme avec renderFieldset</li><li>row: rend le formulaire dans une table horizontale</li></ul>
-     * @return type 
+     * @return type
      */
     public function render($fieldList = null, $subFormsSetting = false) {
         $fieldList = $this->generateFieldsList($fieldList);
@@ -671,8 +673,8 @@ class mmForm extends mmObject implements ArrayAccess {
         $result .= $this->renderJavascript($fieldList);
         return $result;
     }
-    
-    
+
+
     public function getErrors($deep = false) {
         $result = array();
         if ($deep) {
@@ -694,6 +696,16 @@ class mmForm extends mmObject implements ArrayAccess {
         $strExtraAttr = '';
         foreach($extraAttributes as $aName => $aValue) {
             $strExtraAttr .= "$aName=\"$aValue\" ";
+        }
+        if ($this->options['ng-controller']) { // if ng-controller must be added to the form header
+            if ($this->options['ng-controller'] === true) {
+                $strExtraAttr .= ' ng-controller="'.$this->name.'"';
+            }
+            elseif (is_string($this->options['ng-controller'])) {
+                $strExtraAttr .= ' ng-controller="'.$this->options['ng-controller'].'"';
+            } else {
+                throw new mmExceptionForm("Tentative d'attacher un ng-controller avec autre chose qu'un boolean ou une chaine");
+            }
         }
         return sprintf('<form action="%s" method="%s" %s enctype="%s" %s>', $this->action, $this->method, $this->id == '' ? '' : 'id="'.$this->id.'"', $this->enctype, $strExtraAttr);
     }
@@ -750,7 +762,7 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * rendu des formulaires imbriques
-     * @param type $subFormsSetting 
+     * @param type $subFormsSetting
      */
     public function renderSubForms($subFormsSetting = false) {
         if ($subFormsSetting === null) // if strictly null no render
@@ -810,7 +822,7 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * Genere le javascript associe au formulaire (controle et condition associe au widget et globale au formulaire). Genere aussi le script de gestion des droits en mode admin.
-     * 
+     *
      * @param array() $fieldList Liste des widget pour lesquel les script seront genere, null pour tous les widget
      * @param bool $inDocumentReady Inclus les script dans un $(document).ready() jQuery
      * @param bool $inScript Inclus les script entre <script></script>
@@ -856,7 +868,7 @@ class mmForm extends mmObject implements ArrayAccess {
     /**
      * Genere le code HTML associé aux bouton stocké dans le formulaire
      * @param type $fieldList liste des boutons a afficher, si omis: tous les bouttons du formulaire
-     * @return type 
+     * @return type
      */
     public function renderButtons($fieldList = null) {
         $result = '';
@@ -915,8 +927,8 @@ class mmForm extends mmObject implements ArrayAccess {
         $result .= '</table>';
         return $result;
     }
-    
-    
+
+
     public function addJavascript($name, $script) {
         $this->javascripts[$name] = array('script' => $script, 'rendered' => false);
     }
@@ -961,7 +973,7 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
     /**
-     * 
+     *
      * @return type
      * @throws mmExceptionDev
      */
@@ -1037,7 +1049,7 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * retourne l'objet doctrine stocker dans le formulaire avec les donnees en cours
-     * @return type 
+     * @return type
      */
     public function getRecord() {
         return $this->record;
@@ -1163,7 +1175,7 @@ class mmForm extends mmObject implements ArrayAccess {
             }
         }
     }
-    
+
     /**
      * enable all field of the form
      * @param boolean $butButton doesn't disable buttons if true (default)
