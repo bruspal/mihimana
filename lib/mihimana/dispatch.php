@@ -46,12 +46,12 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     //On declare les module et action courant dans des constante pour pouvoir les recuperer facilement dans les modules et scripts.
     define('MODULE_COURANT', $module);
     define('ACTION_COURANTE', $action);
-    
+
 
     /**************************/
     // TODO : revoir le mécanisme de forcage de reponse JSON
     // /!\ _fhr_ a 1 pour forcer la reponse le mode AJAX
-    // detection d'un appel AJAX. Detection automatique sauf si le parametre _fhr_ est present dans le request et vaut 1 
+    // detection d'un appel AJAX. Detection automatique sauf si le parametre _fhr_ est present dans le request et vaut 1
     // determine si la reponse doit etre du json ou non, par defaut oui si on est en mode ajax. Dans ce cas la on est en mode json sauf si on force explicitement
     // le mode http via le parametre _fhr_ fournis en parametre
     /**************************/
@@ -100,12 +100,8 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             define('PROGRAMME_STANDARD', true);
         }
     }
-    
+
     //Defined defaults helpers
-    $_helpers = array(
-        'links'
-    );
-    loadHelper($_helpers);
     if (isset($helpers)) { //on a rajouté des helpers dans le fichier de config
         $helpers = (array) $helpers;
         loadHelper($helpers);
