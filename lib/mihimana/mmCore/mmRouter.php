@@ -40,8 +40,8 @@ class mmRouter extends mmObject {
     protected $getRequest = array();
     protected $postRequest = array();
     protected $requestArray = array();
-    
-    
+
+
     //Methods
     //Public
     /**
@@ -57,26 +57,26 @@ class mmRouter extends mmObject {
         $this->explodeRoute();
         $this->parseRoute();
     }
-    
+
     public function getUriString() {
         return $this->uriString;
     }
-    
+
     public function getUriArray() {
         return $this->uriArray;
     }
-    
+
     public function getRequest() {
         $request = new mmRequest($this->requestArray);
         return $request;
     }
-    
+
     public function getRequestArray() {
         return $this->requestArray;
     }
     //Protected
     protected function getUriFromContext() {
-        
+
         $reqUri = $_SERVER['REQUEST_URI'];
         //URI cleaning
         if (strpos($reqUri, $_SERVER['SCRIPT_NAME']) === 0) { // Does the script name appear in the uri ?
@@ -91,10 +91,10 @@ class mmRouter extends mmObject {
         while(strncmp('/', $reqUri, 1) == 0) {
             $reqUri = substr($reqUri, 1);
         }
-        
+
         $this->uriString = $reqUri;
     }
-    
+
     protected function explodeRoute() {
         if ( ! empty($this->uriString)) { //there is somethinf to parse ?
             //first doing separation between uri and parameters
@@ -112,18 +112,19 @@ class mmRouter extends mmObject {
         $this->getRequest = $_GET;
         $this->postRequest = $_POST;
     }
-    
+
     protected function parseRoute() {
         $_routes = array( //default routes for generique purpose
-            'login'           =>  'module=pLoginStd&action=login',
-            'logout'          =>  'module=pLoginStd&action=logout',
-            'subscribe'       =>  'module=pLoginStd&action=subscribe',
-            'sass/*'          =>  'module=pSass&scss=$1',
-            'pEcran/edit/*'   =>  'module=pEcran&action=edit&ecran=$1',
-            'pEcran/*'        =>  'module=pEcran&action=$1',
+            'login'           =>  'module=pLoginStd&action=login',  // to login action
+            'logout'          =>  'module=pLoginStd&action=logout', // to logout action
+            'subscribe'       =>  'module=pLoginStd&action=subscribe',  // to subscribe action
+            'sass/*'          =>  'module=pSass&scss=$1',   // to computed css throu SASS
+            'pEcran/edit/*'   =>  'module=pEcran&action=edit&ecran=$1', // to edit screen
+            'pEcran/*'        =>  'module=pEcran&action=$1', // to screen
             'pEcran'          =>  'module=pEcran',
-            '*/*'             =>  'module=$1&action=$2',
-            '*'               =>  'module=$1&action=index',
+            '*/*/*'           =>  'module=$1&action=$2&key=$3', // to module/action/key
+            '*/*'             =>  'module=$1&action=$2', // to  module/action
+            '*'               =>  'module=$1&action=index', // to module/index
         );
         $routesFile = CONFIG_DIR.DIRECTORY_SEPARATOR.'routes.php';
         if (file_exists($routesFile)) {
@@ -141,7 +142,7 @@ class mmRouter extends mmObject {
             $this->requestArray = array_merge($this->getRequest, $this->postRequest);
             return true;
         }
-        
+
         // check if exists direct routes
         if (isset($_routes[$this->cleanedReqUri])) {
             parse_str($_routes[$this->cleanedReqUri], $this->requestArray);
@@ -164,6 +165,6 @@ class mmRouter extends mmObject {
             }
         }
     }
-    
-    
+
+
 }
