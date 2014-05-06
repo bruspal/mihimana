@@ -57,12 +57,13 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     /**************************/
     if (array_key_exists('HTTP_X_REQUESTED_WITH', $_SERVER) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
         define('AJAX_REQUEST', true);
-        $_fhr_ = $request->get('_fhr_', false);
-        if ($_fhr_) {
-            define('AJAX_RESPONSE', true);
-        } else {
-            define('AJAX_RESPONSE', false);
-        }
+        define('AJAX_RESPONSE', true);
+//        $_fhr_ = $request->get('_fhr_', true);
+//        if ($_fhr_) {
+//            define('AJAX_RESPONSE', true);
+//        } else {
+//            define('AJAX_RESPONSE', false);
+//        }
     } else {
         define('AJAX_REQUEST', false);
         define('AJAX_RESPONSE', false);
