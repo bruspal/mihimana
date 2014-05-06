@@ -48,7 +48,7 @@ function renderCss($cssName, $global = false, $extension = '.css') {
  * @param string $cssName css filename without extension
  * @param boolean $global
  * @param string $extension filename extension, default .css
- * @return string 
+ * @return string
  */
 function useCss($cssName, $global = false, $extension = '.css') {
     return '<link rel="stylesheet" type="text/css" media="screen" href="'.useAsset($cssName.$extension, $global).'"></link>';
@@ -95,4 +95,33 @@ function renderJavascript($jsName, $global = false, $extension = '.js') {
  */
 function useJavascript($jsName, $global = false, $extension = '.js') {
     return '<script type="text/javascript" src="'.useAsset($jsName.$extension, $global).'"></script>';
+}
+
+/**
+ * Echoing the link tag to $url and labeled $label. Extra parameters can be provided via the array (attrName=>attrValue, ...) $extraParams
+ * @param string $url
+ * @param string $label
+ * @param array $extraParams
+ * @return string
+ */
+function renderLink($url, $label = '#', $extraParams= array()) {
+    echo useLink($url, $label, $extraParams);
+}
+
+/**
+ * Return the string of an link tag to $url and labeled $label. Extra parameters can be provided via the array (attrName=>attrValue, ...) $extraParams
+ * @param string $url
+ * @param string $label
+ * @param array $extraParams
+ * @return string
+ */
+function useLink($url, $label = '#', $extraParams = array()) {
+    $strParam = '';
+    if ($extraParams) {
+        $extraParams = (array)$extraParams;
+        foreach($extraParams as $attr => $value) {
+            $strParam .= " $attr=\"$value\"";
+        }
+    }
+    return '<a href="'.url($url).'"'.$strParam." >$label</a>";
 }
