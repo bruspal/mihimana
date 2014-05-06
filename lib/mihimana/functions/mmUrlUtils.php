@@ -37,13 +37,13 @@
  * <li>@module :  the current module</li>
  * <li>@action : the current action </li>
  * </ul>
- * 
- * 
+ *
+ *
  * @param string $url the input url
  * @return string the well formated URL
  */
 function url($url) {
-    
+
     $url = str_replace(array('@module', '@action'), array(MODULE_COURANT, ACTION_COURANTE), $url);
     switch ($url) {
         case '@home':
@@ -76,6 +76,9 @@ function renderUrl($url) {
  * @return string
  */
 function useAsset($url, $global = false) {
+    if (preg_match('#https?://#', $url)) {
+        return $url;
+    }
     return $global ? WEB_CONTEXT.'/'.$url : WEB_CONTEXT.'/'.APPLICATION.'_assets/'.$url;
 }
 /**
@@ -91,7 +94,7 @@ function renderAsset($url, $global = false) {
  * Retourne l'url encodé. Si jamais on est en debug y'a pas de debug
  * @param type $url
  * @return type
- * @throws mmExceptionControl 
+ * @throws mmExceptionControl
  */
 function genereUrlProtege($url) {
     if (true || DEBUG) { //desactivé pour le moment
@@ -112,7 +115,7 @@ function genereUrlProtege($url) {
 /**
  * Effectue un redirect vers $url, si protegeUrl est a vrai (defaut) encode l'url avant
  * @param type $url
- * @param type $protegeUrl 
+ * @param type $protegeUrl
  */
 function redirect($url, $protegeUrl = true) {
     if ($protegeUrl) {
