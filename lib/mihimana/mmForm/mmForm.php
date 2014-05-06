@@ -240,11 +240,14 @@ class mmForm extends mmObject implements ArrayAccess {
         }
     }
 
+    /**
+     * Add or replace widgets in form
+     * @param array $widgets array of widgets
+     */
     public function setWidgets(array $widgets) {
         foreach ($widgets as $widget) {
             $this->addWidget($widget);
         }
-//    $this->widgetList = $widgets;
     }
     /**
      * Setup form regarding $record
@@ -711,7 +714,7 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
     /**
-     * close the form zone
+     * close the form
      * @return string
      */
     public function stop() {
@@ -891,7 +894,7 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
     /**
-     * Rener all widget's error
+     * Render all widget's error
      */
     public function renderWidgetErrors() {
         $result = '<table class="errors">';
@@ -939,6 +942,38 @@ class mmForm extends mmObject implements ArrayAccess {
 
     public function getJavascripts() {
         return $this->javascripts;
+    }
+
+    /**
+     * Call a widgetMethod for every widgets of the form
+     * @param string $methodName method to execute
+     * @param array $params method parameters as array
+     * @param boolean $deep if true apply also for included forms
+     * @throws mmExceptionForm
+     */
+    public function foreachWidget($methodName, $params = array(), $deep = false) {
+        foreach ($this->widgetList as &$widget) {
+            call_user_function_array(array($widget, $methodName), $params);
+        }
+        if ($deep) {
+            foreach ($this->formsList as $form) {
+                if ($form instanceof mmForm) {
+                    $form->foreachWidget($methodName, $params, $deep);
+                }
+                elseif (is_array($form)) {
+                    foreach ($form as $subForm) {
+                        if ($subForm instanceof mmForm) {
+                            $subForm->foreachWidget($methodName, $params, $deep);
+                        } else {
+                            throw new mmExceptionForm('Formulaire imbriqué non tableau non mmForm');
+                        }
+                    }
+                }
+                else {
+                    throw new mmExceptionForm('Formulaire imbriqué non tableau non mmForm');
+                }
+            }
+        }
     }
 
     /**
