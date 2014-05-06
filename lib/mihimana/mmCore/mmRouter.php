@@ -132,7 +132,7 @@ class mmRouter extends mmObject {
             $_routes = array_merge($_routes, $routes);
         }
         // to ensure that default routing still working moving */* and * to the end of array
-        foreach(array('*/*', '*') as $key) {
+        foreach(array('*/*/*', '*/*', '*') as $key) {
             $cell = $_routes[$key];
             unset($_routes[$key]);
             $_routes[$key] = $cell;
