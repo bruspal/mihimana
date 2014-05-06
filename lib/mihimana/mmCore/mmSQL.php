@@ -31,7 +31,7 @@
 
 class mmSQL extends mmObject {
 
-    
+
     /**
      * Execute a query, result is returned as an array of records
      * @param string $query query string
@@ -40,13 +40,13 @@ class mmSQL extends mmObject {
      * @param type $connexion PDO connexion
      * @return array
      */
-    public static function query($query, $params = array(), $fetchMode = PDO::FETCH_BOTH, $connexion = null) {
+    public static function query($query, $params = array(), $fetchMode = PDO::FETCH_ASSOC, $connexion = null) {
         if ($connexion == null) {
             $connexion = Doctrine_Manager::getInstance()->getCurrentConnection();
         }
         return $connexion->execute($query, $params)->fetchAll($fetchMode);
     }
-    
+
     /**
      * Execute a query, return the first result as PDO record
      * @param string $query query string
@@ -55,13 +55,13 @@ class mmSQL extends mmObject {
      * @param type $connexion PDO connexion
      * @return array
      */
-    public static function queryOne($query, $params = array(), $fetchMode = PDO::FETCH_BOTH, $qm = null) {
+    public static function queryOne($query, $params = array(), $fetchMode = PDO::FETCH_ASSOC, $qm = null) {
         if ($qm == null) {
             $qm = Doctrine_Manager::getInstance()->getCurrentConnection();
         }
         return $qm->execute($query, $params)->fetch($fetchMode);
     }
-    
+
     /**
      * Execute a query, result is returned as a JSON string containing list of records
      * @param string $query query string
@@ -70,11 +70,11 @@ class mmSQL extends mmObject {
      * @param type $connexion PDO connexion
      * @return string
      */
-    public static function queryJSON($query, $params = array(), $fetchMode = PDO::FETCH_BOTH, $connexion = null) {
+    public static function queryJSON($query, $params = array(), $fetchMode = PDO::FETCH_ASSOC, $connexion = null) {
         $resultArray = self::query($query, $params, $fetchMode, $connexion);
         return mmJSON::sendJSON($resultArray);
     }
-    
+
     /**
      * Execute a query, result is returned as a JSON string containing the first record
      * @param string $query query string
@@ -83,7 +83,7 @@ class mmSQL extends mmObject {
      * @param type $connexion PDO connexion
      * @return array
      */
-    public static function queryOneJSON($query, $params = array(), $fetchMode = PDO::FETCH_BOTH, $connexion = null) {
+    public static function queryOneJSON($query, $params = array(), $fetchMode = PDO::FETCH_ASSOC, $connexion = null) {
         $resultArray = self::queryOne($query, $params, $fetchMode, $connexion);
         return mmJSON::sendJSON($resultArray);
     }
@@ -94,7 +94,7 @@ class mmSQL extends mmObject {
      * @param ressource $conn mysql connection
      */
     public static function _query($query, $conn = null) {
-        
+
         $conn = new PDO('mysql:host='.MMSQL_HOST.';dbname='.MMSQL_DB.';charset=utf8', MMSQL_USER, MMSQL_PASSWD);
         $stmt = $conn->query($query);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -108,7 +108,7 @@ class mmSQL extends mmObject {
     /**
      * Genere une chaine de caractere codant la cle unique de l'enregistrement
      * @param Doctrine_Record $enregistrement
-     * @return string 
+     * @return string
      */
     public static function genereChaineIndex(Doctrine_Record $enregistrement, $encodeUrl = true, $separateur = '+') {
         $chaineResultat = '';
@@ -125,7 +125,7 @@ class mmSQL extends mmObject {
      * Retourne le tableau correspondant a la $chaineIndex fournie
      * @param type $chaineIndex
      * @param type $separateur
-     * @return type 
+     * @return type
      */
     public static function genereIndex($chaineIndex, $separateur = '+') {
         $resultat = array();
@@ -140,8 +140,8 @@ class mmSQL extends mmObject {
 
     /**
      * retourne les champs qui compose la cle unique
-     * 
-     * @param Doctrine_Table $table 
+     *
+     * @param Doctrine_Table $table
      * @param si $chane = true renvoie le resultat sous forme de chaine, sous forme de tableau sinon
      */
     public static function getCleUnique($table, $chaine = false) {
