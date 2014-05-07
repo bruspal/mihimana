@@ -421,11 +421,13 @@ class mmWidget extends mmObject {
     }
 
     /**
-     * return iner tags string
+     * return iner tags string, /!\ class attributes will be removed
      * @return type
      */
     public function useTags() {
-        return sprintf('type="%s" name="%s" value="%s"', $this->attributes['type'], sprintf($this->nameFormat, $this->attributes['name']), $this->attributes['value']).$this->generateAttributes();
+        $attributes = $this->attributes;
+        unset($attributes['class']);
+        return sprintf('type="%s" name="%s" value="%s"', $this->attributes['type'], sprintf($this->nameFormat, $this->attributes['name']), $this->attributes['value']).$this->generateAttributes($attributes, true);
     }
     /**
      * echoing inner tags
