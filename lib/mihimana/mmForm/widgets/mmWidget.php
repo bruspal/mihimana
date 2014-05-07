@@ -424,7 +424,7 @@ class mmWidget extends mmObject {
      * return iner tags string, /!\ class attributes will be removed
      * @return type
      */
-    public function useTags() {
+    public function useAttrs() {
         $attributes = $this->attributes;
         unset($attributes['class']);
         return sprintf('type="%s" name="%s" value="%s"', $this->attributes['type'], sprintf($this->nameFormat, $this->attributes['name']), $this->attributes['value']).$this->generateAttributes($attributes, true);
@@ -432,8 +432,8 @@ class mmWidget extends mmObject {
     /**
      * echoing inner tags
      */
-    public function renderTags() {
-        echo $this->useTags();
+    public function renderAttrs() {
+        echo $this->useAttrs();
     }
 
     public function renderPdf($extraAttributes = array(), $replace = false) {

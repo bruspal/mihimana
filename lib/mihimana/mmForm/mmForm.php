@@ -707,10 +707,10 @@ class mmForm extends mmObject implements ArrayAccess {
     /*
      * Return only tag for form
      */
-    public function useTags($widgetName = false) {
+    public function useAttrs($widgetName = false) {
         if ($widgetName) {
             if (isset($this->widgetList[$widgetName])) {
-                return $this->widgetList[$widgetName]->useTags();
+                return $this->widgetList[$widgetName]->useAttrs();
             } else {
                 throw new mmExceptionForm("le widget $widgetName n'existe pas");
             }
@@ -734,8 +734,8 @@ class mmForm extends mmObject implements ArrayAccess {
     /*
      * Echoing only html tag for form
      */
-    public function renderTags($widgetName = false) {
-        echo $this->useTags($widgetName);
+    public function renderAttrs($widgetName = false) {
+        echo $this->useAttrs($widgetName);
     }
 
     /**
