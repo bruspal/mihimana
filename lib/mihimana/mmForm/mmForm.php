@@ -700,17 +700,42 @@ class mmForm extends mmObject implements ArrayAccess {
         foreach($extraAttributes as $aName => $aValue) {
             $strExtraAttr .= "$aName=\"$aValue\" ";
         }
-        if ($this->options['ng-controller']) { // if ng-controller must be added to the form header
-            if ($this->options['ng-controller'] === true) {
-                $strExtraAttr .= ' ng-controller="'.$this->name.'"';
-            }
-            elseif (is_string($this->options['ng-controller'])) {
-                $strExtraAttr .= ' ng-controller="'.$this->options['ng-controller'].'"';
-            } else {
-                throw new mmExceptionForm("Tentative d'attacher un ng-controller avec autre chose qu'un boolean ou une chaine");
-            }
-        }
         return sprintf('<form action="%s" method="%s" %s enctype="%s" %s>', $this->action, $this->method, $this->id == '' ? '' : 'id="'.$this->id.'"', $this->enctype, $strExtraAttr);
+    }
+
+
+    /*
+     * Return only tag for form
+     */
+    public function useTags($widgetName = false) {
+        if ($widgetName) {
+            if (isset($this->widgetList[$widgetName])) {
+                return $this->widgetList[$widgetName]->useTags();
+            } else {
+                throw new mmExceptionForm("le widget $widgetName n'existe pas");
+            }
+        } else {
+            $strExtraAttr = '';
+            if ($this->options['ng-controller']) { // if ng-controller must be added to the form header
+                if ($this->options['ng-controller'] === true) {
+                    $strExtraAttr = ' ng-controller="'.$this->name.'"';
+                }
+                elseif (is_string($this->options['ng-controller'])) {
+                    $strExtraAttr = ' ng-controller="'.$this->options['ng-controller'].'"';
+                } else {
+                    throw new mmExceptionForm("Tentative d'attacher un ng-controller avec autre chose qu'un boolean ou une chaine");
+                }
+            }
+            return sprintf('action="%s" method="%s" %s enctype="%s"', $this->action, $this->method, $this->id == '' ? '' : 'id="'.$this->id.'"', $this->enctype);
+        }
+
+    }
+
+    /*
+     * Echoing only html tag for form
+     */
+    public function renderTags($widgetName = false) {
+        echo $this->useTags($widgetName);
     }
 
     /**

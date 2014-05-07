@@ -58,11 +58,11 @@ class mmWidget extends mmObject {
             /**
              * flag. that means the widget as been created using another widget as reference
              */
-            $overridden = false; 
-    
+            $overridden = false;
+
     /**
      * Cree un nouveau widget
-     * 
+     *
      * @param type $name nom du widget
      * @param type $type type du widget
      * @param type $value valeur par default a la creation
@@ -112,7 +112,7 @@ class mmWidget extends mmObject {
 
     /**
      * remplace les attributs existants
-     * 
+     *
      * @param array $values tableau des attribut sous le format array('nom attribut' => 'valeur attribut',...)
      */
     public function setAttributes($values) {
@@ -143,7 +143,7 @@ class mmWidget extends mmObject {
     public function isEnabled() {
         return $this->enabled && !isset($this->attributes['disabled']);
     }
-    
+
     public function isOverridden() {
         return $this->overridden;
     }
@@ -175,7 +175,7 @@ class mmWidget extends mmObject {
 
     /**
      * Ajoute ou remplace les attributs par ceux fournis dans value
-     * 
+     *
      * @param type $values tableau des attribut sous le format array('nom attribut' => 'valeur attribut',...)
      */
     public function addAttributes($values) {
@@ -184,7 +184,7 @@ class mmWidget extends mmObject {
 
     /**
      * supprime un attribut de la list des attributs, genere une exception si l'attribut n'existe pas
-     * 
+     *
      * @param string $name nom de l'attribut a supprimer
      */
     public function delAttribute($name) {
@@ -195,7 +195,7 @@ class mmWidget extends mmObject {
 
     /**
      * retourne la valeur de l'attribut $name sinon retourne ''
-     * @param type $name 
+     * @param type $name
      * @return type
      */
     public function getAttribute($name) {
@@ -208,7 +208,7 @@ class mmWidget extends mmObject {
     /**
      * retourne true si l'attribut existe, false sinon
      * @param type $name
-     * @return type 
+     * @return type
      */
     public function hasAttribute($name) {
         if (isset($this->attributes[$name])) {
@@ -219,7 +219,7 @@ class mmWidget extends mmObject {
 
     /**
      * set le label
-     * @param string $label 
+     * @param string $label
      */
     public function setLabel($label) {
         $this->label = $label;
@@ -251,7 +251,7 @@ class mmWidget extends mmObject {
 
     /**
      * Met a jour le champ a partir de donner fournis au format humain (par exemple via formulaire
-     * @param type $value 
+     * @param type $value
      */
     public function setValue($value, $ignoreControle = 0) {
         $this->attributes['value'] = $value;
@@ -391,9 +391,9 @@ class mmWidget extends mmObject {
 
     /**
      * Fais le rendu HTML du widget
-     * 
+     *
      * @param type $extraAttributes
-     * @param type $replace 
+     * @param type $replace
      */
     public function render($extraAttributes = array(), $replace = false) {
 
@@ -418,6 +418,20 @@ class mmWidget extends mmObject {
         //On marque le champ comme rendu pour indiquer que le widget a ete rendu et eviter le rendu multiple
         $this->rendered = true;
         return $result . $this->renderInfo() . $this->renderAdminMenu();
+    }
+
+    /**
+     * return iner tags string
+     * @return type
+     */
+    public function useTags() {
+        return sprintf('type="%s" name="%s" value="%s"', $this->attributes['type'], sprintf($this->nameFormat, $this->attributes['name']), $this->attributes['value']).$this->generateAttributes();
+    }
+    /**
+     * echoing inner tags
+     */
+    public function renderTags() {
+        echo $this->useTags();
     }
 
     public function renderPdf($extraAttributes = array(), $replace = false) {
@@ -472,7 +486,7 @@ class mmWidget extends mmObject {
     }
 
     /**
-     * 
+     *
      */
     public function renderText($extraAttributes = array(), $replace = false) {
 
@@ -493,7 +507,7 @@ class mmWidget extends mmObject {
      * Genere une ligne de type <tr>label</tr><td>valeur</td>.
      * @param type $option : options additionnel au widget
      * @param type $renderRow : a true genere la ligne du tableau meme si le champs ne doits pas etre afficher.<br />Dans le cas contraire, si le champs ne doit pas etre afficher on genere pas le <tr>...
-     * @return string 
+     * @return string
      */
     public function renderRow($option = array(), $renderRow = false) {
 
@@ -589,10 +603,10 @@ class mmWidget extends mmObject {
             }
         }
     }
-    
+
     /**
      * Genere le script associe au widget
-     * 
+     *
      */
     public function renderJavascript($inDocumentReady = false, $forceRender = false) {
 //    if ( (! $this->rendered && ! $forceRender) || ! $forceRender)
@@ -687,12 +701,12 @@ class mmWidget extends mmObject {
     }
 
     /*
-     * Foncton interne de gestion 
+     * Foncton interne de gestion
      */
 
     /**
      * genere la chaine correspondante a la liste des attributs
-     * 
+     *
      * @param type $extraAttributes attribut ajouter aux attribut deja existant. Si un des attribut existe deja il est remplace par celui de $extraAttributes
      * @param type $replace si a true, les attributs fournis remplace ceux existant, sinon ajout/remplacement des attributs
      * @return string
@@ -717,7 +731,7 @@ class mmWidget extends mmObject {
     }
 
     /**
-     * Traitement a effectuer apres l'ajout du widget dans un formulaire (appelé par mdForm::addWidget) 
+     * Traitement a effectuer apres l'ajout du widget dans un formulaire (appelé par mdForm::addWidget)
      */
     public function postAddWidget() {
         //rien car par defaut on fait rien. ce sont les decendant qui doivent gerer ca
@@ -747,7 +761,7 @@ class mmWidget extends mmObject {
 
     /**
      * Ajoute le nom de class mmError en cas d'erreur ou mdOk si pas d'erreur
-     * 
+     *
      * @param type $class class a ajouter en cas d'erreur 'error' par default
      */
     protected function addResultClass() {
@@ -784,7 +798,7 @@ class mmWidget extends mmObject {
         if( ! preg_match('#[0-9]*#', $this->attributes['value'])) {
             $this->addError('Le champ doit etre un entier', 0);
         }
-        
+
 //        if ( ! filter_var($this->attributes['value'], FILTER_VALIDATE_INT, )) {
 //            $this->addError('Le champ doit etre un entier', 0);
 //        }
@@ -798,7 +812,7 @@ class mmWidget extends mmObject {
 //            $this->addError('Le champ doit etre une valeur numerique', 0);
 //        }
     }
-    
+
     public function php_validator_email() {
         if ( ! filter_var($this->attributes['value'], FILTER_VALIDATE_EMAIL)) {
             $this->addError('Adresse email invalide');
@@ -829,7 +843,7 @@ class mmWidget extends mmObject {
 //        $this->addJavascript('__real', "mmJsCheckReal($('#{$this->attributes['id']}'));\n");
 //        $this->addJavascript('__real', "$('#{$this->attributes['id']}').change(function(){mmJsCheckReal($(this))});\n");
     }
-    
+
     public function js_validator_email() {
 ////        $this->addJavascript('__email', "mmJsCheckEmail($('#{$this->attributes['id']}'));\n");
 ////        $this->addJavascript('__email', "$('#{$this->attributes['id']}').change(function(){mmJsCheckEmail($(this))});\n");
