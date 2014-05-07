@@ -36,10 +36,11 @@ class mmProgWebService extends mmProg {
 
     public function execute($action, \mmRequest $request) {
         if (AJAX_REQUEST || DEBUG) {
+            $this->outputAsJson(); // by default the output will be a JSON
             parent::execute($action, $request);
         } else {
             //Ici on ne fais rien, si on tente d'executer un service web en mode standard on renvois un ecran vide.
-            $this->addHeader('HTTP/1.1 403 Forbidden'); //on ecrit acces refusé standard            
+            $this->addHeader('HTTP/1.1 403 Forbidden'); //on ecrit acces refusé standard
         }
     }
 

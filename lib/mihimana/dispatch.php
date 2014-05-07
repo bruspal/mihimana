@@ -158,12 +158,24 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
 //    }
 }
 
-function echoError($contenu) {
-    $sortieProgramme = $contenu;
-    if (AJAX_REQUEST) {
-        echo $sortieProgramme;
+function echoError($contenu, $errorCode = -500, $errorMessage = 'Erreur interne') {
+    if (DEBUG) {
+        $sortieProgramme = $contenu;
     } else {
-        include APPLICATION_DIR . '/templates/layout.php';
+        $sortieProgramme = '';
+    }
+
+    switch ($GLOBALS['OUTPUT_JSON']) {
+        case 'json':
+            \mmJSON::sendJSON(array('raw' => $sortieProgramme), false, $errorCode, $errorMessage);
+            break;
+        case 'jsonp':
+            \mmJSON::sendJSONP(array('raw' => $sortieProgramme), false, $errorCode, $errorMessage);
+            break;
+        case 'html':
+        default:
+            include APPLICATION_DIR . '/templates/layout.php';
+            break;
     }
 }
 ?>

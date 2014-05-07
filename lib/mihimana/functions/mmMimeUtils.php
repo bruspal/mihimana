@@ -71,9 +71,10 @@ function mmOutputJpeg($content, $forceDownload = false) {
 
 /**
  * Set output as HTML
- * @param string $encoding if ommited the APP_DEFAULT_ENCODING defined in APP/config/config.php will be used 
+ * @param string $encoding if ommited the APP_DEFAULT_ENCODING defined in APP/config/config.php will be used
  */
 function mmOutputHtml($encoding = APP_DEFAULT_ENCODING) {
+    $GLOBALS['OUTPUT_MODE'] = 'html';
     header("Content-Type: text/html; charset=$encoding");
     header("charset: $encoding");
 }
@@ -82,6 +83,7 @@ function mmOutputHtml($encoding = APP_DEFAULT_ENCODING) {
  * Set output as JSON
  */
 function mmOutputJson() {
+    $GLOBALS['OUTPUT_MODE'] = 'json';
     header('Content-Type: application/json');
 }
 
@@ -89,5 +91,6 @@ function mmOutputJson() {
  * Set output as JSONP
  */
 function mmOutputJsonp() {
+    $GLOBALS['OUTPUT_MODE'] = 'jsonp';
     header('Content-Type: application/javascript');
 }
