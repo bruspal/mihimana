@@ -206,17 +206,16 @@ class mmProg extends mmObject {
 
     protected function outputAsJson() {
         $this->setLayout(false);
-        $this->addHeader('Content-Type: application/json');
+        mmOutputJson();
     }
 
     protected function outputAsJsonp() {
         $this->setLayout(false);
-        $this->addHeader('Content-Type: application/javascript');
+        mmOutputJsonp();
     }
 
     protected function outputAsHtml($encoding = APP_DEFAULT_ENCODING) {
-        $this->addHeader("Content-Type: text/html; charset=$encoding");
-        $this->addHeader("charset: $encoding");
+        mmOutputHtml($encoding);
     }
 
     /**
