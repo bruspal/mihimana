@@ -1,3 +1,68 @@
 #!/usr/bin/php
 <?php
-echo "helloworl";
+/*------------------------------------------------------------------------------
+-------------------------------------
+Mihimana : the visual PHP framework.
+Copyright (C) 2012-2014  Bruno Maffre
+contact@bmp-studio.com
+-------------------------------------
+
+-------------------------------------
+@package : lib
+@module: bin
+@file : mihimana-cli
+-------------------------------------
+
+This file is part of Mihimana.
+
+Mihimana is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mihimana is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+------------------------------------------------------------------------------*/
+
+/*
+ * Constants
+ */
+print_r($_SERVER);
+require '../lib/mihimana/constantes.php';
+require CONFIG_DIR . DIRECTORY_SEPARATOR .'config.php';
+// Define default constants value if not defined in config.php or application index file
+if (!defined('APPLICATION')) {
+    Die("L'application n'a pas été définie");
+}
+if (!defined('MODULE_DEFAUT')) {
+    define('MODULE_DEFAUT', 'main');
+}
+if (!defined('ACTION_DEFAUT')) {
+    define('ACTION_DEFAUT', 'index');
+}
+if (!defined('DEBUG')) {
+    define('DEBUG', false);
+}
+if (!defined('MODE_INSTALL')) {
+    define('MODE_INSTALL', false);
+}
+if (!defined('NO_LOGIN')) {
+    define('NO_LOGIN', false);
+}
+if (!defined('SUPER_ADMIN')) {
+    define('SUPER_ADMIN', false);
+}
+if (! defined('APP_DEFAULT_ENCODING')) {
+    define('APP_DEFAULT_ENCODING', 'utf-8');
+}
+if (!defined('LOGIN_MODE')) {
+    define('LOGIN_MODE', LOGIN_BY_USER);
+}
+if (!defined('REGISTER_MODE')) {
+    define ('REGISTER_MODE', REGISTER_BY_USER);
+}

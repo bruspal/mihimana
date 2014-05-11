@@ -5,7 +5,7 @@
  */
 
 //config par defaut pour cette application et configuration de mihimana
-define('APPLICATION', 'welcomeapp'); //definie le nom de l'application et le repertoire dans laquel se trouve les programmes
+define('APPLICATION', 'welcomeApp'); //definie le nom de l'application et le repertoire dans laquel se trouve les programmes
 define('MODULE_DEFAUT', 'main');  //Programme a lancer par defaut si 'module' n'est pas fournis
 define('ACTION_DEFAUT', 'index'); //action par defaut si elle est pas donnée en parametre
 define('DEBUG', true); // met le programme en mode debug ou non
