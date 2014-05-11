@@ -38,7 +38,6 @@ class mmForm extends mmObject implements ArrayAccess {
             $controlList = array(); //probablement a virer
     protected
             $nameFormat = '%s',
-            $prefixName = '',
             $record = null,
             $valid = true,
             $renderWidgetList = null,
@@ -58,11 +57,10 @@ class mmForm extends mmObject implements ArrayAccess {
             $errors = array();
     protected //default options, see constructor phpdoc for details
             $options = array(
-                'deep' => false,
-                'auto-ng-model' => false,
-                'ng-controller' => false
-            );
-
+        'deep' => false,
+        'auto-ng-model' => false,
+        'ng-controller' => false
+    );
 
     /**
      * Create a new form<br>
@@ -78,8 +76,8 @@ class mmForm extends mmObject implements ArrayAccess {
     public function __construct(Doctrine_Record $record = null, $options = array()) {
         $this->new = true;
         //check if exists unknown option
-        if ( $diffArray = array_diff_key($options, $this->options) ) {
-            throw new mmExceptionForm('mmForm: unknowns option '.$diffArray[0]);
+        if ($diffArray = array_diff_key($options, $this->options)) {
+            throw new mmExceptionForm('mmForm: unknowns option ' . $diffArray[0]);
         }
 
         $this->options = array_merge($this->options, $options);
@@ -92,37 +90,56 @@ class mmForm extends mmObject implements ArrayAccess {
         //fill in the form regarding the $record
         if ($record) {
             $this->setWidgetFromRecord($record);
-            $this->new = ! $this->record->exists();
+            $this->new = !$this->record->exists();
         }
 //    if (myUser::superAdmin() && $this->adminMenu) {
 //      $this->addJavascript('admin_menu', mdTemplate::renderTemplate('jsAdmin.js', array('baseUrl'=>$_SERVER['SCRIPT_NAME'].'/Droits/', 'screen' => '')));
 //    }
     }
 
+    /**
+     * magic call of $this->render()
+     * @return string
+     */
     public function __toString() {
         return $this->render();
     }
 
+    /**
+     * Set the form's action
+     * @param type $action
+     * @param type $encodeUrl @deprecated since version 1.0-ALPHA_1
+     */
     public function setAction($action, $encodeUrl = true) {
-        if ($encodeUrl) {
-            $action = genereUrlProtege($action);
-        }
         $this->action = $action;
     }
 
+    /**
+     * Return the form action
+     * @return string
+     */
     public function getAction() {
         return $this->action;
     }
 
+    /**
+     * Set method 'post' (default) or 'get'
+     * @param string $method
+     * @throws mmExceptionForm
+     */
     public function setMethod($method) {
         $method = strtolower($method);
         if ($method == 'post' || $method == 'get') {
             $this->method = $method;
         } else {
-            throw new mmExceptionDev("La method pour un formulaire ne peut etre que 'post' ou 'get'");
+            throw new mmExceptionForm("La method pour un formulaire ne peut etre que 'post' ou 'get'");
         }
     }
 
+    /**
+     * @deprecated since version 1.0_ALPHA-1
+     * @param type $adminMenu
+     */
     public function setAdminMenu($adminMenu) {
         $this->adminMenu = $adminMenu;
         //On vire le script si il exist et si on desactive
@@ -140,10 +157,9 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
     /**
-     * Ajoute ou remplace le widget identifie par $name
-     *
-     * @param string $name nom du widget
-     * @param mmWidget $widget widget
+     * Add or Replace a inner widget
+     * @param mmWidget $widget mmWidget instance
+     * @param mmWidget $ignoreNameFormat (default false) if set to true the widget's namr format won't be changed
      */
     public function addWidget(mmWidget $widget, $ignoreNameFormat = false) {
 
@@ -171,18 +187,25 @@ class mmForm extends mmObject implements ArrayAccess {
         }
 
         //revoir ce que ca fait
-        if ($this->getId() && ! $widget->isOverridden()) {
-            $widget->setId($this->getId().'_'.$widget->getId());
+        if ($this->getId() && !$widget->isOverridden()) {
+            $widget->setId($this->getId() . '_' . $widget->getId());
         }
 
         $this->widgetList[$name] = $widget;
     }
 
+    /**
+     * Attach a validator nammed $validatorName to the inner widget $widgetName
+     * @param string $widgetName
+     * @param string $validatorName
+     * @param array $params validator's parameters
+     * @throws mmExceptionForm
+     */
     public function addValidator($widgetName, $validatorName, $params = array()) {
         if (isset($this->widgetList[$widgetName])) {
             $this->widgetList[$widgetName]->addValidator($validatorName, $params);
         } else {
-            throw new mmException(__CLASS__.'::'.__METHOD__. " : tentative d'ajout d'un validateur sur un widget inexistant");
+            throw new mmExceptionForm("Le widget $widgetName n'existe pas.");
         }
     }
 
@@ -191,12 +214,12 @@ class mmForm extends mmObject implements ArrayAccess {
      * @param mixed $subForm can be a mmForm instance or an array of mmForm instances
      * @param type $includeName
      * @param mixed $rowIndex the row index gave to the included form, mainly used when an array of subForm is used this parameter can be used for hacking toi form subform name format
-     * @throws mmExceptionDev
+     * @throws mmExceptionForm
      */
     public function addForms($subForm, $includeName, $rowIndex = false) {
         if ($subForm instanceof mmForm) {
             if ($includeName) {
-                $subForm->setName($this->name.'['.$includeName.']');
+                $subForm->setName($this->name . '[' . $includeName . ']');
                 if ($rowIndex === false) {
                     $subForm->setNameFormat(sprintf('%s[%s][%%s]', $this->name, $includeName));
                     $baseId = $includeName;
@@ -235,7 +258,7 @@ class mmForm extends mmObject implements ArrayAccess {
                 }
                 $this->formsList[$includeName] = $subForm;
             } else {
-                throw new mmExceptionDev('Formulaire imbriqu&eacute; : seul un mdForm ou un tableau de mdForm peut etre imbriqu&eacute;');
+                throw new mmExceptionForm('Formulaire imbriqu&eacute; : seul un mdForm ou un tableau de mdForm peut etre imbriqu&eacute;');
             }
         }
     }
@@ -249,11 +272,12 @@ class mmForm extends mmObject implements ArrayAccess {
             $this->addWidget($widget);
         }
     }
+
     /**
-     * Setup form regarding $record
+     * Setup form's widgets from a Doctrine_Record
      * @param Doctrine_Record $record
-     * @param type $nameFormat
-     * @return type
+     * @param type $nameFormat use the %s formated string such as 'foobar[%s]' instead of default name format. @see setNameFormat for details.
+     * @return boolean true if everything was ok.
      */
     public function setWidgetFromRecord(Doctrine_Record $record, $nameFormat = '') {
         // variabled utiles
@@ -292,11 +316,11 @@ class mmForm extends mmObject implements ArrayAccess {
             }
             $widget->setLabel(ucfirst(str_replace('_', ' ', $fieldName)));
 
-            //Application des validateur
-
-//            if (isset($field['primary']) && $field['primary']) {
-//                $widget->addValidator('notnull');
-//            }
+            //Validators
+            //for primary key of existing records add the validator
+            if (isset($field['primary']) && $field['primary'] && $record->exists()) {
+                $widget->addValidator('notnull');
+            }
 
             if (isset($field['length']) && $widget instanceof mmWidgetText) {
                 $widget->addValidator('length_max', $field['length']);
@@ -317,10 +341,14 @@ class mmForm extends mmObject implements ArrayAccess {
         return $this->valid;
     }
 
-
+    /**
+     * Create forms and its related nested form from a Doctrine_Record
+     * @param type Doctrine_Record $record 
+     * @return type
+     */
     public function setSubFormFromRecord(Doctrine_Record $record) {
         $arrayRelation = $record->getReferences();
-        foreach($arrayRelation as $relationName => $relation) {
+        foreach ($arrayRelation as $relationName => $relation) {
             $dataRelation = $relation['data'];
             if (is_array($dataRelation)) {
                 $arraySubform = array();
@@ -330,12 +358,18 @@ class mmForm extends mmObject implements ArrayAccess {
                 }
                 $this->addForms($arraySub, $relationName);
             } else {
-                $subForm = new mmForm ($dataRelation, $this->options);
+                $subForm = new mmForm($dataRelation, $this->options);
                 $this->addForms($subForm, $relationName);
             }
         }
     }
 
+    /**
+     * Widget creation based on the field description
+     * @param string $fieldName name of futur widget
+     * @param array $field database field description
+     * @return mmWidget created widget
+     */
     protected function creerWidgetDepuisTypeChamp($fieldName, $field) {
         // variables utiles
         $ouiNon = array('0' => 'Non', '1' => 'Oui');
@@ -404,6 +438,7 @@ class mmForm extends mmObject implements ArrayAccess {
      */
 
     /**
+     * Set the internal DB value of the object 
      * Met a jour l'objet avec les valeurs fournis en parametre au format de la base de donnees
      * ignore les champs manquant et supplementaires
      *
@@ -424,7 +459,8 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
     /**
-     * set values to the form, $values is a associative array 'field_name' => 'value'
+     * set values to the form, $values is a associative array 'field_name' => 'value'. Validators are checked during the process.<br>
+     * If an error occure, the valide flad will be set to false.
      * @param array $values
      * @param mixed $compulsory true: all fields but mmWidgetButton,... instances are compulsory<br>otherwise an array of compulsory fields. If ommited there is no fields compulsory
      * @return boolean true if all fields are validated false otherwise
@@ -443,18 +479,19 @@ class mmForm extends mmObject implements ArrayAccess {
         if ($compulsory !== false) {
             if ($compulsory === true) {
                 foreach ($this->widgetList as $wName => $widgetInstance) {
-                    if ($widgetInstance instanceof mmWidgetButton) continue;
-                    if ( ! isset($_values[$wName])) {
+                    if ($widgetInstance instanceof mmWidgetButton)
+                        continue;
+                    if (!isset($_values[$wName])) {
                         $this->valid = false;
-                        $this->addError('missing field '.$wName);
+                        $this->addError('missing field ' . $wName);
                     }
                 }
             } else {
-                $compulsory = (array)$compulsory;
-                foreach($compulsory as $cField) {
-                    if ( ! isset($_values[$cField])) {
+                $compulsory = (array) $compulsory;
+                foreach ($compulsory as $cField) {
+                    if (!isset($_values[$cField])) {
                         $this->valid = false;
-                        $this->addError('missing field '.$cFields);
+                        $this->addError('missing field ' . $cFields);
                     }
                 }
             }
@@ -463,12 +500,18 @@ class mmForm extends mmObject implements ArrayAccess {
         foreach ($_values as $name => $value) {
             if (isset($this->widgetList[$name])) {
                 try {
+                    if (function_exists('mmFormBeforeSetValue')) {
+                        if (mmFormBeforeSetValue()) {
+                            $this->widgetList[$name]->setValue($value);
+                        }
+                    } else {
+                        $this->widgetList[$name]->setValue($value);
+                    }
                     //On verifie les droits
 //          if (myUser::superAdmin() || isset($this->listDroits[$name]['edit']) && $this->listDroits[$name]['edit']) {
 //                    if ($value == "O") {
 //                        $rien = $value;
 //                    }
-                    $this->widgetList[$name]->setValue($value);
 //          }
                 } catch (mmExceptionWidget $e) {
                     $this->valid = false;
@@ -500,19 +543,27 @@ class mmForm extends mmObject implements ArrayAccess {
         return $this->valid;
     }
 
+    /**
+     * Set the $value of the $fieldname widget. Set the form in invalid state if something went wrong. 
+     * @param type $fieldName 
+     * @param type $value 
+     */
     public function setValue($fieldName, $value) {
         if (isset($this->widgetList[$fieldName])) {
             try {
-                //On verifie les droits
-//        if (myUser::superAdmin() || isset($this->listDroits[$name]['edit']) && $this->listDroits[$name]['edit']) {
                 $this->widgetList[$fieldName]->setValue($value);
-//        }
             } catch (mmExceptionWidget $e) {
                 $this->valid = false;
             }
+        } else {
+            throw new mmExceptionForm("The widget $fieldName doesn't exists");
         }
     }
 
+    /**
+     * return an array of widget values
+     * @return array
+     */
     public function getValues() {
         $result = array();
         foreach ($this->widgetList as $wn => $widget) {
@@ -521,31 +572,37 @@ class mmForm extends mmObject implements ArrayAccess {
         return $result;
     }
 
+    /**
+     * Get the widget value of the widget $fieldName
+     * @param type $fieldName 
+     * @return type
+     */
     public function getValue($fieldName) {
         return $this->widgetList[$fieldName]->getValue();
     }
 
-    // a virer et $this->prefixName aussi
-    public function setPrefixName($prefix) {
-        $this->prefixName = $prefix;
-    }
-
-    public function getPrefixName() {
-        return $this->prefixName;
-    }
-
-    // jusque la
-
+    /**
+     * set the form name
+     * @param string $name
+     */
     public function setName($name) {
         $this->name = $name;
         //On met a jour le nameFormat
 //    $this->nameFormat = sprintf()
     }
 
+    /**
+     * get the form's name
+     * @return string
+     */
     public function getName() {
         return $this->name;
     }
 
+    /**
+     * Return the table name or empty string if there is no associed table
+     * @return type
+     */
     public function getTableName() {
         if ($this->record === null) {
             return '';
@@ -553,27 +610,58 @@ class mmForm extends mmObject implements ArrayAccess {
             return $this->record->getTable()->getTableName();
         }
     }
-
+    /**
+     * set the form html id tag for the form
+     * @param string $id 
+     */
     public function setId($id = '') {
         $this->id = $id;
     }
 
+    /**
+     * Get the ihtml id tag
+     * @return type
+     */
     public function getId() {
         return $this->id;
     }
 
+    //TODO: Voir ce que ca fait ici
+    /**
+     * set screen. @todo probably deprecated
+     * @param type $screen 
+     * @return type
+     */
     public function setScreen($screen) {
         $this->screen = $screen;
     }
 
+    //TODO: revoir ce que ca fait ici
+    /**
+     * get screen. @todo probably deprecated
+     * @param type $screen 
+     * @return type
+     */
     public function getScreen() {
         return $this->screen;
     }
 
+    //TODO: voir si c'est a virer
+    /**
+     * set label. @todo probably deprecated
+     * @param type $label 
+     * @return type
+     */
     public function setLabel($label) {
         $this->label = $label;
     }
 
+    //TODO: voir si on doit virer ca
+    /**
+     * get label. @todo probably deprecated
+     * @param type $label 
+     * @return type
+     */
     public function getLabel() {
         return $this->label;
     }
@@ -589,7 +677,10 @@ class mmForm extends mmObject implements ArrayAccess {
             }
         }
     }
-
+    /**
+     * set the name format of inner widgets, name format must contains '%s' in with the widget name takes place
+     * @param string $format 
+     */
     public function setNameFormat($format) {
         $this->nameFormat = $format;
         //On applique le nouveau nameFormat a tous les widgetAssocie
@@ -605,38 +696,47 @@ class mmForm extends mmObject implements ArrayAccess {
                 $w->setNameFormat($this->nameFormat);
             }
         }
-/*
-        //on traite tous les cas des sous formulaire
-        foreach ($this->formsList as $fName => $subForm) {
-            if ($subForm instanceof mmForm) {
-                echo "<h1>subform $fName ".$subForm->getNameFormat()."</h1>";
-            } else {
-                if (is_array($subForm)) {
-                    foreach ($subForm as $forRow => $subFormRow) {
-                        if ($subFormRow instanceof mmForm) {
-                            echo "<h1>subform[$forRow] $fName ".$subFormRow->getNameFormat()."</h1>";
-                        } else {
-                            throw new mmExceptionDev('array de sous forme contenant un truc pas legal');
-                        }
-                    }
-                } else {
-                    throw new mmExceptionDev('pas mmForm et pas array');
-                }
-            }
+        /*
+          //on traite tous les cas des sous formulaire
+          foreach ($this->formsList as $fName => $subForm) {
+          if ($subForm instanceof mmForm) {
+          echo "<h1>subform $fName ".$subForm->getNameFormat()."</h1>";
+          } else {
+          if (is_array($subForm)) {
+          foreach ($subForm as $forRow => $subFormRow) {
+          if ($subFormRow instanceof mmForm) {
+          echo "<h1>subform[$forRow] $fName ".$subFormRow->getNameFormat()."</h1>";
+          } else {
+          throw new mmExceptionDev('array de sous forme contenant un truc pas legal');
+          }
+          }
+          } else {
+          throw new mmExceptionDev('pas mmForm et pas array');
+          }
+          }
 
-        }
-*/
+          }
+         */
     }
 
+    /**
+     * get the form's nameFormat
+     * @return type
+     */
     public function getNameFormat() {
         return $this->nameFormat;
     }
 
     /**
-     * rendu du formulaire
+     * display form
      *
-     * @param array $fieldList : $array list des champs a afficher, si omis, affiche tous les champs
-     * @param array $subFormsSetting: tableau de paramettrage de rendu des sous-formulaires array(nom_interne =><br />
+     * @param array $fieldList array of string. enumerate which field will be displayed, if ommited or empty it will display every widgets<br>
+     * @param array $subFormsSetting parameters array to defined how to render subforms:
+     * <table>
+     * <tr><th colspan="2">subform setup</th></tr>
+     * <tr><td>subform_name</td>
+     * </table>
+     * : tableau de paramettrage de rendu des sous-formulaires array(nom_interne =><br />
      * array('fieldList'=>comme $fieldList, 'renderType'=> type de rendu, 'label'=> label a afficher dans le cas du renderType='fieldset'))<br />
      * type de rendu:<ul><li>table (default): rend le formulaire comme une table html</li><li>fieldset: rend le formulaire comme avec renderFieldset</li><li>row: rend le formulaire dans une table horizontale</li></ul>
      * @return type
@@ -648,7 +748,7 @@ class mmForm extends mmObject implements ArrayAccess {
             if (($wn == 'id' && $widget instanceof mmWidgetHidden) || $widget instanceof mmWidgetHidden) { //TODO: ameliorer le filtre pour rendre par automatique les champs index invisible
                 $result .= '<tr style="display: none;"><td colspan="2">' . $widget->render() . '</td></tr>';
             } else {
-                if ( ! ($widget instanceof mmWidgetButton)) {
+                if (!($widget instanceof mmWidgetButton)) {
                     $result .= $widget->renderRow();
                 }
             }
@@ -671,18 +771,23 @@ class mmForm extends mmObject implements ArrayAccess {
         $result .= $this->renderErrors();
         //On ajoute les balise <form> si l'action a ete definie
         if ($this->action) {
-            $result = $this->start().$result.$this->stop();
+            $result = $this->start() . $result . $this->stop();
         }
         $result .= $this->renderJavascript($fieldList);
         return $result;
     }
 
-
+    /**
+     * return the array of errors stored in the form instance, if deep set to false (default) it will return erros only for the current form. if set tp true, it will also return the erros of sub forms.
+     * @param type $deep 
+     * @return type
+     */
     public function getErrors($deep = false) {
         $result = array();
         if ($deep) {
             foreach ($this->widgetList as $wName => $wInstance) {
-                if ( ! $wInstance->isValid()) $result['widgets'][$wName] = $wInstance->getErrors();
+                if (!$wInstance->isValid())
+                    $result['widgets'][$wName] = $wInstance->getErrors();
             }
             $result['form'] = $this->errors;
         } else {
@@ -697,15 +802,17 @@ class mmForm extends mmObject implements ArrayAccess {
      */
     public function start($extraAttributes = array()) {
         $strExtraAttr = '';
-        foreach($extraAttributes as $aName => $aValue) {
+        foreach ($extraAttributes as $aName => $aValue) {
             $strExtraAttr .= "$aName=\"$aValue\" ";
         }
-        return sprintf('<form action="%s" method="%s" %s enctype="%s" %s>', $this->action, $this->method, $this->id == '' ? '' : 'id="'.$this->id.'"', $this->enctype, $strExtraAttr);
+        return sprintf('<form action="%s" method="%s" %s enctype="%s" %s>', $this->action, $this->method, $this->id == '' ? '' : 'id="' . $this->id . '"', $this->enctype, $strExtraAttr);
     }
 
-
-    /*
-     * Return only tag for form
+    /**
+     * return the inners attributes of form or any widget within the form. if $widgetName is ommited the form's attributes will be returned<br>
+     * otherwise $widgetName widget's attributes are returned
+     * @param string $widgetName 
+     * @return string
      */
     public function useAttrs($widgetName = false) {
         if ($widgetName) {
@@ -718,21 +825,22 @@ class mmForm extends mmObject implements ArrayAccess {
             $strExtraAttr = '';
             if ($this->options['ng-controller']) { // if ng-controller must be added to the form header
                 if ($this->options['ng-controller'] === true) {
-                    $strExtraAttr = ' ng-controller="'.$this->name.'"';
-                }
-                elseif (is_string($this->options['ng-controller'])) {
-                    $strExtraAttr = ' ng-controller="'.$this->options['ng-controller'].'"';
+                    $strExtraAttr = ' ng-controller="' . $this->name . '"';
+                } elseif (is_string($this->options['ng-controller'])) {
+                    $strExtraAttr = ' ng-controller="' . $this->options['ng-controller'] . '"';
                 } else {
                     throw new mmExceptionForm("Tentative d'attacher un ng-controller avec autre chose qu'un boolean ou une chaine");
                 }
             }
-            return sprintf('action="%s" method="%s" %s enctype="%s"', $this->action, $this->method, $this->id == '' ? '' : 'id="'.$this->id.'"', $this->enctype);
+            return sprintf('action="%s" method="%s" %s enctype="%s"', $this->action, $this->method, $this->id == '' ? '' : 'id="' . $this->id . '"', $this->enctype);
         }
-
     }
 
-    /*
-     * Echoing only html tag for form
+    /**
+     * echoing the inners attributes of form or any widget within the form. if $widgetName is ommited the form's attributes will be returned<br>
+     * otherwise $widgetName widget's attributes are returned
+     * @param string $widgetName 
+     * @return string
      */
     public function renderAttrs($widgetName = false) {
         echo $this->useAttrs($widgetName);
@@ -746,10 +854,12 @@ class mmForm extends mmObject implements ArrayAccess {
         return '</form>';
     }
 
-    public function renderFormHeader() {
-        throw new mmExceptionDev('Method renderFormHeader desuete. Utiliser start()');
-    }
-
+    /**
+     * render form as a html table.
+     * @param array $fieldList list of rendered widgets, if ommitted render all widgets
+     * @param type $subFormsSetting  setting for subform's rendering @see render
+     * @return string
+     */
     public function renderRow($fieldList = null, $subFormsSetting = null) {
         $fieldList = $this->generateFieldsList($fieldList);
         $result = '';
@@ -777,6 +887,13 @@ class mmForm extends mmObject implements ArrayAccess {
         return sprintf('<table><thead><tr>%s</tr></thead><tbody><tr>%s</tr>%s</tbody></table>', $head, $result, $strSubForms) . $this->renderJavascript($fieldList);
     }
 
+    /**
+     * render the form in a fieldset container
+     * @param string $legend fieldset's legend 
+     * @param array $fieldList list of redenred widgets, if ommited all widgets will be rendered
+     * @param array $subFormsSetting subforms setting @see render
+     * @return string
+     */
     public function renderFieldset($legend = '', $fieldList = null, $subFormsSetting = false) {
         if ($legend == '') {
             $legend = $this->label;
@@ -805,7 +922,7 @@ class mmForm extends mmObject implements ArrayAccess {
                 } else {
                     if (is_array($form)) {
                         foreach ($form as $formRow) {
-                            if ( ! $formRow instanceof mmForm) {
+                            if (!$formRow instanceof mmForm) {
                                 throw new mmExceptionDev('le tableau de formulaire impriqué ne peux contenir que des instance de mmForm');
                             }
                             $result .= $formRow->renderRow();
@@ -910,7 +1027,7 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
     public function renderErrors($bloc = 'div', $line = 'p') {
-        if (count($this->errors)>0) { //there is errors
+        if (count($this->errors) > 0) { //there is errors
             $errorsLine = implode("</$line><$line>", $this->errors);
             return "<$bloc id=\"mmFormError_{$this->getId()}\" class=\"mmFormError\"><$line>$errorsLine</$line></$bloc>";
         } else {
@@ -925,9 +1042,9 @@ class mmForm extends mmObject implements ArrayAccess {
         $result = '<table class="errors">';
         //widgets
         foreach ($this->widgetList as $wn => $widget) {
-            if ( ! $widget->isValid()) {
+            if (!$widget->isValid()) {
                 $errors = $widget->getErrors();
-                foreach($errors as $ligne) {
+                foreach ($errors as $ligne) {
                     $result.="<tr><th>$wn</th><td>$ligne</td></tr>";
                 }
             }
@@ -935,14 +1052,14 @@ class mmForm extends mmObject implements ArrayAccess {
         //embeded forms
         foreach ($this->formsList as $fn => $form) {
             if ($form instanceof mmForm) {
-                $result .= '<tr><th colspan="2">Subform : '.$fn.'</th></tr>';
-                $result .= '<tr><td colspan="2">'.$form->renderWidgetErrors().'</td></tr>';
+                $result .= '<tr><th colspan="2">Subform : ' . $fn . '</th></tr>';
+                $result .= '<tr><td colspan="2">' . $form->renderWidgetErrors() . '</td></tr>';
             } else {
                 if (is_array($form)) {
                     foreach ($form as $afn => $aform) {
                         if ($aform instanceof mmForm) {
-                            $result .= '<tr><th colspan="2">Subform : '.$afn.'</th></tr>';
-                            $result .= '<tr><td colspan="2">'.$aform->renderWidgetErrors().'</td></tr>';
+                            $result .= '<tr><th colspan="2">Subform : ' . $afn . '</th></tr>';
+                            $result .= '<tr><td colspan="2">' . $aform->renderWidgetErrors() . '</td></tr>';
                         } else {
                             throw new mmExceptionDev('le tableau de formulaire impriqué ne peux contenir que des instance de mmForm');
                         }
@@ -955,7 +1072,6 @@ class mmForm extends mmObject implements ArrayAccess {
         $result .= '</table>';
         return $result;
     }
-
 
     public function addJavascript($name, $script) {
         $this->javascripts[$name] = array('script' => $script, 'rendered' => false);
@@ -984,8 +1100,7 @@ class mmForm extends mmObject implements ArrayAccess {
             foreach ($this->formsList as $form) {
                 if ($form instanceof mmForm) {
                     $form->foreachWidget($methodName, $params, $deep);
-                }
-                elseif (is_array($form)) {
+                } elseif (is_array($form)) {
                     foreach ($form as $subForm) {
                         if ($subForm instanceof mmForm) {
                             $subForm->foreachWidget($methodName, $params, $deep);
@@ -993,8 +1108,7 @@ class mmForm extends mmObject implements ArrayAccess {
                             throw new mmExceptionForm('Formulaire imbriqué non tableau non mmForm');
                         }
                     }
-                }
-                else {
+                } else {
                     throw new mmExceptionForm('Formulaire imbriqué non tableau non mmForm');
                 }
             }
@@ -1078,11 +1192,17 @@ class mmForm extends mmObject implements ArrayAccess {
 
     public function save(Doctrine_Connection $conn = null) {
         if ($this->record) {
+            //TODO hooks avant save
+            if ( ! $this->beforeUpdateSave()) {
+                return null; //save canceled
+            }
             //En enregistrement existe pour ce formulaire, on fais un enregistrement
             if ($this->valid && $this->updateRecord()) {
+                $this->beforeSave();
                 if ($this->record->isModified(true)) {
                     //si les données ont été changées dans l'enregistrement ou un de ses enregistrement lié, on enregistre
                     $this->record->save($conn);
+                    $this->afterSave();
                 }
                 $this->new = !$this->record->exists();
             }
@@ -1106,7 +1226,27 @@ class mmForm extends mmObject implements ArrayAccess {
 
         return $this->record;
     }
+    /**
+     * hooks methods before record updated with data in form. If return false save is canceled
+     * @return boolean
+     */
+    public function beforeUpdateSave() {
+        return true;
+    }
 
+    /**
+     * Action to do after record updated with forms data and before saving. called only if form is valid (i.e. no errors)
+     */
+    public function beforeSave() {
+
+    }
+
+    /**
+     * Action to do after records has been saved
+     */
+    public function afterSave() {
+
+    }
     /**
      * retourne l'objet doctrine stocker dans le formulaire avec les donnees en cours
      * @return type
@@ -1122,10 +1262,13 @@ class mmForm extends mmObject implements ArrayAccess {
     public function getUpdatedRecord() {
         return $this->updateRecord();
     }
+
     /*
      * Gestion des droits
      */
-
+    /**
+     * @deprecated methods perhaps in an overided classe
+     */
     public function loadDroits($screen = '') {
         return true;
 
@@ -1221,7 +1364,7 @@ class mmForm extends mmObject implements ArrayAccess {
                     $form->disable($butButton);
                 } else {
                     if (is_array($form)) {
-                        foreach($form as $subForm) {
+                        foreach ($form as $subForm) {
                             if ($subForm instanceof mmForm) {
                                 $subForm->disable($butButton);
                             } else {
@@ -1255,7 +1398,7 @@ class mmForm extends mmObject implements ArrayAccess {
                     $form->enable($butButton);
                 } else {
                     if (is_array($form)) {
-                        foreach($form as $subForm) {
+                        foreach ($form as $subForm) {
                             if ($subForm instanceof mmForm) {
                                 $subForm->enable($butButton);
                             } else {
