@@ -37,7 +37,7 @@ class mmWidget extends mmObject {
     protected $dbValue = ''; //Valeur nettoyee
     protected $display = true; //A true on affiche le widget, a false non
     //Tableau de clause de verification et validation
-    protected $validations = array();
+    protected $validators = array();
     protected $errors = array();
     protected $jsError = array();
     protected $options = array();
@@ -53,6 +53,10 @@ class mmWidget extends mmObject {
     public $rendered = false;
     public $ignoreRender = false;
     protected $ignorePortefeuille = false;
+
+    protected 
+            $relatedRecord = false;
+
 
     private
             /**
@@ -89,14 +93,13 @@ class mmWidget extends mmObject {
             $this->label = $name->label;
             $this->dbValue = $name->dbValue;
             $this->display = $name->display;
-            $this->validations = $name->validations;
+            $this->validators = $name->validators;
             $this->errors = $name->errors;
             $this->jsError = $name->jsError;
             $this->options = $name->options;
             $this->fromDb = $name->fromDb;
             $this->nameFormat = $name->nameFormat;
             $this->javascripts = $name->javascripts;
-            $this->validations = $name->validations;
             //on ecrase le type de widget et la classe
             $this->attributes['type'] = $type;
             $this->attributes['class'] = $class;
@@ -286,6 +289,13 @@ class mmWidget extends mmObject {
         return (string) $this->dbValue;
     }
 
+    public function setRelatedRecord(Doctrine_Record &$relatedRecord) {
+        if ( ! $relatedRecord instanceof Doctrine_Record) {
+            throw new mmExceptionForm("Related record must be a Doctrine_Record instance");
+        }
+        $this->relatedRecord = $relatedRecord;
+    }
+    
     public function setMax($valeur) {
         $this->max = $valeur;
     }
@@ -595,14 +605,16 @@ class mmWidget extends mmObject {
         if (!is_array($params)) {
             $params = array($params);
         }
-        $this->validations[$name] = $params;
+        $this->validators[$name] = $params;
         if (!($this instanceof mmWidgetHidden)) {
             $methodName = 'js_validator_' . $name;
             call_user_func_array(array($this, $methodName), $params);
-            if ( ! is_null($this->containerForm)) {
-                $this->containerForm->addJavascript('_jquerytoolsValidator', "$('#{$this->containerForm->getId()}').validator();\n");
-
-            }
+            
+// @deprecated
+//            if ( ! is_null($this->containerForm)) {
+//                $this->containerForm->addJavascript('_jquerytoolsValidator', "$('#{$this->containerForm->getId()}').validator();\n");
+//
+//            }
         }
     }
 
@@ -733,10 +745,11 @@ class mmWidget extends mmObject {
     }
 
     /**
-     * Traitement a effectuer apres l'ajout du widget dans un formulaire (appelé par mdForm::addWidget)
+     * Hooks called by mmForm::addWidget() after the widget is successfuly added to the form. Do nothing but must be overidden.
+     * @return boolean 
      */
     public function postAddWidget() {
-        //rien car par defaut on fait rien. ce sont les decendant qui doivent gerer ca
+        return true;
     }
 
     /**
@@ -751,7 +764,7 @@ class mmWidget extends mmObject {
             $this->addError("La valeur ne peux etre superieur à " . $this->max);
         }
 
-        foreach ($this->validations as $validatorName => $params) {
+        foreach ($this->validators as $validatorName => $params) {
             $methodName = 'php_validator_' . $validatorName;
             if (method_exists($this, $methodName)) {
                 call_user_func_array(array($this, $methodName), $params);
@@ -790,6 +803,14 @@ class mmWidget extends mmObject {
         }
     }
 
+    public function php_validator_primary() {
+        if ($this->fromDb) { // has sens only if widget is related to DB
+            if ($this->attributes['value'] === '' || $this->attributes['value'] === $this->relatedRecord[$this->getName()]) {
+                throw new mmExceptionData("Tentative de mise a jour d'un champs en fournissant une clé vide ou incorrecte");
+            }
+            
+        }   
+    }
     public function php_validator_length_max($params) {
         if (strlen($this->attributes['value']) > $params) {
             $this->addError("La longueur ne peux pas etre superieur a $params", '');
@@ -856,4 +877,7 @@ class mmWidget extends mmObject {
 //        }
     }
 
+    public function js_validator_primary() {
+        
+    }
 }
