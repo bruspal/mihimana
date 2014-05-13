@@ -31,6 +31,11 @@
 /*
  * Dispatching
  */
+
+//Force outpu as Html
+mmOutputHtml();
+
+//TODO: make a better try catch
 try { //On protege contre les erreurs ce qui se trouve dans le try { }
     /*
      * Routing
@@ -107,8 +112,6 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         $helpers = (array) $helpers;
         loadHelper($helpers);
     }
-    //On force l'encodage des pages
-    mmOutputHtml();
 
     if ($dispatcher_fichierProgramme) {
         //fichier PHP personnalisé
@@ -165,7 +168,7 @@ function echoError($contenu, $errorCode = -500, $errorMessage = 'Erreur interne'
         $sortieProgramme = '';
     }
 
-    switch ($GLOBALS['OUTPUT_JSON']) {
+    switch ($GLOBALS['OUTPUT_MODE']) {
         case 'json':
             \mmJSON::sendJSON(array('raw' => $sortieProgramme), false, $errorCode, $errorMessage);
             break;
