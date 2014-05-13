@@ -6,7 +6,7 @@
  * @param string $extension file's extension. default: .php 
  * @return string
  */
-function partial($templateName, $variables = array(), $extension = '.php') {
+function usePartial($templateName, $variables = array(), $extension = '.php') {
     $strTemplate = mmTemplate::renderTemplate($templateName.$extension, $variables, getPartialPath());
     return $strTemplate;
 }
@@ -18,5 +18,5 @@ function partial($templateName, $variables = array(), $extension = '.php') {
  * @return string
  */
 function renderPartial($templateName, $variables = array(), $extension = '.php') {
-    echo partial($templateName, $variables, $extension);
+    echo usePartial($templateName, $variables, $extension);
 }
