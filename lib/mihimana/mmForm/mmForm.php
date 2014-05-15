@@ -161,7 +161,7 @@ class mmForm extends mmObject implements ArrayAccess {
      * @param mmWidget $widget mmWidget instance
      * @param mmWidget $ignoreNameFormat (default false) if set to true the widget's namr format won't be changed
      */
-    public function addWidget(mmWidget $widget, $ignoreNameFormat = false) {
+    public function addWidget(mmWidget &$widget, $ignoreNameFormat = false) {
 
         $name = $widget->getName();
 
@@ -336,6 +336,11 @@ class mmForm extends mmObject implements ArrayAccess {
             //Affectation du widget
 //      $this->widgetList[$fieldName] = $widget;
             $this->addWidget($widget);
+
+            if ($this->options['auto-ng-model']) {
+                $widget->addAttribute('ng-init', $widget->getAttribute('ng-model')."='".$widget->getValue()."'");
+            }
+
         }
         $this->record = $record;
         return $this->valid;
@@ -343,7 +348,7 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * Create forms and its related nested form from a Doctrine_Record
-     * @param type Doctrine_Record $record 
+     * @param type Doctrine_Record $record
      * @return type
      */
     public function setSubFormFromRecord(Doctrine_Record $record) {
@@ -438,7 +443,7 @@ class mmForm extends mmObject implements ArrayAccess {
      */
 
     /**
-     * Set the internal DB value of the object 
+     * Set the internal DB value of the object
      * Met a jour l'objet avec les valeurs fournis en parametre au format de la base de donnees
      * ignore les champs manquant et supplementaires
      *
@@ -499,13 +504,15 @@ class mmForm extends mmObject implements ArrayAccess {
         // do affectation to all fields provided in values
         foreach ($_values as $name => $value) {
             if (isset($this->widgetList[$name])) {
-                try {
+//                try {
                     if (function_exists('mmFormBeforeSetValue')) {
                         if (mmFormBeforeSetValue()) {
-                            $this->widgetList[$name]->setValue($value);
+                            $this->setValue($name, $value);
+//                            $this->widgetList[$name]->setValue($value);
                         }
                     } else {
-                        $this->widgetList[$name]->setValue($value);
+                        $this->setValue($name, $value);
+//                        $this->widgetList[$name]->setValue($value);
                     }
                     //On verifie les droits
 //          if (myUser::superAdmin() || isset($this->listDroits[$name]['edit']) && $this->listDroits[$name]['edit']) {
@@ -513,9 +520,10 @@ class mmForm extends mmObject implements ArrayAccess {
 //                        $rien = $value;
 //                    }
 //          }
-                } catch (mmExceptionWidget $e) {
-                    $this->valid = false;
-                }
+
+//                //                } catch (mmExceptionWidget $e) {
+//                    $this->valid = false;
+//                }
             } else {
                 //est-ce pour le formulaire imprique ?
                 if (is_array($value) && isset($this->formsList[$name])) {
@@ -544,14 +552,19 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
     /**
-     * Set the $value of the $fieldname widget. Set the form in invalid state if something went wrong. 
-     * @param type $fieldName 
-     * @param type $value 
+     * Set the $value of the $fieldname widget. Set the form in invalid state if something went wrong.
+     * @param type $fieldName
+     * @param type $value
      */
     public function setValue($fieldName, $value) {
         if (isset($this->widgetList[$fieldName])) {
             try {
+
+                if ($this->options['auto-ng-model']) {
+                    $this->widgetList[$fieldName]->addAttribute('ng-init', $this->widgetList[$fieldName]->getAttribute('ng-model')."='".$value."'");
+                }
                 $this->widgetList[$fieldName]->setValue($value);
+
             } catch (mmExceptionWidget $e) {
                 $this->valid = false;
             }
@@ -574,7 +587,7 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * Get the widget value of the widget $fieldName
-     * @param type $fieldName 
+     * @param type $fieldName
      * @return type
      */
     public function getValue($fieldName) {
@@ -612,7 +625,7 @@ class mmForm extends mmObject implements ArrayAccess {
     }
     /**
      * set the form html id tag for the form
-     * @param string $id 
+     * @param string $id
      */
     public function setId($id = '') {
         $this->id = $id;
@@ -629,7 +642,7 @@ class mmForm extends mmObject implements ArrayAccess {
     //TODO: Voir ce que ca fait ici
     /**
      * set screen. @todo probably deprecated
-     * @param type $screen 
+     * @param type $screen
      * @return type
      */
     public function setScreen($screen) {
@@ -639,7 +652,7 @@ class mmForm extends mmObject implements ArrayAccess {
     //TODO: revoir ce que ca fait ici
     /**
      * get screen. @todo probably deprecated
-     * @param type $screen 
+     * @param type $screen
      * @return type
      */
     public function getScreen() {
@@ -649,7 +662,7 @@ class mmForm extends mmObject implements ArrayAccess {
     //TODO: voir si c'est a virer
     /**
      * set label. @todo probably deprecated
-     * @param type $label 
+     * @param type $label
      * @return type
      */
     public function setLabel($label) {
@@ -659,7 +672,7 @@ class mmForm extends mmObject implements ArrayAccess {
     //TODO: voir si on doit virer ca
     /**
      * get label. @todo probably deprecated
-     * @param type $label 
+     * @param type $label
      * @return type
      */
     public function getLabel() {
@@ -679,7 +692,7 @@ class mmForm extends mmObject implements ArrayAccess {
     }
     /**
      * set the name format of inner widgets, name format must contains '%s' in with the widget name takes place
-     * @param string $format 
+     * @param string $format
      */
     public function setNameFormat($format) {
         $this->nameFormat = $format;
@@ -779,7 +792,7 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * return the array of errors stored in the form instance, if deep set to false (default) it will return erros only for the current form. if set tp true, it will also return the erros of sub forms.
-     * @param type $deep 
+     * @param type $deep
      * @return type
      */
     public function getErrors($deep = false) {
@@ -811,7 +824,7 @@ class mmForm extends mmObject implements ArrayAccess {
     /**
      * return the inners attributes of form or any widget within the form. if $widgetName is ommited the form's attributes will be returned<br>
      * otherwise $widgetName widget's attributes are returned
-     * @param string $widgetName 
+     * @param string $widgetName
      * @return string
      */
     public function useAttrs($widgetName = false) {
@@ -839,7 +852,7 @@ class mmForm extends mmObject implements ArrayAccess {
     /**
      * echoing the inners attributes of form or any widget within the form. if $widgetName is ommited the form's attributes will be returned<br>
      * otherwise $widgetName widget's attributes are returned
-     * @param string $widgetName 
+     * @param string $widgetName
      * @return string
      */
     public function renderAttrs($widgetName = false) {
@@ -889,7 +902,7 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * render the form in a fieldset container
-     * @param string $legend fieldset's legend 
+     * @param string $legend fieldset's legend
      * @param array $fieldList list of redenred widgets, if ommited all widgets will be rendered
      * @param array $subFormsSetting subforms setting @see render
      * @return string
