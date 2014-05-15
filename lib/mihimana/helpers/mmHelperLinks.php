@@ -87,7 +87,7 @@ function renderJavascript($jsName, $global = false, $extension = '.js') {
 }
 
 /**
- * Echoing the tag to the css file
+ * Echoing the tag to the javascript file
  * @param string $jsName script name (without extension)
  * @param boolean $global if false (default) the referenced javascript will be in the assets projetx directory
  * @param string $extension the file extension, by default '.js'
