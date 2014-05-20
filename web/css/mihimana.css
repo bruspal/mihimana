@@ -3,13 +3,23 @@
  */
  
 #__mmPopup {
-    font-style: italic;
-    top: 17%;
+    top: 5%;
     left: 50%;
-    width: 400px;
-    margin-left: -200px;
+    width: 50%;
+    margin-left: -25%;
     padding: 10px;
-    max-height: 400px;
+    max-height: 90%;
+    overflow: auto;  
+}
+
+@media screen and (max-width: 768px) {
+    #__mmPopup {
+        top: 5%;
+        left: 10%;
+        width: 90%;
+        margin-left: -5%;
+        padding: 2px;
+    }
 }
 
 #__mmDialog {
@@ -52,7 +62,6 @@
   background-color: #00A;
   border: 3px ridge yellow;
   padding: 5px 5px 10px 5px;
-  overflow: auto;
 }
 
 .mmXClose {
