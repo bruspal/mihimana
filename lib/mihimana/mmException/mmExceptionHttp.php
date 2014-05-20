@@ -29,9 +29,10 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
 class mmExceptionHttp extends mmException{
-    const NOT_FOUND     = 404;
-    const FORBIDDEN     = 403;
-    
+    const NOT_FOUND         = 404;
+    const FORBIDDEN         = 403;
+    const INTERNAL_ERROR    = 500;
+
     public function __construct($code = null, $previous = null) {
         $message = '';
         switch ($code) {
