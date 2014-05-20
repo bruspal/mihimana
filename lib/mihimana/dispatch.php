@@ -167,13 +167,15 @@ function echoError($contenu, $errorCode = -500, $errorMessage = 'Erreur interne'
     } else {
         $sortieProgramme = '';
     }
+    //set status as internal error
+    header('HTTP/1.0 500 Internal Error');
 
     switch ($GLOBALS['OUTPUT_MODE']) {
         case 'json':
-            \mmJSON::sendJSON(array('raw' => $sortieProgramme), false, $errorCode, $errorMessage);
+            \mmJSON::sendJSON(null, false, $errorCode, $errorMessage."\n".$sortieProgramme);
             break;
         case 'jsonp':
-            \mmJSON::sendJSONP(array('raw' => $sortieProgramme), false, $errorCode, $errorMessage);
+            \mmJSON::sendJSONP(null, false, $errorCode, $errorMessage."\n".$sortieProgramme);
             break;
         case 'html':
         default:
