@@ -34,43 +34,75 @@ class mmVarHolder extends mmObject implements ArrayAccess {
     protected $variables;
 
     /**
-     * Generic variable holder, implementing ArrayAccess 
-     * @return \mmVarHolder
+     * Generic variable holder, implementing ArrayAccess
+     * @return mmVarHolder
      */
     public function __construct() {
         $this->variables = array();
         return $this;
     }
 
+    /**
+     * Insert or replace $varName with the $value
+     * @param string $varName
+     * @param mixed $value
+     * @return mixed return $value
+     */
     public function set($varName, $value) {
         $this->variables[$varName] = $value;
         return $value;
     }
 
-    public function get($varName, $defaut = null) {
+    /**
+     * return $Varname, if not found return $default
+     * @param string $varName
+     * @param mixed $default if ommitted $default = null
+     * @return mixed
+     */
+    public function get($varName, $default = null) {
         if (isset($this->variables[$varName])) {
             return $this->variables[$varName];
         } else {
-            return $defaut;
+            return $default;
         }
     }
 
+    /**
+     * Unset $varName
+     * @param string $varName
+     */
     public function remove($varName) {
         unset($this->variables[$varName]);
     }
 
+    /**
+     * Return if $varName exists, otherwise false
+     * @param string $varName
+     * @return boolean
+     */
     public function exists($varName) {
         return isset($this->variables[$varName]);
     }
 
+    /**
+     * Empty var holder
+     */
     public function destroy() {
         $this->variables = array();
     }
 
+    /**
+     * Return var holder content as an array
+     * @return array
+     */
     public function toArray() {
         return $this->variables;
     }
 
+    /**
+     * return true if var holder is empty
+     * @return boolean
+     */
     public function isEmpty() {
         return count($this->variables) == 0;
     }
