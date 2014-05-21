@@ -28,7 +28,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
- echo $form->renderFormHeader() ?>
+ echo $form->start() ?>
   <?php echo $form->renderButtons() ?>
   <fieldset>
     <legend>Edition d'un utilisateur</legend>

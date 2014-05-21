@@ -45,15 +45,45 @@ class pUser extends mmProgCRUD {
 
     public function configure(mmRequest $request) {
         $this->verifDroits();
-        $this->tableName = 'Utilisateur'; //Table sur laquel on travail
+        $this->tableName = 'User'; //Table sur laquel on travail
         $this->options['autoHtml'] = false; //ne genere pas les formulaires
-        $this->options['cols'] = array('login', 'password', 'lastname', 'firstname'); //colonnes apparaissant dans la liste
+        $this->options['cols'] = array('login', 'lastname', 'firstname'); //colonnes apparaissant dans la liste
+        $this->options['addDelete'] = true;
+    }
+
+    public function save(\mmRequest $request) {
+
+        // before saving password encryption
+        if ( ! ($user = $request->get('user', false))) {
+            throw new mmExceptionControl('No data receive from user manager');
+        }
+        if (empty($user['password'])) {
+            throw new mmExceptionControl('No password provided for user');
+        }
+        $password = $user['password'];
+        $salt = md5(uniqid(md5(mt_rand() . microtime()), true));
+        $user['password'] = mmUser::encryptPassword($password, $salt);
+        $user['salt'] = $salt;
+        //update request with modified data
+        $request->set('user', $user);
+        //go back to normal behavior
+        parent::save($request);
+    }
+
+    public function initForm(\Doctrine_Record $table, $nouveau) {
+        //standardised creation
+        parent::initForm($table, $nouveau);
+        // customization
+        $this->form->addWidget(new mmWidgetSelect($this->form['actif'], array('0'=>'No', '1'=>'Yes')));
+        $this->form->addWidget(new mmWidgetSelect($this->form['super_admin'], array('0'=>'No', '1'=>'Yes')));
+        $this->form['password'] = '';
+
     }
 
     public function verifDroits() {
         if (!mmUser::superAdmin()) {
             mmUser::flashError('Vous ne pouvez pas acceder à cet écran');
-            $this->redirect('?');
+            $this->redirect('@homepage');
         }
     }
 
