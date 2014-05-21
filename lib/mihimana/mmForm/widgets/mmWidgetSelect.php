@@ -33,6 +33,13 @@ class mmWidgetSelect extends mmWidget {
 
     protected $values;
 
+    /**
+     * Create a new select widget
+     * @param mixed $name internal name (if string) or other widget instance to get select based on provided widget
+     * @param array $values associative array : value => label
+     * @param mixed $value widget value
+     * @param array $attributes associative array of extra attributes
+     */
     public function __construct($name, $values = array(), $value = '', $attributes = array()) {
         $this->addAttribute('class', 'select');
         $this->values = $values;
