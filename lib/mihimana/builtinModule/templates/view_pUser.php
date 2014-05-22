@@ -38,7 +38,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
         <td><?php echo $form['login'] ?></td>
       </tr>
       <tr>
-        <th>Mot de passe</th>
+        <th>Password</th>
         <td><?php echo $form['password'] ?></td>
       </tr>
         <tr>
@@ -50,12 +50,16 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
         <td><?php echo $form['super_admin'] ?></td>
       </tr>
       <tr>
+        <th>Prénom</th>
+        <td><?php echo $form['firstname'] ?></td>
+      </tr>
+      <tr>
         <th>Nom</th>
         <td><?php echo $form['lastname'] ?></td>
       </tr>
       <tr>
-        <th>Prénom</th>
-        <td><?php echo $form['firstname'] ?></td>
+          <th>Username</th>
+          <td><?php echo $form['username'] ?></td>
       </tr>
       <tr>
         <th>Email</th>
