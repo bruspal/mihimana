@@ -62,7 +62,26 @@ class mmJSON extends mmObject{
             echo self::encodeJson(null, false, -9999, 'Appel a JSONP sans parametre calback');
         }
     }
-    
+
+
+    /**
+     * Send standardized JSON error message
+     * @param type $errorCode error code
+     * @param type $errorMessage error string
+     */
+    public static function sendJSONError($errorCode = -9999, $errorMessage = 'Uncategorized error') {
+        self::sendJSON(null, false, $errorCode, $errorMessage);
+    }
+
+    /**
+     * Send standardized JSON error message
+     * @param type $errorCode error code
+     * @param type $errorMessage error string
+     */
+    public static function sendJSONPError($errorCode = -9999, $errorMessage = 'Uncategorized error') {
+        self::sendJSONP(null, false, $errorCode, $errorMessage);
+    }
+
     /**
      * Send $data as JSON string
      * @param array $data
@@ -72,7 +91,7 @@ class mmJSON extends mmObject{
         $data = (array)$data;
         echo json_encode($data);
     }
-    
+
     /**
      * Send $data as JSONP string
      * @param array $data
@@ -83,7 +102,7 @@ class mmJSON extends mmObject{
         echo $_GET['callback'].' (';
         echo json_encode($data);
         echo ');';
-        
+
     }
     private static function encodeJson($data, $success, $errorCode, $errorMessage) {
         //encode json regarding parameters
@@ -115,5 +134,5 @@ class mmJSON extends mmObject{
             return false;
         }
     }
-    
+
 }
