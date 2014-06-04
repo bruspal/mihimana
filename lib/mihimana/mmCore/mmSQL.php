@@ -88,6 +88,12 @@ class mmSQL extends mmObject {
         return mmJSON::sendJSON($resultArray);
     }
 
+    public static function execute($query, $params) {
+        $pdo = Doctrine_Manager::getInstance()->getCurrentConnection()->getDbh();
+        $stmt = $pdo->prepare($query);
+        $stmt->execute($params);
+//        return $stmt->fetchAll();
+    }
     /**
      * Quick qnd dirty method to execute native SQL
      * @param string $query
