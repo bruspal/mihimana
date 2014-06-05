@@ -278,12 +278,12 @@ class pGestionBase extends mmProg {
         $form->addWidget(new mmWidgetPassword('passwd'));
         $form->addWidget(new mmWidgetButtonSubmit());
         //validator
-        $form['file_name']->addValidation('notnull');
-        $form['db']->addValidation('notnull');
-        $form['host']->addValidation('notnull');
-        $form['user']->addValidation('notnull');
-        $form['passwd']->addValidation('notnull');
-        
+        $form['file_name']->addValidator('notnull');
+        $form['db']->addValidator('notnull');
+        $form['host']->addValidator('notnull');
+        $form['user']->addValidator('notnull');
+        $form['passwd']->addValidator('notnull');
+
         $form->setValues($request);
         if ( ! $request->isEmpty() && $form->isValid()) {
             $db = $form->getValue('db');
@@ -324,7 +324,7 @@ class pGestionBase extends mmProg {
         $form = new mmForm();
         $form->addWidget(new mmWidgetFile('ymlFile'));
         $form->addWidget(new mmWidgetButtonSubmit());
-        
+
         $form->setValues($request);
         if ( ! $request->isEmpty() && $form->isValid()) {
             echo "<h1>Importe</h1>";
@@ -339,18 +339,18 @@ class pGestionBase extends mmProg {
             //merge des tableau et ecriture du fichier temporaire
             $resultArray = array_merge($mihimanaDBArray, $sourceArray);
             $newYamlStr = sfYaml::dump($resultArray);
-            
+
             $currentModelYaml = sys_get_temp_dir().DIRECTORY_SEPARATOR."currentModel_$uniqueId.yml";
             $newModelYaml =  sys_get_temp_dir().DIRECTORY_SEPARATOR."newModel_$uniqueId.yml";
-            
+
             file_put_contents($newModelYaml, $newYamlStr);
-            
+
             //récupération du yaml a partir du model existant
 
             Doctrine_Core::generateYamlFromModels($currentModelYaml, MODELS_DIR);
             //generation des classes de migration
             Doctrine_Core::generateMigrationsFromDiff(MIGRATION_DIR, $currentModelYaml, $newModelYaml);
-            
+
             //On fait la migration du model
             mmEmptyDirectory(MODELS_DIR.DIRECTORY_SEPARATOR.'generated');
             Doctrine_Core::generateModelsFromYaml($newModelYaml, MODELS_DIR, array('generateTableClasses' => true));
@@ -361,17 +361,17 @@ class pGestionBase extends mmProg {
             } catch (Doctrine_Migration_Exception $e) {
                 echo $e->getMessage();
             }
-                
-            
+
+
             unlink($currentModelYaml);
             unlink($newModelYaml);
         }
-        
+
         echo $form->start();
         echo $form->render();
         echo $form->stop();
-        
-        
+
+
     }
     public function executeModelFromDb(mmRequest $request) {
         //premiere chose on cre les classe de migration afin de garder un trace de la mise a jour.
@@ -392,10 +392,10 @@ class pGestionBase extends mmProg {
     public function executeFillParamBaseFromYaml (mmRequest $request) {
         $uniqId = uniqid();
         $currentModelYaml = sys_get_temp_dir().DIRECTORY_SEPARATOR."currentModel_$uniqId.yml";
-        
+
         Doctrine_Core::generateYamlFromModels($currentModelYaml, MODELS_DIR);
         $arrayYaml = sfYaml::load($currentModelYaml);
-        
+
         echo "<pre>".print_r($arrayYaml, true)."</pre>";
         foreach($arrayYaml as $tableName => $tableChamps) {
             $tableUtilisateur = new TableUtilisateur();
@@ -403,7 +403,7 @@ class pGestionBase extends mmProg {
             $tableUtilisateur['emplacement'] = $tableChamps['connection'];
             $tableUtilisateur['nom_table_base'] = $tableName;
             $tableUtilisateur->save();
-            
+
             foreach ($tableChamps['columns'] as $nomChamp => $paramChamp) {
                 $champsTableUtilisateur = new ChampsTableUtilisateur();
                 $champsTableUtilisateur['nom_table'] = $tableName;
@@ -426,9 +426,9 @@ class pGestionBase extends mmProg {
                 $champsTableUtilisateur->save();
             }
         }
-                
+
     }
-    
+
     public function executeNettoyerModel(mmRequest $request) {
         echo "<h1>Nettoyage du model</h1>";
         //on va supprimer les classes qui ne sont plus
