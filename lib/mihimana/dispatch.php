@@ -113,6 +113,11 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         loadHelper($helpers);
     }
 
+    //Check for defauls plugins
+    if (isset($plugins)) {
+        loadPlugin($plugins);
+    }
+
     if ($dispatcher_fichierProgramme) {
         //fichier PHP personnalisé
         //inclusion du programme en fonction du module
