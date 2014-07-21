@@ -60,10 +60,26 @@ class mmProg extends mmObject {
      */
     public function execute($action, mmRequest $request) {
 //        $action = ACTION_COURANTE;
+
+        //get the request methode prefix, by default the request is execute, that means a get request
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'DELETE': //delete method
+                $requestMethod = 'delete';
+                break;
+            //for now other methods are treated as get
+            case 'PUT':
+            case 'POST':
+            default:
+                $requestMethod = 'execute';
+                break;
+        }
+
         //On sauvegarde les parametres passé au programme
         $this->parametresProgramme = $request;
         //On definie quelle action a executer
-        $methodAction = 'execute' . ucfirst($action); //action a executer
+
+//        $methodAction = 'execute' . ucfirst($action); //action a executer
+        $methodAction = $requestMethod . ucfirst($action); //action a executer
 
     //demarage du buffer
         ob_clean();
