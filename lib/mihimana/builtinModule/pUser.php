@@ -58,12 +58,13 @@ class pUser extends mmProgCRUD {
             throw new mmExceptionControl('No data receive from user manager');
         }
         if (empty($user['password'])) {
-            throw new mmExceptionControl('No password provided for user');
+            unset($user['password']);
+        } else {
+            $password = $user['password'];
+            $salt = md5(uniqid(md5(mt_rand() . microtime()), true));
+            $user['password'] = mmUser::encryptPassword($password, $salt);
+            $user['salt'] = $salt;
         }
-        $password = $user['password'];
-        $salt = md5(uniqid(md5(mt_rand() . microtime()), true));
-        $user['password'] = mmUser::encryptPassword($password, $salt);
-        $user['salt'] = $salt;
         //update request with modified data
         $request->set('user', $user);
         //go back to normal behavior
