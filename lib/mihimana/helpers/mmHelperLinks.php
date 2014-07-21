@@ -94,7 +94,7 @@ function renderJavascript($jsName, $global = false, $extension = '.js') {
  * @return string
  */
 function useJavascript($jsName, $global = false, $extension = '.js') {
-    return '<script type="text/javascript" src="'.useAsset($jsName.$extension, $global).'"></script>';
+    return '<script type="text/javascript" src="'.useAsset($jsName, $global, $extension).'"></script>';
 }
 
 /**
