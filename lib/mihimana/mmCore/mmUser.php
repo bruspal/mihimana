@@ -54,17 +54,23 @@ class mmUser extends mmSession {
     protected function __chargeContext($nomContext, $forceVide = false) {
         $this->nomContext = $nomContext;
         if ($forceVide) {
-            
+
         }
         $context = mmUser::get($nomContext, array());
     }
 
     protected function __sauveContext() {
-        
+
     }
 
     /*
      * Override
+     */
+    /**
+     * Get in the global session the value $nomVar if missing return $defaut. If $nomVar exists in the user context return this one instead of the global session ones
+     * @param type $nomVar
+     * @param type $defaut
+     * @return type
      */
     public static function get($nomVar, $defaut = null) {
         if (isset($_SESSION['__user__'][$nomVar])) {
@@ -75,9 +81,9 @@ class mmUser extends mmSession {
 
     /**
      * Ajoute un message utilisateur dans la pile des messages identifié par message
-     * 
+     *
      * @param type $type
-     * @param type $message 
+     * @param type $message
      */
     public static function flashMessage($type, $message) {
         $__flashs__ = parent::get('__flashs__', array());
@@ -92,7 +98,7 @@ class mmUser extends mmSession {
 
     /**
      * Empile un message d'erreur
-     * @param type $message 
+     * @param type $message
      */
     public static function flashError($message) {
         self::flashMessage('error', $message);
@@ -100,7 +106,7 @@ class mmUser extends mmSession {
 
     /**
      * Emile un message de warning
-     * @param type $message 
+     * @param type $message
      */
     public static function flashWarning($message) {
         self::flashMessage('warning', $message);
@@ -108,7 +114,7 @@ class mmUser extends mmSession {
 
     /**
      * Empile un message de succes
-     * @param type $message 
+     * @param type $message
      */
     public static function flashSuccess($message) {
         self::flashMessage('success', $message);
@@ -116,7 +122,7 @@ class mmUser extends mmSession {
 
     /**
      * Empile un message d'information
-     * @param type $message 
+     * @param type $message
      */
     public static function flashInfo($message) {
         self::flashMessage('info', $message);
@@ -124,7 +130,7 @@ class mmUser extends mmSession {
 
     /**
      * Empile un message destiné uniquement aux superadministrateur.
-     * @param type $message 
+     * @param type $message
      */
     public static function flashSuperAdmin($message) {
         if (self::superAdmin()) {
@@ -134,7 +140,7 @@ class mmUser extends mmSession {
 
     /**
      * Empile un message qui n'apparaitra que si l'application est en mode debug
-     * @param type $message 
+     * @param type $message
      */
     public static function flashDebug($message) {
         if (DEBUG) {
@@ -147,7 +153,7 @@ class mmUser extends mmSession {
      * Si on donne le type: retourne que le tableau de ce type.<br />
      * Si le type n'existe pas ou que le tableau des flash est vide on renvois un tableau vide
      * @param type $type
-     * @return array() 
+     * @return array()
      */
     public static function getFlashs($type = false) {
         if ($type) {
@@ -166,7 +172,7 @@ class mmUser extends mmSession {
      * Genere le code HTML pour afficher les flash a envoyer a l'utilisateur. si videApresRendu est a vrai (defaut) la pile des flash est vidée.
      * @param type $type
      * @param type $videApresRendu
-     * @return type 
+     * @return type
      */
     public static function renderFlashs($type = false, $videApresRendu = true) {
         //On construit la chaine HTML
@@ -191,7 +197,7 @@ class mmUser extends mmSession {
      * Genere le HTML des flash. Si $type est omis genere le HTML pour tous les flashs
      * @param type $donneesFlashs une pile de flash
      * @param type $type
-     * @return type 
+     * @return type
      */
     protected static function parcoursFlashs($donneesFlashs, $type = false) {
         $resultat = '';
@@ -212,7 +218,7 @@ class mmUser extends mmSession {
 
     /*
      * Methode d'information sur l'utilisateur connecté
-     * 
+     *
      */
 
     public static function getNom($full = false) {
@@ -225,7 +231,7 @@ class mmUser extends mmSession {
 
     /**
      * Retourne TRUE si l'utilisateur connecté est un super administrateur
-     * @return boolean 
+     * @return boolean
      */
     public static function superAdmin() {
         if (MODE_INSTALL) {
@@ -246,12 +252,12 @@ class mmUser extends mmSession {
      * Retourne TRUE si l'itilisateur courant est authentifié
      * @param string $module Module sur lequel effectué la vérification
      * @param string $action Action sur laquelle faire la vérification
-     * @return boolean 
+     * @return boolean
      */
     public static function isAuthenticated($module = false, $action = false) {
         if (empty($module)) $module = MODULE_COURANT;
         if (empty($action)) $action = ACTION_COURANTE;
-        
+
         if (MODE_INSTALL || NO_LOGIN) {
             // On est en mode installation ou en mode fonctionnement sans login
             // On cree en mémoire un utilisateur fictif avec des parametres figé
@@ -288,7 +294,7 @@ class mmUser extends mmSession {
         } else {
 //            //Vérification des module/actions auquelles on a acces sans être identifier
 //            //list des credentials par defaut, peuvent etre ecrasé par les valeur dans le fichier credentials
-//            $credentialsArray = array( 
+//            $credentialsArray = array(
 //                'pLoginStd/subscribe'   => false,
 //                'pLoginStd/login'       => false,
 //                'pSass'                 => false
@@ -316,10 +322,10 @@ class mmUser extends mmSession {
     public static function isAuthorized($module = false, $action = false) {
         $module = $module ? $module : MODULE_COURANT;
         $action = $action ? $action : ACTION_COURANTE;
-        
+
         //check setings about credentials
         //first set default credentials
-        $credentialsArray = array( 
+        $credentialsArray = array(
             'pLoginStd/subscribe'   => false,
             'pLoginStd/login'       => false,
             'pSass'                 => false
@@ -341,9 +347,9 @@ class mmUser extends mmSession {
         }
         //in all other case we are not authorized
         return false;
-        
+
     }
-    
+
     private static function createVirtualGuest() {
         $user = new User();
         $user['id'] = false;
@@ -459,7 +465,7 @@ class mmUser extends mmSession {
                 echo $e->getMessage();
                 echo '<br>';
                 echo $e->getCode();
-                
+
             }
         }
     }
