@@ -73,11 +73,16 @@ function renderUrl($url) {
  * On *ix system a symbolic link to APPLICATION/assets nammed APPLICATION_assets can be created in the web root directory<br>
  * @param string $url the relative URI to the asset
  * @param boolean $global if FALSE (default) use the application's specific assets. Otherwise this will point to global assets sits in the web directory
+ * @param string ressource extension (with '.' if needed)
  * @return string
  */
-function useAsset($url, $global = false) {
-    if (preg_match('#https?://#', $url)) {
+function useAsset($url, $global = false, $extension = false) {
+    if (preg_match('#https?://#', $url)) { //url is an absolute link ? just retrun it without any changes
         return $url;
+    }
+
+    if ($extension) { // there is an extension ?
+        $url .= $extension; //add it to the url
     }
     return $global ? WEB_CONTEXT.'/'.$url : WEB_CONTEXT.'/'.APPLICATION.'_assets/'.$url;
 }
@@ -85,9 +90,10 @@ function useAsset($url, $global = false) {
  * echoing an asset URI @see asset
  * @param string $url the relative URI to the asset
  * @param boolean $global if FALSE (default) use the application's specific assets. Otherwise this will point to global assets sits in the web directory
+ * @param string ressource extension (with '.' if needed)
  */
-function renderAsset($url, $global = false) {
-    echo useAsset($url, $global);
+function renderAsset($url, $global = false, $extension = false) {
+    echo useAsset($url, $global, $extension);
 }
 
 /**
