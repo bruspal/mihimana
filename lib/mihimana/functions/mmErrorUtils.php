@@ -56,18 +56,18 @@ function mmErrorMessageHttp($message, $errorCode = -9999) {
 /**
  * Génére la chaine au format JSON d'un message d'erreur
  * @param string $message message a afficher
- * @param int $errorCode 
+ * @param int $errorCode
  * @return string
  */
 function mmErrorMessageAjax($message='Uncategorized error', $errorCode=-9999) {
-    return mmJSON::sendJSON(null, false, $errorCode, $errorMessage);
+    return mmJSON::sendJSON(null, false, $errorCode, $message);
 }
 
 /**
  * Génére la chaine d'un message d'erreur, renvoi du HTML si on est dans un context standard ou un JSON si on est dans un context AJAX<br />
  * ATTENTION ca reste a tester
  * @param string $message message a afficher
- * @param string $errorCode 
+ * @param string $errorCode
  * @return string
  */
 function mmErrorMessage($message, $errorCode = -9999) {
