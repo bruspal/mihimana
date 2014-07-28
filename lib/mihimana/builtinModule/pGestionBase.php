@@ -47,7 +47,7 @@ class pGestionBase extends mmProg {
             echo new mmWidgetButtonGoModule('Charger les data de la base de parametres', 'pGestionBase', 'loadData') . '<br />';
         }
         echo new mmWidgetButtonGoModule('Genere la base de données utilisateur', 'pGestionBase', 'genereBaseUtilisateur').'<br />';
-        echo new mmWidgetButtonGoModule('Importer le fichier yaml dans la base de parametre', 'pGestionBase', 'fillParamBaseFromYaml');
+        echo new mmWidgetButtonGoModule('Initialiser base de parametres depuis le model', 'pGestionBase', 'fillParamBaseFromYaml');
         echo '<hr>';
         echo new mmWidgetButtonGoModule('genere Yaml depuis une base existante', 'pGestionBase', 'importFromDB').'<br />';
         echo new mmWidgetButtonGoModule('Migrer depuis un fichier Yaml', 'pGestionBase', 'migrateFromYaml').'<br />';
@@ -93,7 +93,7 @@ class pGestionBase extends mmProg {
         /*
          * Pemet de generer le fichier yaml des fichiers utilisateurs
          */
-        mmUser::flashSuperAdmin('Desactive pour le moment');
+        mmUser::flashSuperAdmin('Desactive');
         $this->redirect(url('@module'));
         return;
         $uniqueId = md5(uniqid(microtime()) . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
@@ -395,8 +395,12 @@ class pGestionBase extends mmProg {
 
         Doctrine_Core::generateYamlFromModels($currentModelYaml, MODELS_DIR);
         $arrayYaml = sfYaml::load($currentModelYaml);
-
-        echo "<pre>".print_r($arrayYaml, true)."</pre>";
+        //vidage des tables
+        echo "<h1>Truncate des tables de parametre</h1>";
+        mmSQL::execute("TRUNCATE champs_table_utilisateur");
+        mmSQL::execute("TRUNCATE table_utilisateur");
+        echo "<h1>Population des tables</h1>";
+        echo "<ul>";
         foreach($arrayYaml as $tableName => $tableChamps) {
             $tableUtilisateur = new TableUtilisateur();
             $tableUtilisateur['nom_table'] = $tableName;
@@ -404,10 +408,15 @@ class pGestionBase extends mmProg {
             $tableUtilisateur['nom_table_base'] = $tableName;
             $tableUtilisateur->save();
 
+            echo "<li>$tableName<br><ul>";
+
             foreach ($tableChamps['columns'] as $nomChamp => $paramChamp) {
                 $champsTableUtilisateur = new ChampsTableUtilisateur();
                 $champsTableUtilisateur['nom_table'] = $tableName;
                 $champsTableUtilisateur['nom_champ'] = $nomChamp;
+
+                echo "<li>$nomChamp</li>";
+
                 if (is_array($paramChamp)){
                     $typeChamp = $paramChamp['type'];
                     if (isset($paramChamp['autoincrement']) && $paramChamp['autoincrement'] == '1') $champsTableUtilisateur['est_autoincrement'] = 1;
@@ -425,7 +434,11 @@ class pGestionBase extends mmProg {
                 }
                 $champsTableUtilisateur->save();
             }
+            echo "</ul></li>";
         }
+        echo "</ul>";
+//        echo "<pre>".print_r($arrayYaml, true)."</pre>";
+
 
     }
 
