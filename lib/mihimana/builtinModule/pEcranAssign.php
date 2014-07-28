@@ -153,7 +153,7 @@ class pEcranAssign extends mmProgProcedural {
                         where("nom_ecran = ? AND nom_champ = ?", array($champsEcran['nom_ecran'], $donneesSaisie['nom_champ']))->
                         fetchOne();
 //        $text = get_raw_sql($champTemp);
-//                
+//
 //                fetchOne();
                 if ($champTemp != false) {
                     $champsEcran = $champTemp;
@@ -175,7 +175,7 @@ class pEcranAssign extends mmProgProcedural {
                 if (!$ecran) {
                     mmErrorMessage("Impossible de trouver l'écran associé");
                     return false;
-//<------ Sortie du programme en affichant un message d'erreur          
+//<------ Sortie du programme en affichant un message d'erreur
                 }
                 $nomTable = $ecran['table_liee'];
 
@@ -223,7 +223,7 @@ class pEcranAssign extends mmProgProcedural {
                     }
                 }
                 return true;
-//<----- sortie          
+//<----- sortie
             } else {
                 mmErrorMessage('Il y\'a des erreurs de saisie');
                 $this->afficheFormulaire();
@@ -264,7 +264,7 @@ class pEcranAssign extends mmProgProcedural {
 //          $("#ecran_utilisateur_id").submit();
 //          </script>';
 //        return true;
-////<----- sortie          
+////<----- sortie
 //      }
 //    }
 //  }
@@ -512,7 +512,7 @@ $('#type_champ_id').change(function()
                     }
                 });
                 resultat = resultat.substring(1);
-                $('#<?php echo $this->form['type_widget']->getId() ?>').val(resultat);
+                $('#<?php echo $this->form['option_type_widget']->getId() ?>').val(resultat);
             }
 
             function initialiseOptions()
@@ -609,12 +609,12 @@ $('#type_champ_id').change(function()
                 if (listeOptions !== false)
                 {
                     cont = creerTableauOptions(listeOptions, valOptions);
-                    $('#<?php echo $this->form['option_type_widget']->getId() ?>').hide();
+                    //$('#<?php echo $this->form['option_type_widget']->getId() ?>').hide();
                 }
                 else
                 {
                     cont = '';
-                    $('#<?php echo $this->form['option_type_widget']->getId() ?>').show();
+                    //$('#<?php echo $this->form['option_type_widget']->getId() ?>').show();
                 }
                 $('#table_options').append(cont);
             }
@@ -662,7 +662,7 @@ $('#type_champ_id').change(function()
           </form>
         </fieldset>
         -->
-        
+
         <?php echo $this->form->start() ?>
         <table class="formulaire">
         </table>
@@ -671,7 +671,7 @@ $('#type_champ_id').change(function()
               <th style="width: 20ex;">Type de champ</th>
               <td><?php echo $this->form['type_champ'] ?></td>
             </tr>
-            
+
             <tr>
                 <th>Nom variable</th>
                 <td>
@@ -725,7 +725,7 @@ $('#type_champ_id').change(function()
                     </tr>
 
                 </table>
-            </div>    
+            </div>
             <div id="onglet-par">
                 <table>
                     <tr id="t_est_lecture_seule_id">
@@ -757,7 +757,7 @@ $('#type_champ_id').change(function()
                         <td><?php echo $this->form['css_attr'] ?></td>
                     </tr>
                 </table>
-            </div>    
+            </div>
             <div id="onglet-for">
                 <table>
                     <tr id="t_formule_calcul">
@@ -772,7 +772,7 @@ $('#type_champ_id').change(function()
                     si a oui les formule sont recalculée a chaque fois, sinon seulement lors de la creation d'un nouvel enregistrement.<br />
                     Dans le cas des ecrans sans table associé c'est toujours recalculé
                 </div>
-            </div>    
+            </div>
             <div id="onglet-js">
                 <table>
                     <tr>
@@ -800,13 +800,13 @@ $('#type_champ_id').change(function()
                         <td><?php echo $this->form['jsrclick'] ?></td>
                     </tr>
                 </table>
-            </div>    
+            </div>
         </div>
 
         <?php echo $this->form->renderButtons() . $this->form['op']; ?>
         <?php echo $this->form->stop() ?>
 
-        
+
         <?php
         //rendu du javascript
         echo $this->form->renderJavascript();
