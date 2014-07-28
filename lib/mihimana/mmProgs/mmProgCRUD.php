@@ -245,7 +245,9 @@ class mmProgCRUD extends mmProg {
 
     protected function afficheFormulaire($fieldList = null) {
         if ($this->options['autoHtml']) {
+            echo $this->form->start();
             echo $this->form->render($fieldList);
+            echo $this->form->stop();
         }
     }
 
@@ -259,7 +261,9 @@ class mmProgCRUD extends mmProg {
             $chaineCle = $this->genereChaineIndex($this->form->getRecord());
             $renduEcran->setAction(url("@module/update?$chaineCle"));
         }
+        echo $renduEcran->start();
         echo $renduEcran->render();
+        echo $renduEcran->stop();
         echo "</fieldset>";
     }
 
