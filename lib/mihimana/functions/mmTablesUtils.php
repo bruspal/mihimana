@@ -71,3 +71,9 @@ function mmTableCategorieDetail($categorie, $withNom = TRUE, $addEmpty = false, 
     }
     return $result;
 }
+
+function mmTableParametre($categorie, $nomParam) {
+    $resultat = mmSQL::queryOne('SELECT * FROM tables WHERE id_table = ? AND nom = ?', array($categorie, $nomParam));
+    return $resultat;
+
+}
