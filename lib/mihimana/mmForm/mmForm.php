@@ -860,6 +860,13 @@ class mmForm extends mmObject implements ArrayAccess {
     }
 
     /**
+     * Echo value stored in $widgetName widget
+     * @param string $widgetName
+     */
+    public function renderValue($widgetName) {
+        echo $this->getValue($widgetName);
+    }
+    /**
      * close the form
      * @return string
      */
