@@ -57,4 +57,16 @@ class mmWidgetTextArea extends mmWidget {
         }
     }
 
+    /**
+     * return iner tags string, /!\ class attributes will be removed
+     * @return type
+     */
+    public function useAttrs() {
+        $attributes = $this->attributes;
+        unset($attributes['class']);
+        unset($attributes['value']);
+        return sprintf('type="%s" name="%s"', $this->attributes['type'], sprintf($this->nameFormat, $this->attributes['name'])).$this->generateAttributes($attributes, true);
+    }
+
+
 }
