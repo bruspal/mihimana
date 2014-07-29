@@ -54,7 +54,7 @@ class mmWidget extends mmObject {
     public $ignoreRender = false;
     protected $ignorePortefeuille = false;
 
-    protected 
+    protected
             $relatedRecord = false;
 
 
@@ -272,6 +272,13 @@ class mmWidget extends mmObject {
         return $this->attributes['value'];
     }
 
+    /**
+     * Echoing inner value of the widget
+     */
+    public function renderValue() {
+        echo $this->attributes['value'];
+    }
+
     public function getStyle() {
         if (!empty($this->attributes['style'])) {
             return $this->attributes['style'];
@@ -295,7 +302,7 @@ class mmWidget extends mmObject {
         }
         $this->relatedRecord = $relatedRecord;
     }
-    
+
     public function setMax($valeur) {
         $this->max = $valeur;
     }
@@ -609,7 +616,7 @@ class mmWidget extends mmObject {
         if (!($this instanceof mmWidgetHidden)) {
             $methodName = 'js_validator_' . $name;
             call_user_func_array(array($this, $methodName), $params);
-            
+
 // @deprecated
 //            if ( ! is_null($this->containerForm)) {
 //                $this->containerForm->addJavascript('_jquerytoolsValidator', "$('#{$this->containerForm->getId()}').validator();\n");
@@ -746,7 +753,7 @@ class mmWidget extends mmObject {
 
     /**
      * Hooks called by mmForm::addWidget() after the widget is successfuly added to the form. Do nothing but must be overidden.
-     * @return boolean 
+     * @return boolean
      */
     public function postAddWidget() {
         return true;
@@ -808,8 +815,8 @@ class mmWidget extends mmObject {
             if ($this->attributes['value'] === '' || $this->attributes['value'] === $this->relatedRecord[$this->getName()]) {
                 throw new mmExceptionData("Tentative de mise a jour d'un champs en fournissant une clé vide ou incorrecte");
             }
-            
-        }   
+
+        }
     }
     public function php_validator_length_max($params) {
         if (strlen($this->attributes['value']) > $params) {
@@ -878,6 +885,6 @@ class mmWidget extends mmObject {
     }
 
     public function js_validator_primary() {
-        
+
     }
 }
