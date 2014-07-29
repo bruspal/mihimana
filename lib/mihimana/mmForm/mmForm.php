@@ -861,10 +861,11 @@ class mmForm extends mmObject implements ArrayAccess {
 
     /**
      * Echo value stored in $widgetName widget
-     * @param string $widgetName
+     * @param string $fieldName
+     * @param mixed $default default value if widgetValue is empty
      */
-    public function renderValue($widgetName) {
-        echo $this->getValue($widgetName);
+    public function renderValue($fieldName, $default = null) {
+        $this->widgetList[$fieldName]->renderValue($default);
     }
     /**
      * close the form
