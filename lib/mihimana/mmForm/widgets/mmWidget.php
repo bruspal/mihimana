@@ -274,9 +274,14 @@ class mmWidget extends mmObject {
 
     /**
      * Echoing inner value of the widget
+     * @param mixed $default
      */
-    public function renderValue() {
-        echo $this->attributes['value'];
+    public function renderValue($default = null) {
+        if (empty($this->attributes['value'])) {
+            echo $default;
+        } else {
+            echo $this->attributes['value'];
+        }
     }
 
     public function getStyle() {
