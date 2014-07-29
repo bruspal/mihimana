@@ -32,6 +32,7 @@
 class mmWidgetHidden extends mmWidget {
 
     public function __construct($name, $value = '', $attributes = array()) {
+        $this->addAttribute('class', 'hidden');
         parent::__construct($name, 'hidden', $value, $attributes);
     }
 
