@@ -94,6 +94,15 @@ class mmJSON extends mmObject{
     }
 
     /**
+     * Envois une erreur 400, $message correspond au message a renvoyer par defaut "Les informations reçut sont incorrectes"
+     * @param type $message
+     */
+    public static function sendBadRequest($message="Les informations reçut sont incorrectes") {
+        mmStatusBadRequest();
+        self::sendJSONError(mmExceptionHttp::BAD_REQUEST, $message);
+    }
+
+    /**
      * Send standardized JSON error message
      * @param type $errorCode error code
      * @param type $errorMessage error string
