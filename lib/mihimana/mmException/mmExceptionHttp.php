@@ -32,6 +32,7 @@ class mmExceptionHttp extends mmException{
     const NOT_FOUND         = 404;
     const FORBIDDEN         = 403;
     const INTERNAL_ERROR    = 500;
+    const BAD_REQUEST       = 400;
 
     public function __construct($code = null, $previous = null) {
         $message = '';
