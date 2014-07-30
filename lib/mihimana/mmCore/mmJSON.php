@@ -63,6 +63,35 @@ class mmJSON extends mmObject{
         }
     }
 
+    /*
+     * Ensemble des fonctions d'erreur
+     */
+
+    /**
+     * Envois une erreur 404, $message correspond au message a renvoyer par defaut "l'élément recherché est introuvable"
+     * @param type $message
+     */
+    public static function sendNotFound($message="l'élément recherché est introuvable") {
+        mmStatusNotFound();
+        self::sendJSONError(mmExceptionHttp::NOT_FOUND, $message);
+    }
+    /**
+     * Envois une erreur 403, $message correspond au message a renvoyer par defaut "Accès interdit"
+     * @param type $message
+     */
+    public static function sendForbidden($message="Accès interdit") {
+        mmStatusForbidden();
+        self::sendJSONError(mmExceptionHttp::FORBIDDEN, $message);
+    }
+
+    /**
+     * Envois une erreur 500, $message correspond au message a renvoyer par defaut "Erreur interne"
+     * @param type $message
+     */
+    public static function sendInternalError($message="Erreur interne") {
+        mmStatusInternalError();
+        self::sendJSONError(mmExceptionHttp::INTERNAL_ERROR, $message);
+    }
 
     /**
      * Send standardized JSON error message
