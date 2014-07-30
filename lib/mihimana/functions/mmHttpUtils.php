@@ -10,3 +10,7 @@ function mmStatusForbidden() {
 function mmStatusInternalError() {
     header('HTTP/1.0 500 Internal Error');
 }
+
+function mmStatusBadRequest() {
+    header('HTTP/1.0 400 Bad Request');
+}
