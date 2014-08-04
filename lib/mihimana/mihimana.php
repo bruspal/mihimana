@@ -34,6 +34,7 @@ session_name('sess_' . APPLICATION);
 session_start();
 //Lecture des constante
 require 'constantes.php';
+//Config reading
 require CONFIG_DIR . DIRECTORY_SEPARATOR .'config.php';
 // Define default constants value if not defined in config.php or application index file
 if (!defined('APPLICATION')) {
@@ -99,7 +100,7 @@ spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
 
 $mdManager = Doctrine_Manager::getInstance();
 
-$mdManager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE); //VALIDATE_CONSTRAINTS | Doctrine_Core::VALIDATE_LENGTHS);  
+$mdManager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE); //VALIDATE_CONSTRAINTS | Doctrine_Core::VALIDATE_LENGTHS);
 $mdManager->setAttribute(Doctrine_Core::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
 $mdManager->setAttribute(Doctrine_Core::ATTR_AUTOLOAD_TABLE_CLASSES, true);
 $mdManager->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_CONSERVATIVE);
@@ -111,7 +112,6 @@ try {
 } catch (Doctrine_Manager_Exception $e) {
     die($e->getMessage());
 }
-
 
 Doctrine_Core::loadModels(MODELS_DIR);
 
@@ -156,7 +156,7 @@ function __autoloadScanRepertoire($className, $directory) {
             $filePath = $file->getPathname();
             //add to session array them require and quit
             $_SESSION['__classesCache__'][$className] = $filePath;
-            require_once $filePath; 
+            require_once $filePath;
             return true;
         }
     }
