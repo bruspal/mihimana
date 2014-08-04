@@ -459,13 +459,14 @@ class mmUser extends mmSession {
         try {
             $user->save();
         }
-        catch (Exception $e) {
-            echo "<h1>Erreur de création de l'utilisateur</h1>";
-            if (DEBUG) {
-                echo $e->getMessage();
-                echo '<br>';
-                echo $e->getCode();
-
+        catch (Doctrine_Connection_Mysql_Exception $e) {
+            //on ne fait rien de plus si la clé existe deja dans la base
+            $errorCode = $e->getPortableCode();
+            //si l'erreur n'est pas 'duplication de clé' on rebalance l'exception, sinon on se contente d'ignorer
+            if ($errorCode != Doctrine_Core::ERR_ALREADY_EXISTS) {
+                throw $e;
+            } else {
+                throw new mmExceptionAuth('Utilisateur déjà existant', mmExceptionHttp::FORBIDDEN);
             }
         }
     }
