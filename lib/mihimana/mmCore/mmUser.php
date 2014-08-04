@@ -403,7 +403,7 @@ class mmUser extends mmSession {
             $user['remote_ip'] = $_SERVER['REMOTE_ADDR'];
             if (!$user['password']) {
                 self::remove('__user__');
-                throw new mmExceptionAuth('utilisateur invalide');
+                throw new mmExceptionAuth('utilisateur invalide', 4000);
             }
             if ($user['password'] == self::encryptPassword($password, $user['salt'])) {
                 //c'est ok l'utilisateur est reconnu
@@ -411,19 +411,30 @@ class mmUser extends mmSession {
                 $user['login_failure'] = 0; //on remet a zero le compteur d'echec de connexion
                 $user->save();
                 // mise a jour de la session
-                $user = $user->toArray();
-                $user['auth'] = true;
-                self::set('__user__', $user);
+                //preparation des données de travail
+                $aUser = $user->toArray();
+                $aUser['auth'] = true;
+//                $aUser['__uInstance__'] = $user;
+                self::set('__user__', $aUser);
                 return true;
             } else {
                 $user['login_failure'] = $user['login_failure'] + 1; //echec de connection on additionne 1 au nombre de tentative de connection raté
                 $user->save();
                 self::remove('__user__');
-                throw new mmExceptionAuth("Utilisateur inconnu ou inactif");
+                throw new mmExceptionAuth("Mauvais email/mot de passe", 4003);
             }
         } else {
             self::remove('__user__');
-            throw new mmExceptionAuth("Utilisateur inconnu ou inactif");
+            throw new mmExceptionAuth("Utilisateur inconnu ou inactif", 4004);
+        }
+    }
+
+    public static function getInstance() {
+        $instance = Doctrine_Core::getTable('User')->find(mmUser::get('id'));//$_SESSION['__user__']['__uInstance__'];
+        if ($instance) {
+            return $instance;
+        } else {
+            return null;
         }
     }
 
@@ -436,6 +447,9 @@ class mmUser extends mmSession {
      * @param string $email user email
      */
     public static function createUser($login, $password, $actif = true, $superAdmin = false, $email = '') {
+        if (! $login || ! $password) {
+            throw new mmExceptionAuth('User creation atempted without login/password', 4005);
+        }
         //verification que le parametrage est correct
         if (LOGIN_MODE < 3 && LOGIN_MODE != REGISTER_MODE) {
             throw new mmExceptionConfig("Incohérence dans la configuration de l'enregistrement/login.Si MODE n'est pas LOGIN_BY_BOTH, LOGIN_BY et REGISTER_BY doivent utilisé les meme mode");
@@ -458,6 +472,8 @@ class mmUser extends mmSession {
         $user['registration_date'] = date("Y-m-d H:i:s");
         try {
             $user->save();
+            $_SESSION['__user__']['id'] = $user['id'];
+
         }
         catch (Doctrine_Connection_Mysql_Exception $e) {
             //on ne fait rien de plus si la clé existe deja dans la base
