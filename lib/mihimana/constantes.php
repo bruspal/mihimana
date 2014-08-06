@@ -101,6 +101,10 @@ define('REGISTER_BY_EMAIL', 1);    //On utilise l'email pour se connecter'
 /*
  * Mail constants
  */
+//server method
 define('MM_MAIL_SERVER_SMTP', 0);
 define('MM_MAIL_SERVER_SENDMAIL', 1);
+//mail format
+define('MM_MAIL_PLAINTEXT', 0);
+define('MM_MAIL_HTML', 1);
 ?>
