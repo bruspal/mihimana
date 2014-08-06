@@ -97,4 +97,10 @@ define('LOGIN_BY_BOTH', 2);     //On utilise l'email ou le login
  */
 define('REGISTER_BY_USER', 0);     //On utilise le login de l'utilisateur pour les opération de login
 define('REGISTER_BY_EMAIL', 1);    //On utilise l'email pour se connecter'
+
+/*
+ * Mail constants
+ */
+define('MM_MAIL_SERVER_SMTP', 0);
+define('MM_MAIL_SERVER_SENDMAIL', 1);
 ?>
