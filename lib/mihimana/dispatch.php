@@ -74,6 +74,27 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         define('AJAX_RESPONSE', false);
     }
 
+    // check for maintenance mode
+    if (file_exists(APPLICATION_DIR.DIRECTORY_SEPARATOR.'maintenance')) {
+        if (AJAX_RESPONSE) {
+            \mmJSON::sendForbidden('The application is actually in maintenance. Come back soon !');
+            die;
+        }
+        if (file_exists(TEMPLATES_DIR.DIRECTORY_SEPARATOR.'maintenance.php')) {
+            require_once TEMPLATES_DIR.DIRECTORY_SEPARATOR.'maintenance.php';
+        } else {
+            ?>
+    <html>
+        <head>
+            <title>Maintenance</title>
+        </head>
+        <body><h1>Down for maintenance</h1>It won't be very long. Come to see us soon !</body>
+    </html>
+            <?php
+            die;
+        }
+    }
+
     //verification de l'authentification
     if (!\mmUser::isAuthenticated($module, $action)) { // not identified
         if( ! \mmUser::isAuthorized($module, $action)) { // nor authorized
@@ -173,7 +194,7 @@ function echoError($contenu, $errorCode = -500, $errorMessage = 'Erreur interne'
         $sortieProgramme = '';
     }
     //set status as internal error
-    header('HTTP/1.0 500 Internal Error');
+    //header('HTTP/1.0 500 Internal Error');
 
     switch ($GLOBALS['OUTPUT_MODE']) {
         case 'json':
