@@ -107,4 +107,8 @@ define('MM_MAIL_SERVER_SENDMAIL', 1);
 //mail format
 define('MM_MAIL_PLAINTEXT', 0);
 define('MM_MAIL_HTML', 1);
+//SMTP secure
+define('MM_MAIL_SMTP_SECURE_NONE', 0);
+define('MM_MAIL_SMTP_SECURE_TLS', 1);
+define('MM_MAIL_SMTP_SECURE_SSL', 2);
 ?>
