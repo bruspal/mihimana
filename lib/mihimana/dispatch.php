@@ -118,8 +118,8 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
 
     //ici deux choix : soit le fichier php existe. On le charge et l'execute. Sinon on charge et execute le programme générique d'extension
     $dispatcher_fichierProgramme = false;
-    if (file_exists('../' . APPLICATION . '/' . $module . '.php')) {
-        $dispatcher_fichierProgramme = '../' . APPLICATION . '/' . $module . '.php';
+    if (file_exists(APPLICATION_DIR.DIRECTORY_SEPARATOR.$module . '.php')) {
+        $dispatcher_fichierProgramme = APPLICATION_DIR.DIRECTORY_SEPARATOR.$module . '.php';
         define('PROGRAMME_STANDARD', false);
     } else {
         if (file_exists(MIHIMANA_DIR . '/builtinModule/' . $module . '.php')) {
