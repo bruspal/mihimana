@@ -52,12 +52,15 @@ if ( !defined('APPLICATION_DIR')) {
 if ( ! defined('WEB_DIR')) {
     define('WEB_DIR', MM_BASE_DIR.'/web');
 }
-define('LIB_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'lib');
-define('MODELS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'models');
-define('CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
 if ( ! defined('ASSETS_DIR')) {
     define('ASSETS_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'assets');
 }
+if ( ! defined('APPLICATION_SCRIPT')) { //what is the name of the applications's entry point file
+    define ('APPLICATION_SCRIPT', basename(__FILE__));
+}
+define('LIB_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'lib');
+define('MODELS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'models');
+define('CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
 define('PLUGINS_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'plugins');
 define('MIGRATION_DIR', APPLICATION_DIR.'/lib/migration');
 define('TEMPLATES_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'templates');
@@ -70,13 +73,13 @@ define('HELPERS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'helpers');
 /*
  * Constant URI
  */
-if (array_key_exists('CONTEXT_PREFIX', $_SERVER)) {
-    define('WEB_CONTEXT', $_SERVER['CONTEXT_PREFIX']);
-} else {
+//if (array_key_exists('CONTEXT_PREFIX', $_SERVER)) {
+//    define('WEB_CONTEXT', $_SERVER['CONTEXT_PREFIX']);
+//} else {
     $posLastSlash = strrpos($_SERVER['SCRIPT_NAME'], '/');
     $webContext = substr($_SERVER['SCRIPT_NAME'], 0, $posLastSlash);
     define('WEB_CONTEXT', $webContext);
-}
+//}
 
 /*
  * Constantes pdf
@@ -113,4 +116,3 @@ define('MM_MAIL_HTML', 1);
 define('MM_MAIL_SMTP_SECURE_NONE', 0);
 define('MM_MAIL_SMTP_SECURE_TLS', 1);
 define('MM_MAIL_SMTP_SECURE_SSL', 2);
-?>
