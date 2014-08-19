@@ -49,6 +49,10 @@ class mmExceptionHttp extends mmException{
                 $message = '<h1>Erreur interne</h1>'.new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
                 header('HTTP/1.0 500 Internal Error');
                 break;
+            case self::BAD_REQUEST:
+                $message = '<h1>Request malform&eacute;e</h1>'.new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
+                header('HTTP/1.0 400 Bad Request');
+                break;
             default:
                 $message = "<h1>Erreur HTTP $code inconnue.</h1>".new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
                 header('HTTP/1.0 404 Not Found');
