@@ -40,6 +40,9 @@ class mmProg extends mmObject {
             $templateModuleAction, //template associé a un module + action
             $templateModule, //template associé a un module
             $parametresProgramme,
+            $autoDetectMobile =false,
+            $isMobile =false,
+            $isTablet = false,
             $headers = array();
     public
             $variables;
@@ -183,6 +186,52 @@ class mmProg extends mmObject {
     }
 
     /**
+     * This method enable mobile/tablet auto selection. If set to true (default) render will use phone_MODULENAME#ACTION instead of view_MODULENAME#ACTION if the client
+     * is a phone or a tablet.
+     * <!--
+     * TODO : set template [phone|tablet]_MODULENAME#ACTION
+     * if one of the template is missing the closest template will be used:<br>
+     * <table>
+     * <tr><td colspan="2">Not yet fully implemented<br>for now there is no auto selection, all go to phone_*</td></tr>
+     * <tr><td>MISSING</td><td>USED</td></tr>
+     * <tr><td>phone</td><td>tablet</td></tr>
+     * <tr><td>tablet</td><td>phone</td></tr>
+     * <tr><td>view</td><td>tablet</td></tr>
+     * </table>
+     * -->
+     * @param type $mode enabled(true) or disabled(false)
+     */
+    protected function detectMobile($mode = true) {
+        $this->autoDetectMobile = $mode;
+        if ($mode === true) {
+            $md = new Mobile_Detect();
+            $this->isMobile = $md->isMobile();
+            $this->isTablet = $md->isTablet();
+            if ($this->isMobile || $this->isTablet) {
+                $prefix = 'phone_';
+                $templateModuleAction = getViewsPath() . DIRECTORY_SEPARATOR . $prefix . MODULE_COURANT . "#" . ACTION_COURANTE . ".php";
+                $templateModule = getViewsPath() . DIRECTORY_SEPARATOR . $prefix . MODULE_COURANT . ".php";
+
+                //one of the templates exists ? phone_ prefix can be used
+                if (file_exists($templateModuleAction) || file_exists($templateModule)) {
+                    $prefix = 'phone_';
+                } else {
+                    $prefix = 'view_';
+                }
+
+            } else {
+                $prefix = 'view_';
+            }
+        } else {
+            $this->isMobile = false;
+            $this->isTablet = false;
+            $prefix = 'view_';
+        }
+        $this->templateModuleAction = $prefix . MODULE_COURANT . "#" . ACTION_COURANTE . ".php";
+        $this->templateModule = $prefix . MODULE_COURANT . ".php";
+    }
+
+    /**
      * Set the template for module/action. Templates are located in the PROJECT_ROOT/templates/views. By default name format is 'view_'.module[#action].php<br>
      * if #action is ommited this template become the template for all actions. Otherwise the template is used for the particular module/action<br>
      *
@@ -190,11 +239,18 @@ class mmProg extends mmObject {
      * @return string the full name of the previous template name (without extension)
      */
     protected function setTemplate($templateName = false) {
+        if ($this->autoDetectMobile) {
+            if ($this->isMobile || $this->isTablet) {
+                $prefix = 'phone_';
+            }
+        } else {
+            $prefix = 'view_';
+        }
         $oldTemplate = substr($this->templateModuleAction, 0, strpos($this->templateModuleAction, '.php'));
         if ($templateName) {
             if ($templateName[0] == '#') {
                 // templateName start with # the template is set to the current module + action mode
-                $templateName = "view_" . MODULE_COURANT . $templateName;
+                $templateName = $prefix . MODULE_COURANT . $templateName;
             }
             $this->templateModuleAction = $templateName . '.php';
         } else {
@@ -235,7 +291,7 @@ class mmProg extends mmObject {
     }
 
     /**
-     * effectue un redirect
+     * do a http redirection
      * @param type $url
      * @param type $protegeUrl
      */
