@@ -139,6 +139,58 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
         loadPlugin($plugins);
     }
 
+    //client type determination
+    $md = new \Mobile_Detect();
+    $isMobile = $md->isMobile();
+    $isTablet = $md->isTablet();
+    if (DEBUG) {
+        /*
+         * in debug mode it is possible to force mode with url parameter _ForceClient_
+         * value are :
+         *      mobile: to force mobile
+         *      tablet: to force tablet
+         *      desktop: to force desktop
+         *      default (or anything else): to reset setting
+         * The setting still logout or 'default' call
+         */
+        $forcedClient = $request->get('_ForceClient_',false);
+        if ($forcedClient) {
+            \mmUser::set('_ForceClient_', $forcedClient);
+        }
+        $forcedClient = \mmUser::get('_ForceClient_', false);
+        if ($forcedClient) {
+            switch ($forcedClient) {
+                case 'mobile':
+                    $isMobile = true;
+                    $isTablet = false;
+                    break;
+                case 'tablet':
+                    $isMobile = false;
+                    $isTablet = true;
+                    break;
+                case 'desktop':
+                    $isMobile = false;
+                    $isTablet = false;
+                    break;
+                default:
+                    \mmUser::remove('_ForceClient_');
+                    break;
+            }
+        }
+    }
+
+    if ($isMobile || $isTablet) {
+        define('CLIENT_DESKTOP', false);
+        define('CLIENT_HANDHELD', true);
+        define('CLIENT_MOBILE', $md->isMobile());
+        define('CLIENT_TABLET', $md->isTablet());
+    } else {
+        define('CLIENT_DESKTOP', true);
+        define('CLIENT_HANDHELD', false);
+        define('CLIENT_MOBILE', false);
+        define('CLIENT_TABLET', false);
+    }
+
     if ($dispatcher_fichierProgramme) {
         //fichier PHP personnalisé
         //inclusion du programme en fonction du module
