@@ -182,8 +182,8 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     if ($isMobile || $isTablet) {
         define('CLIENT_DESKTOP', false);
         define('CLIENT_HANDHELD', true);
-        define('CLIENT_MOBILE', $md->isMobile());
-        define('CLIENT_TABLET', $md->isTablet());
+        define('CLIENT_MOBILE', $isMobile);
+        define('CLIENT_TABLET', $isTablet);
     } else {
         define('CLIENT_DESKTOP', true);
         define('CLIENT_HANDHELD', false);
