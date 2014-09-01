@@ -204,9 +204,8 @@ class mmProg extends mmObject {
     protected function detectMobile($mode = true) {
         $this->autoDetectMobile = $mode;
         if ($mode === true) {
-            $md = new Mobile_Detect();
-            $this->isMobile = $md->isMobile();
-            $this->isTablet = $md->isTablet();
+            $this->isMobile = CLIENT_MOBILE;
+            $this->isTablet = CLIENT_TABLET;
             if ($this->isMobile || $this->isTablet) {
                 $prefix = 'phone_';
                 $templateModuleAction = getViewsPath() . DIRECTORY_SEPARATOR . $prefix . MODULE_COURANT . "#" . ACTION_COURANTE . ".php";
