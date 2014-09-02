@@ -64,6 +64,10 @@ class mmProg extends mmObject {
     public function execute($action, mmRequest $request) {
 //        $action = ACTION_COURANTE;
 
+        if (HANDHELD_AUTODETECT) {
+            $this->detectMobile(true);
+        }
+
         //get the request methode prefix, by default the request is execute, that means a get request
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'DELETE': //delete method
@@ -249,7 +253,19 @@ class mmProg extends mmObject {
         if ($templateName) {
             if ($templateName[0] == '#') {
                 // templateName start with # the template is set to the current module + action mode
-                $templateName = $prefix . MODULE_COURANT . $templateName;
+
+                if ($this->autoDetectMobile && ($this->isMobile || $this->isTablet)) {
+                    //special case if mobile detection is enabled. fallback to view_* if $prefix_* not found.
+                    //it will drive to regular behavior if phone and view is missing
+                    $tempName = $prefix . MODULE_COURANT . $templateName;
+                    if (file_exists($tempName.'.php')) {
+                        $templateName = $tempName;
+                    } else {
+                        $templateName = 'view_' . MODULE_COURANT . $templateName;
+                    }
+                } else {
+                    $templateName = 'view_' . MODULE_COURANT . $templateName;
+                }
             }
             $this->templateModuleAction = $templateName . '.php';
         } else {
