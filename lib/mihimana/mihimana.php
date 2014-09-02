@@ -67,6 +67,9 @@ if (!defined('LOGIN_MODE')) {
 if (!defined('REGISTER_MODE')) {
     define ('REGISTER_MODE', REGISTER_BY_USER);
 }
+if (!defined('HANDHELD_AUTODETECT')) {
+    define ('HANDHELD_AUTODETECT', true);
+}
 //Error reporting
 if (DEBUG) {
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
