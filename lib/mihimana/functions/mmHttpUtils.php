@@ -14,3 +14,7 @@ function mmStatusInternalError() {
 function mmStatusBadRequest() {
     header('HTTP/1.0 400 Bad Request');
 }
+
+function mmStatusUnauthorized() {
+    header('HTTP/1.0 401 Unauthorized');
+}

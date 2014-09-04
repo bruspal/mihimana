@@ -33,6 +33,7 @@ class mmExceptionHttp extends mmException{
     const FORBIDDEN         = 403;
     const INTERNAL_ERROR    = 500;
     const BAD_REQUEST       = 400;
+    const UNAUTHORIZED      = 401;
 
     public function __construct($code = null, $previous = null) {
         $message = '';
@@ -40,22 +41,32 @@ class mmExceptionHttp extends mmException{
             case self::NOT_FOUND:
                 $message = '<h1>404 - Not Found</h1>'.new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
                 header('HTTP/1.0 404 Not Found');
+                $this->code = self::NOT_FOUND;
                 break;
             case self::FORBIDDEN:
                 $message = '<h1>Acces interdit</h1>'.new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
                 header('HTTP/1.0 403 Forbidden');
+                $this->code = self::FORBIDDEN;
                 break;
             case self::INTERNAL_ERROR:
                 $message = '<h1>Erreur interne</h1>'.new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
                 header('HTTP/1.0 500 Internal Error');
+                $this->code = self::INTERNAL_ERROR;
                 break;
             case self::BAD_REQUEST:
                 $message = '<h1>Request malform&eacute;e</h1>'.new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
                 header('HTTP/1.0 400 Bad Request');
+                $this->code = self::BAD_REQUEST;
+                break;
+            case self::UNAUTHORIZED:
+                $message = '<h1>Unauthorized</h1>'.new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
+                header('HTTP/1.0 400 Bad Request');
+                $this->code = self::UNAUTHORIZED;
                 break;
             default:
                 $message = "<h1>Erreur HTTP $code inconnue.</h1>".new mmWidgetButtonGoPage('Accueil', url('@home'))."<fieldset>$message</fieldset>";
-                header('HTTP/1.0 404 Not Found');
+                header('HTTP/1.0 400 Bad Request');
+                $this->code = self::BAD_REQUEST;
                 break;
         }
         parent::__construct($message, $code, $previous);

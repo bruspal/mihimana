@@ -71,7 +71,7 @@ class mmJSON extends mmObject{
      * Envois une erreur 404, $message correspond au message a renvoyer par defaut "l'élément recherché est introuvable"
      * @param type $message
      */
-    public static function sendNotFound($message="l'élément recherché est introuvable") {
+    public static function sendNotFound($message="404 : Not found") {
         mmStatusNotFound();
         self::sendJSONError(mmExceptionHttp::NOT_FOUND, $message);
     }
@@ -79,7 +79,7 @@ class mmJSON extends mmObject{
      * Envois une erreur 403, $message correspond au message a renvoyer par defaut "Accès interdit"
      * @param type $message
      */
-    public static function sendForbidden($message="Accès interdit") {
+    public static function sendForbidden($message="403 : Forbidden") {
         mmStatusForbidden();
         self::sendJSONError(mmExceptionHttp::FORBIDDEN, $message);
     }
@@ -88,7 +88,7 @@ class mmJSON extends mmObject{
      * Envois une erreur 500, $message correspond au message a renvoyer par defaut "Erreur interne"
      * @param type $message
      */
-    public static function sendInternalError($message="Erreur interne") {
+    public static function sendInternalError($message="500 : Internal error") {
         mmStatusInternalError();
         self::sendJSONError(mmExceptionHttp::INTERNAL_ERROR, $message);
     }
@@ -97,9 +97,18 @@ class mmJSON extends mmObject{
      * Envois une erreur 400, $message correspond au message a renvoyer par defaut "Les informations reçut sont incorrectes"
      * @param type $message
      */
-    public static function sendBadRequest($message="Les informations reçut sont incorrectes") {
+    public static function sendBadRequest($message="400 : Bad request") {
         mmStatusBadRequest();
         self::sendJSONError(mmExceptionHttp::BAD_REQUEST, $message);
+    }
+
+    /**
+     * Envois une erreur 401, $message correspond au message a renvoyer par defaut "Les informations reçut sont incorrectes"
+     * @param type $message
+     */
+    public static function sendUnauthorized($message="401 : Unauthorized") {
+        mmStatusUnauthorized();
+        self::sendJSONError(mmExceptionHttp::UNAUTHORIZED, $message);
     }
 
     /**
