@@ -58,6 +58,21 @@ class pLoginStd extends mmProg {
         }
     }
 
+    public function executeJSONLogin(mmRequest $request) {
+        $data = mmJSON::getPost();
+        if (empty($data) || empty($data['login']) || empty($data['password'])) {
+            mmJSON::sendBadRequest();
+            return false;
+        }
+        try {
+            mmUser::doLogin($data['login'], $data['password']);
+            $dataUser = mmUser::get('__user__');
+            mmJSON::sendJSON($dataUser);
+        } catch (mmExceptionAuth $ex) {
+            mmJSON::sendUnauthorized();
+        }
+    }
+
     public function executeSubscribe(mmRequest $request) {
         $this->initForm();
         if ( ! $request->isEmpty()) {
@@ -69,7 +84,7 @@ class pLoginStd extends mmProg {
 //                try {
                     mmUser::createUser($login, $password);
 //                }
-                
+
             }
         }
     }
@@ -96,7 +111,7 @@ class pLoginStd extends mmProg {
                 throw new mmExceptionDev('LOGIN_MODE d&eacute;fini avec une valeur &eacute;ronn&eacute;e');
                 break;
         }
-        
+
         switch (REGISTER_MODE) {
             case REGISTER_BY_EMAIL:
                 $phRegister = 'email@example.com';
@@ -108,7 +123,7 @@ class pLoginStd extends mmProg {
                 throw new mmExceptionDev('REGISTER_MODE d&eacute;fini avec une valeur &eacute;ronn&eacute;e');
                 break;
         }
-        
+
         $signinForm = new mmForm();
         $signinForm->setAction(url('login'));
         $signinForm->setId('loginForm');
