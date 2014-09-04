@@ -101,11 +101,17 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             //if ajax call juste echo error message
             //TODO: allow JSON response for webservice authentification
             if (AJAX_REQUEST) {
-                echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>', 1);
-                die;
+                if (AJAX_RESPONSE) {
+                    \mmJSON::sendUnauthorized();
+                    die;
+                } else {
+                    echo mmErrorMessageAjax('La session à expirée veuillez vous reconnecter<br /><button onclick="goPage(\'?\')">Reconnection</button>', 1);
+                    die;
+                }
+            } else {
+                //on fait une redirection vers la page de login
+                redirect(url('login'));
             }
-            //on fait une redirection vers la page de login
-            redirect(url('login'));
         }
     }
 
