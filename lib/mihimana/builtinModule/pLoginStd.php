@@ -59,17 +59,25 @@ class pLoginStd extends mmProg {
     }
 
     public function executeJSONLogin(mmRequest $request) {
-        $data = mmJSON::getPost();
-        if (empty($data) || empty($data['login']) || empty($data['password'])) {
-            mmJSON::sendBadRequest();
-            return false;
-        }
-        try {
-            mmUser::doLogin($data['login'], $data['password']);
-            $dataUser = mmUser::get('__user__');
-            mmJSON::sendJSON($dataUser);
-        } catch (mmExceptionAuth $ex) {
-            mmJSON::sendUnauthorized();
+        //on prepare la sortie en json pur
+        $this->setTemplate(false); //no template
+        $this->outputAsJson(); // no layout + JSON header
+
+        if (AJAX_REQUEST || DEBUG) {
+            $data = mmJSON::getPost();
+            if (empty($data) || empty($data['login']) || empty($data['password'])) {
+                mmJSON::sendBadRequest();
+                return false;
+            }
+            try {
+                mmUser::doLogin($data['login'], $data['password']);
+                $dataUser = mmUser::get('__user__');
+                mmJSON::sendJSON($dataUser);
+            } catch (mmExceptionAuth $ex) {
+                mmJSON::sendUnauthorized();
+            }
+        } else {
+            throw new mmExceptionHttp(mmExceptionHttp::FORBIDDEN);
         }
     }
 
