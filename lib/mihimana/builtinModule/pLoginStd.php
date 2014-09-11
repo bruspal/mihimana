@@ -59,11 +59,11 @@ class pLoginStd extends mmProg {
     }
 
     public function executeJSONLogin(mmRequest $request) {
-        //on prepare la sortie en json pur
+        //pure json output
         $this->setTemplate(false); //no template
         $this->outputAsJson(); // no layout + JSON header
 
-        if (AJAX_REQUEST || DEBUG) {
+        if (AJAX_REQUEST || DEBUG) { //Access authorized only through ajax request (if debug is true http acces allowed too).
             $data = mmJSON::getPost();
             if (empty($data) || empty($data['login']) || empty($data['password'])) {
                 mmJSON::sendBadRequest();
@@ -101,6 +101,19 @@ class pLoginStd extends mmProg {
         mmUser::flashSuccess('Vous êtes déconnecté');
         mmUser::doLogout();
         $this->redirect(url('login'));
+    }
+
+    public function executeJSONLogout(mmRequest $request) {
+        //Pure json output
+        $this->setTemplate(false); //no template
+        $this->outputAsJson(); // no layout + JSON header
+
+        if (AJAX_REQUEST || DEBUG) { //Access authorized only through ajax request (if debug is true http acces allowed too).
+            mmUser::doLogout(); //logout
+            mmJSON::sendJSON(); // send success
+        } else {
+            throw new mmExceptionHttp(mmExceptionHttp::FORBIDDEN);
+        }
     }
 
     public function initForm() {
