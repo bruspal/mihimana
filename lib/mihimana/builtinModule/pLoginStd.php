@@ -39,6 +39,12 @@ class pLoginStd extends mmProg {
         }
     }
 
+    /**
+     * Do http login
+     * @param mmRequest $request
+     * @throws mmExceptionConfig
+     * @throws mmExceptionDev
+     */
     public function executeLogin(mmRequest $request) {
         $this->initForm();
         if ( ! $request->isEmpty()) {
@@ -58,6 +64,12 @@ class pLoginStd extends mmProg {
         }
     }
 
+    /**
+     * do json login
+     * @param mmRequest $request
+     * @throws mmExceptionConfig
+     * @throws mmExceptionHttp
+     */
     public function executeJSONLogin(mmRequest $request) {
         //pure json output
         $this->setTemplate(false); //no template
@@ -114,6 +126,14 @@ class pLoginStd extends mmProg {
         } else {
             throw new mmExceptionHttp(mmExceptionHttp::FORBIDDEN);
         }
+    }
+
+    public function executeResetPassword(mmRequest $request) {
+
+    }
+
+    public function executeJSONResetPassword(mmRequest $request) {
+
     }
 
     public function initForm() {
