@@ -226,6 +226,23 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
 } catch (\mmExceptionRessource $e) { //Exception de ressources
     $sortieProgramme = '<h1>' . $e->getMessage() . '</h1>';
     echoError($sortieProgramme);
+} catch (\mmExceptionUser $e) {
+    $errorCode = $e->getCode();
+    $errorMessage = $e->getMessage();
+
+    switch ($GLOBALS['OUTPUT_MODE']) {
+        case 'json':
+            \mmJSON::sendJSONError($errorCode, $errorMessage);
+            break;
+        case 'jsonp':
+            \mmJSON::sendJSONError($errorCode, $errorMessage);
+            break;
+        case 'html':
+        default:
+            $sortieProgramme = "<div><h1>Erreur</h1><div>$errorCode : $errorMessage</div></div>";
+            include APPLICATION_DIR . '/templates/layout.php';
+            break;
+    }
 } catch (\Exception $e) { //tous les autres cas
     //Si une erreur non gerée se produit on affiche le message d'erreur detaillé si on est en mode DEBUG, sinon on fais autre chose (genre log, mail, etc)
     //TODO: voir comment gerer les erreurs critique en production
