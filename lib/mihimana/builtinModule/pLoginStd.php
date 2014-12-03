@@ -136,6 +136,19 @@ class pLoginStd extends mmProg {
 
     }
 
+
+    public function executeJSONIsLogged(mmRequest $request) {
+        //set pure json mode : turns off template and layout set header
+        $this->setTemplate(false);
+        $this->outputAsJson();
+        if (mmUser::isAuthenticated()) {
+            mmJSON::sendJSON();
+        } else {
+            mmStatusUnauthorized();
+            mmJSON::sendUnauthorized();
+        }
+    }
+
     public function initForm() {
         /* Signin form */
         switch (LOGIN_MODE) {
