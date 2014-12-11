@@ -152,6 +152,9 @@ class mmJSON extends mmObject{
 
     }
     private static function encodeJson($data, $success, $errorCode, $errorMessage) {
+
+        $data = self::utf8encode($data);
+
         //encode json regarding parameters
         if ($success) {
             if ( ! is_null($data)) {
@@ -169,6 +172,19 @@ class mmJSON extends mmObject{
             return json_encode(array('success' => false, 'errorCode' =>  -9999, 'errorMessage' => 'JSON error :'.json_last_error().' : '.json_last_error_msg()));
         else
             return json_encode(array('success' => false, 'errorCode' =>  -9999, 'errorMessage' => 'JSON error :'.json_last_error()));
+    }
+
+    private function utf8encode ($data) {
+        foreach ($data as $key => $val) {
+            if (is_string($val)) {
+                $data[$key] = utf8_encode($val);
+            }
+            if (is_array($val)) {
+                $data[$key] = self::utf8encode($val);
+            }
+        }
+
+        return $data;
     }
     /**
      * Return an associative array of a JSON post call
