@@ -35,10 +35,14 @@ class mmVarHolder extends mmObject implements ArrayAccess {
 
     /**
      * Generic variable holder, implementing ArrayAccess
+     * @param mixed $variables initial set off variable
      * @return mmVarHolder
      */
-    public function __construct() {
-        $this->variables = array();
+    public function __construct($variables = array()) {
+        if ( ! is_array($variables)) {
+            throw new mmExceptionDev("mmVarHolder : provided data must be an array");
+        }
+        $this->variables = $variables;
         return $this;
     }
 

@@ -175,12 +175,14 @@ class mmJSON extends mmObject{
     }
 
     private function utf8encode ($data) {
-        foreach ($data as $key => $val) {
-            if (is_string($val)) {
-                $data[$key] = utf8_encode($val);
-            }
-            if (is_array($val)) {
-                $data[$key] = self::utf8encode($val);
+        if (is_array($data)) {
+            foreach ($data as $key => $val) {
+                if (is_string($val)) {
+                    $data[$key] = utf8_encode($val);
+                }
+                if (is_array($val)) {
+                    $data[$key] = self::utf8encode($val);
+                }
             }
         }
 
@@ -192,7 +194,8 @@ class mmJSON extends mmObject{
      */
     public static function getPost() {
         if ($input = file_get_contents('php://input')) {
-            return json_decode($input, true);
+            $varHolder = new mmVarHolder(json_decode($input, true));
+            return $varHolder;
         } else {
             return false;
         }
