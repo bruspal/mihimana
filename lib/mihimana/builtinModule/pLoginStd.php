@@ -84,7 +84,7 @@ class pLoginStd extends mmProg {
             try {
                 mmUser::doLogin($data['login'], $data['password']);
                 $dataUser = mmUser::get('__user__');
-                mmJSON::sendJSON($dataUser);
+                mmJSON::sendJSON($this->cleanupUserData($dataUser));
             } catch (mmExceptionAuth $ex) {
                 mmJSON::sendUnauthorized();
             }
@@ -142,14 +142,26 @@ class pLoginStd extends mmProg {
         $this->setTemplate(false);
         $this->outputAsJson();
         if (mmUser::isAuthenticated()) {
-            mmJSON::sendJSON();
+            $user = mmUser::getInstance();
+            if ($user) {
+                $user = $user->toArray();
+                mmJSON::sendJSON($this->cleanupUserData($user));
+            } else {
+                mmStatusNotFound();
+                mmJSON::sendNotFound('Unknown user');
+            }
         } else {
             mmStatusUnauthorized();
             mmJSON::sendUnauthorized();
         }
     }
 
-    public function initForm() {
+    /**
+     * init login form object
+     * @throws mmExceptionDev
+     * @throws mmExceptionForm
+     */
+    protected function initForm() {
         /* Signin form */
         switch (LOGIN_MODE) {
             case LOGIN_BY_EMAIL:
@@ -212,4 +224,18 @@ class pLoginStd extends mmProg {
         $this->registerForm = $registerForm;
     }
 
+    /*
+     * Protected methods
+     */
+    /**
+     * This methode remove critical data from the user array to avoid security issues
+     * @param array $user user data to be cleaned
+     * @return array cleaned data
+     */
+    protected function cleanupUserData($user) {
+        unset($user['password']);
+        unset($user['salt']);
+
+        return $user;
+    }
 }
