@@ -175,6 +175,8 @@ class mmJSON extends mmObject{
     }
 
     private function utf8encode ($data) {
+        return $data;
+
         if (is_array($data)) {
             foreach ($data as $key => $val) {
                 if (is_string($val)) {
