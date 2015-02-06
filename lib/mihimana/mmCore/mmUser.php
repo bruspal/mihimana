@@ -487,6 +487,30 @@ class mmUser extends mmSession {
         }
     }
 
+    /**
+     * This method generate and save the new password's user. it returns
+     * @param $login
+     * @return string new password
+     * @throws mmExceptionHttp
+     */
+    public static function resetPassword($login) {
+        $user = Doctrine_Core::getTable('User')->findOneBy('login', $login);
+        if ($user) { // user is known
+            $password = self::generatePassword();
+            $salt = md5(uniqid(md5(mt_rand() . microtime()), true));
+            $encryptedPassword = self::encryptPassword($password, $salt);
+            $user['salt'] = $salt;
+            $user['password'] = $encryptedPassword;
+            $user->save();
+            return $password;
+        } else { // unknown user
+            throw new mmExceptionHttp(mmExceptionHttp::NOT_FOUND);
+        }
+    }
+
+    /**
+     * Logout the current connected user
+     */
     public static function doLogout() {
         self::remove('__user__');
     }
@@ -496,4 +520,17 @@ class mmUser extends mmSession {
         return $cryptedPassword;
     }
 
+    private static function generatePassword($length = 6) {
+        $conso=array("b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z");
+        $vocal=array("a","e","i","o","u");
+
+        $password="";
+        srand ((double)microtime()*1000000);
+        $max = $length/2;
+        for($i=1; $i<=$max; $i++) {
+            $password.=$conso[rand(0,19)];
+            $password.=$vocal[rand(0,4)];
+        }
+        return $password;
+    }
 }
