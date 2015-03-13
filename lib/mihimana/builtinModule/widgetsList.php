@@ -83,7 +83,7 @@ $GLOBALS['typeWidget'] = array(
     ),
     'dynamique' => array(
         'execScreen' => 'Ecran externe',
-        'execModule' => 'Programme Maides',
+        'execModule' => 'Programme mihimana',
         'execProg' => 'Programme externe'
     )
 );

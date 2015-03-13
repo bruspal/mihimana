@@ -31,6 +31,6 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 class mmObject {
 /*
- * La classe parent de base, utilse pour 'identifier' les classe de maides
+ * Mihimana root's object
  */
 }
