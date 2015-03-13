@@ -28,6 +28,16 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
+if ( ! defined('ENVIRONNEMENT')) {
+    define('ENVIRONNEMENT', 'dev');
+}
+if ( ! defined('DEBUG')) {
+    if (ENVIRONNEMENT == 'dev') {
+        define('DEBUG', true);
+    } else {
+        define('DEBUG', false);
+    }
+}
 
 //Fichier qui stock et defini les constantes
 /*
@@ -50,17 +60,27 @@ if ( !defined('APPLICATION_DIR')) {
     define('APPLICATION_DIR', MM_BASE_DIR.DIRECTORY_SEPARATOR.APPLICATION);
 }
 if ( ! defined('WEB_DIR')) {
-    define('WEB_DIR', MM_BASE_DIR.'/web');
+    define('WEB_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'web');
+}
+if ( !  defined('SCRIPT_DIR')) {
+    define('SCRIPT_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'script_console');
 }
 if ( ! defined('ASSETS_DIR')) {
     define('ASSETS_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'assets');
 }
-if ( ! defined('APPLICATION_SCRIPT')) { //what is the name of the applications's entry point file
-    define ('APPLICATION_SCRIPT', basename(__FILE__));
-}
+
+//if ( ! defined('APPLICATION_SCRIPT')) { //what is the name of the applications's entry point file
+//    define ('APPLICATION_SCRIPT', basename(__FILE__));
+//}
+
 define('LIB_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'lib');
 define('MODELS_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'models');
-define('CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
+if ( ! defined('CONFIG_DIR')) {
+    define('CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
+}
+if ( ! defined('CONFIG_FILE')) {
+    define('CONFIG_FILE', CONFIG_DIR.DIRECTORY_SEPARATOR.'config.php');
+}
 define('PLUGINS_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'plugins');
 define('MIGRATION_DIR', APPLICATION_DIR.'/lib/migration');
 define('TEMPLATES_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'templates');

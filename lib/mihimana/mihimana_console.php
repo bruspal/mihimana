@@ -27,50 +27,20 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
-
-
-
-session_name('sess_' . APPLICATION);
-session_start();
 //Lecture des constante
 require 'constantes.php';
+
+//definition des constante specifiques
+
 //Config reading
-require CONFIG_DIR . DIRECTORY_SEPARATOR .'config.php';
+require CONFIG_FILE;
 // Define default constants value if not defined in config.php or application index file
 if (!defined('APPLICATION')) {
     Die("L'application n'a pas été définie");
 }
-// web specifique constantes
-if (!defined('MODULE_DEFAUT')) {
-    define('MODULE_DEFAUT', 'main');
-}
-if (!defined('ACTION_DEFAUT')) {
-    define('ACTION_DEFAUT', 'index');
-}
-//if (!defined('DEBUG')) {
-//    define('DEBUG', false);
-//}
-if (!defined('MODE_INSTALL')) {
-    define('MODE_INSTALL', false);
-}
-if (!defined('NO_LOGIN')) {
-    define('NO_LOGIN', false);
-}
-if (!defined('SUPER_ADMIN')) {
-    define('SUPER_ADMIN', false);
-}
-if (! defined('APP_DEFAULT_ENCODING')) {
-    define('APP_DEFAULT_ENCODING', 'utf-8');
-}
-if (!defined('LOGIN_MODE')) {
-    define('LOGIN_MODE', LOGIN_BY_USER);
-}
-if (!defined('REGISTER_MODE')) {
-    define ('REGISTER_MODE', REGISTER_BY_USER);
-}
-if (!defined('HANDHELD_AUTODETECT')) {
-    define ('HANDHELD_AUTODETECT', true);
-}
+
+// console specifique constante
+
 //Error reporting
 if (DEBUG) {
     error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
@@ -120,10 +90,6 @@ try {
 
 Doctrine_Core::loadModels(MODELS_DIR);
 
-//classes cache init
-if ( ! array_key_exists('__classesCache__', $_SESSION)) {
-    $_SESSION['__classesCache__'] = array();
-}
 //AutoLoad de mihimana
 spl_autoload_register('mdAutoload');
 
@@ -131,16 +97,11 @@ spl_autoload_register('mdAutoload');
  * FIN DU PARAMETRAGE
  * ************************************ */
 
-//Dispatcheur
-require_once 'dispatch.php';
+// params parsing -> args are put in $_GET
+parse_str(implode('&', array_slice($argv, 1)), $_GET);
 
 //Fonction de callback pour l'autoload des classes de mihimana
 function mdAutoload($className) {
-    //looking for class in cache
-    if (array_key_exists($className, $_SESSION['__classesCache__'])) {
-        require_once $_SESSION['__classesCache__'][$className];
-        return true;
-    }
     //On cherche dans mihimana
     $found = __autoloadScanRepertoire($className, MIHIMANA_DIR);
     if (!$found) {
