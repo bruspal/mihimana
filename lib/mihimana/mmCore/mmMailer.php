@@ -139,6 +139,14 @@ class mmMailer extends mmObject {
         return true;
     }
 
+    /**
+     * Add an embedded image
+     * @param $path path to the picture
+     * @param $cid cid
+     */
+    public function addEmbededdedImage($path, $cid) {
+        $this->mail->addEmbeddedImage($path, $cid);
+    }
 
 
 }
