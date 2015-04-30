@@ -292,11 +292,13 @@ class mmProg extends mmObject {
     }
 
     protected function outputAsJson() {
+        $this->setTemplate(false);
         $this->setLayout(false);
         mmOutputJson();
     }
 
     protected function outputAsJsonp() {
+        $this->setTemplate(false);
         $this->setLayout(false);
         mmOutputJsonp();
     }
