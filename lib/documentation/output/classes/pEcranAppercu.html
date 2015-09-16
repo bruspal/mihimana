@@ -1,0 +1,2150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/mm.html">\mm</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">1771</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">32</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-241033247"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-241033247" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1422976861"></a>
+                                <a href="../namespaces/mm.html" style="margin-left: 30px; padding-left: 0">mm</a>
+            </div>
+            <div id="namespace-1422976861" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/mm.dispatcher.html" style="margin-left: 30px; padding-left: 0">dispatcher</a>
+            </div>
+            <div id="namespace-1885710203" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-135973049"></a>
+                                <a href="../namespaces/mm.helpers.html" style="margin-left: 30px; padding-left: 0">helpers</a>
+            </div>
+            <div id="namespace-135973049" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/mm.helpers.form.html" style="margin-left: 30px; padding-left: 0">form</a>
+            </div>
+            <div id="namespace-739863236" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/mm.helpers.links.html" style="margin-left: 30px; padding-left: 0">links</a>
+            </div>
+            <div id="namespace-1016717572" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/__moduleName__.html">__moduleName__</a></li>
+                                                    <li class="class"><a href="../classes/CRUDModule.html">CRUDModule</a></li>
+                                                    <li class="class"><a href="../classes/main.html">main</a></li>
+                                                    <li class="class"><a href="../classes/mdCouchDb.html">mdCouchDb</a></li>
+                                                    <li class="class"><a href="../classes/mdWidgetTiersPopup.html">mdWidgetTiersPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmConfig.html">mmConfig</a></li>
+                                                    <li class="class"><a href="../classes/mmContext.html">mmContext</a></li>
+                                                    <li class="class"><a href="../classes/mmDoctrineRecordVide.html">mmDoctrineRecordVide</a></li>
+                                                    <li class="class"><a href="../classes/mmException.html">mmException</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionAuth.html">mmExceptionAuth</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionConfig.html">mmExceptionConfig</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionControl.html">mmExceptionControl</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionData.html">mmExceptionData</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionDev.html">mmExceptionDev</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionForm.html">mmExceptionForm</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionFormule.html">mmExceptionFormule</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionHttp.html">mmExceptionHttp</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionRessource.html">mmExceptionRessource</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionUser.html">mmExceptionUser</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionWidget.html">mmExceptionWidget</a></li>
+                                                    <li class="class"><a href="../classes/mmExpression.html">mmExpression</a></li>
+                                                    <li class="class"><a href="../classes/mmForm.html">mmForm</a></li>
+                                                    <li class="class"><a href="../classes/mmIndice.html">mmIndice</a></li>
+                                                    <li class="class"><a href="../classes/mmJSON.html">mmJSON</a></li>
+                                                    <li class="class"><a href="../classes/mmMailer.html">mmMailer</a></li>
+                                                    <li class="class"><a href="../classes/mmMenu.html">mmMenu</a></li>
+                                                    <li class="class"><a href="../classes/mmMessages.html">mmMessages</a></li>
+                                                    <li class="class"><a href="../classes/mmObject.html">mmObject</a></li>
+                                                    <li class="class"><a href="../classes/mmOptions.html">mmOptions</a></li>
+                                                    <li class="class"><a href="../classes/mmPdf.html">mmPdf</a></li>
+                                                    <li class="class"><a href="../classes/mmProg.html">mmProg</a></li>
+                                                    <li class="class"><a href="../classes/mmProgCRUD.html">mmProgCRUD</a></li>
+                                                    <li class="class"><a href="../classes/mmProgProcedural.html">mmProgProcedural</a></li>
+                                                    <li class="class"><a href="../classes/mmProgProceduralWebService.html">mmProgProceduralWebService</a></li>
+                                                    <li class="class"><a href="../classes/mmProgWebService.html">mmProgWebService</a></li>
+                                                    <li class="class"><a href="../classes/mmRequest.html">mmRequest</a></li>
+                                                    <li class="class"><a href="../classes/mmRouter.html">mmRouter</a></li>
+                                                    <li class="class"><a href="../classes/mmScreen.html">mmScreen</a></li>
+                                                    <li class="class"><a href="../classes/mmSequence.html">mmSequence</a></li>
+                                                    <li class="class"><a href="../classes/mmSession.html">mmSession</a></li>
+                                                    <li class="class"><a href="../classes/mmSQL.html">mmSQL</a></li>
+                                                    <li class="class"><a href="../classes/mmStack.html">mmStack</a></li>
+                                                    <li class="class"><a href="../classes/mmTaxes.html">mmTaxes</a></li>
+                                                    <li class="class"><a href="../classes/mmTemplate.html">mmTemplate</a></li>
+                                                    <li class="class"><a href="../classes/mmUser.html">mmUser</a></li>
+                                                    <li class="class"><a href="../classes/mmVarHolder.html">mmVarHolder</a></li>
+                                                    <li class="class"><a href="../classes/mmWidget.html">mmWidget</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetBlank.html">mmWidgetBlank</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButton.html">mmWidgetButton</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonAjaxPopup.html">mmWidgetButtonAjaxPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonClose.html">mmWidgetButtonClose</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonGoModule.html">mmWidgetButtonGoModule</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonGoPage.html">mmWidgetButtonGoPage</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonHtmlPopup.html">mmWidgetButtonHtmlPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonModuleAjaxPopup.html">mmWidgetButtonModuleAjaxPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonModuleHtmlPopup.html">mmWidgetButtonModuleHtmlPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonNext.html">mmWidgetButtonNext</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonPrec.html">mmWidgetButtonPrec</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonSeqNext.html">mmWidgetButtonSeqNext</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonSeqPrec.html">mmWidgetButtonSeqPrec</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonSubmit.html">mmWidgetButtonSubmit</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetCKEditor.html">mmWidgetCKEditor</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetCodeMirror.html">mmWidgetCodeMirror</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetDate.html">mmWidgetDate</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetDayMonth.html">mmWidgetDayMonth</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetEmail.html">mmWidgetEmail</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetFile.html">mmWidgetFile</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetFloat.html">mmWidgetFloat</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetHidden.html">mmWidgetHidden</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetImg.html">mmWidgetImg</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetInputPopup.html">mmWidgetInputPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetInteger.html">mmWidgetInteger</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetList.html">mmWidgetList</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetNumeric.html">mmWidgetNumeric</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetPassword.html">mmWidgetPassword</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetRecordCle.html">mmWidgetRecordCle</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetRecordList.html">mmWidgetRecordList</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetScreen.html">mmWidgetScreen</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetSelect.html">mmWidgetSelect</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetSelectFic.html">mmWidgetSelectFic</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetSelectTable.html">mmWidgetSelectTable</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetText.html">mmWidgetText</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTextArea.html">mmWidgetTextArea</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTextSearch.html">mmWidgetTextSearch</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTime.html">mmWidgetTime</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTimestamp.html">mmWidgetTimestamp</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTinyMce.html">mmWidgetTinyMce</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetUrl.html">mmWidgetUrl</a></li>
+                                                    <li class="class"><a href="../classes/pEcran.html">pEcran</a></li>
+                                                    <li class="class"><a href="../classes/pEcranAppercu.html">pEcranAppercu</a></li>
+                                                    <li class="class"><a href="../classes/pEcranAssign.html">pEcranAssign</a></li>
+                                                    <li class="class"><a href="../classes/pEcranCopie.html">pEcranCopie</a></li>
+                                                    <li class="class"><a href="../classes/pEcranDec.html">pEcranDec</a></li>
+                                                    <li class="class"><a href="../classes/pEcranGenereCRUD.html">pEcranGenereCRUD</a></li>
+                                                    <li class="class"><a href="../classes/pEcranJS.html">pEcranJS</a></li>
+                                                    <li class="class"><a href="../classes/pEcranPopup.html">pEcranPopup</a></li>
+                                                    <li class="class"><a href="../classes/pEditerTable.html">pEditerTable</a></li>
+                                                    <li class="class"><a href="../classes/pGed.html">pGed</a></li>
+                                                    <li class="class"><a href="../classes/pGestionBase.html">pGestionBase</a></li>
+                                                    <li class="class"><a href="../classes/pInputPopup.html">pInputPopup</a></li>
+                                                    <li class="class"><a href="../classes/pJpegSQL.html">pJpegSQL</a></li>
+                                                    <li class="class"><a href="../classes/pLoginStd.html">pLoginStd</a></li>
+                                                    <li class="class"><a href="../classes/pModuleGenerator.html">pModuleGenerator</a></li>
+                                                    <li class="class"><a href="../classes/pPdfSQL.html">pPdfSQL</a></li>
+                                                    <li class="class"><a href="../classes/programmeType.html">programmeType</a></li>
+                                                    <li class="class"><a href="../classes/pSass.html">pSass</a></li>
+                                                    <li class="class"><a href="../classes/pSelectTablePopup.html">pSelectTablePopup</a></li>
+                                                    <li class="class"><a href="../classes/pStructure.html">pStructure</a></li>
+                                                    <li class="class"><a href="../classes/pStructurePopup.html">pStructurePopup</a></li>
+                                                    <li class="class"><a href="../classes/pTestFormule.html">pTestFormule</a></li>
+                                                    <li class="class"><a href="../classes/pUser.html">pUser</a></li>
+                                                    <li class="class"><a href="../classes/pWidgetAjax.html">pWidgetAjax</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>pEcranAppercu</h1>
+                    <p><em>Ce programme genere l&#039;a&amp;ppercu d&#039;un ecran</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/mmProg.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/pEcranAppercu.html#method_configure" class="">configure()</a><br />
+                                                                    <a href="../classes/pEcranAppercu.html#method_executeIndex" class="">executeIndex()</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#method_executeNew" class="">executeNew()</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#method_executeCreate" class="">executeCreate()</a><br />
+                                                                    <a href="../classes/pEcranAppercu.html#method_executeEdit" class="">executeEdit()</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#method_executeUpdate" class="">executeUpdate()</a><br />
+                                                                    <a href="../classes/pEcranAppercu.html#method_initForm" class="">initForm()</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#method_executeDelete" class="">executeDelete()</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#method_save" class="">save()</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#method_postSave" class="">postSave()</a><br />
+                                                                    <a href="../classes/pEcranAppercu.html#method_afficheFormulaire" class="">afficheFormulaire()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_execute" class="">execute()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_renderHtml" class="">renderHtml()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_preExecute" class="">preExecute()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_postExecute" class="">postExecute()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_redirect" class="">redirect()</a><br />
+                                                                    <a href="../classes/mmProg.html#method___set" class="">__set()</a><br />
+                                                                    <a href="../classes/mmProg.html#method___get" class="">__get()</a><br />
+                                                                    <a href="../classes/mmProg.html#method___isset" class="">__isset()</a><br />
+                                                                    <a href="../classes/mmProg.html#method___unset" class="">__unset()</a><br />
+                                                                    <a href="../classes/pEcranAppercu.html#method_enregistrer" class="">enregistrer()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/mmProgCRUD.html#property_tableName" class="">$tableName</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#property_screenName" class="">$screenName</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#property_options" class="">$options</a><br />
+                                                                    <a href="../classes/mmProg.html#property_variables" class="">$variables</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/mmProgCRUD.html#method_genereChaineIndex" class="">genereChaineIndex()</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#method_afficheFormulaireDepuisBase" class="">afficheFormulaireDepuisBase()</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#method_afficheFormulaireStandard" class="">afficheFormulaireStandard()</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#method_initEcranTable" class="">initEcranTable()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_setLayout" class="">setLayout()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_getLayout" class="">getLayout()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_detectMobile" class="">detectMobile()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_setTemplate" class="">setTemplate()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_getTemplate" class="">getTemplate()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_addHeader" class="">addHeader()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_outputAsJson" class="">outputAsJson()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_outputAsJsonp" class="">outputAsJsonp()</a><br />
+                                                                    <a href="../classes/mmProg.html#method_outputAsHtml" class="">outputAsHtml()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/mmProgCRUD.html#property_table" class="">$table</a><br />
+                                                                    <a href="../classes/mmProgCRUD.html#property_ecran" class="">$ecran</a><br />
+                                                                    <a href="../classes/mmProg.html#property_layout" class="">$layout</a><br />
+                                                                    <a href="../classes/mmProg.html#property_templateModuleAction" class="">$templateModuleAction</a><br />
+                                                                    <a href="../classes/mmProg.html#property_templateModule" class="">$templateModule</a><br />
+                                                                    <a href="../classes/mmProg.html#property_parametresProgramme" class="">$parametresProgramme</a><br />
+                                                                    <a href="../classes/mmProg.html#property_autoDetectMobile" class="">$autoDetectMobile</a><br />
+                                                                    <a href="../classes/mmProg.html#property_isMobile" class="">$isMobile</a><br />
+                                                                    <a href="../classes/mmProg.html#property_isTablet" class="">$isTablet</a><br />
+                                                                    <a href="../classes/mmProg.html#property_headers" class="">$headers</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/mihimana.builtinModule.pEcranAppercu.html"><div class="path-wrapper">mihimana/builtinModule/pEcranAppercu.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                        <div class="namespace-wrapper"><a href="../classes/mmObject.html">\mmObject</a></div>
+                                                                    
+                                        <div class="namespace-wrapper"><a href="../classes/mmProg.html">\mmProg</a></div>
+                                                                    
+                                        <div class="namespace-wrapper"><a href="../classes/mmProgCRUD.html">\mmProgCRUD</a></div>
+                                                                                                    <div class="namespace-wrapper">\pEcranAppercu</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                author
+                            </th>
+                            <td>
+                                                                    <p>bruno</p>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_tableName" name="property_tableName" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$tableName</h3>
+                <pre class="signature">$tableName : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_screenName" name="property_screenName" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$screenName</h3>
+                <pre class="signature">$screenName : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_options" name="property_options" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$options</h3>
+                <pre class="signature">$options : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_variables" name="property_variables" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$variables</h3>
+                <pre class="signature">$variables : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_table" name="property_table" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$table</h3>
+                <pre class="signature">$table : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_ecran" name="property_ecran" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$ecran</h3>
+                <pre class="signature">$ecran : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_layout" name="property_layout" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$layout</h3>
+                <pre class="signature">$layout : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_templateModuleAction" name="property_templateModuleAction" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$templateModuleAction</h3>
+                <pre class="signature">$templateModuleAction : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_templateModule" name="property_templateModule" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$templateModule</h3>
+                <pre class="signature">$templateModule : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_parametresProgramme" name="property_parametresProgramme" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$parametresProgramme</h3>
+                <pre class="signature">$parametresProgramme : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_autoDetectMobile" name="property_autoDetectMobile" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$autoDetectMobile</h3>
+                <pre class="signature">$autoDetectMobile : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_isMobile" name="property_isMobile" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$isMobile</h3>
+                <pre class="signature">$isMobile : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_isTablet" name="property_isTablet" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$isTablet</h3>
+                <pre class="signature">$isTablet : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_headers" name="property_headers" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$headers</h3>
+                <pre class="signature">$headers : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_configure" name="method_configure" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">configure()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">configure() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_executeIndex" name="method_executeIndex" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">executeIndex()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">executeIndex(\mmRequest  <span class="argument">$request</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_executeNew" name="method_executeNew" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">executeNew()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">executeNew(\mmRequest  <span class="argument">$request</span>,   <span class="argument">$afficherFormulaire = true</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$afficherFormulaire </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_executeCreate" name="method_executeCreate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">executeCreate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">executeCreate(\mmRequest  <span class="argument">$request</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_executeEdit" name="method_executeEdit" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">executeEdit()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">executeEdit(\mmRequest  <span class="argument">$request</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_executeUpdate" name="method_executeUpdate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">executeUpdate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">executeUpdate(\mmRequest  <span class="argument">$request</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_initForm" name="method_initForm" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">initForm()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">initForm(\Doctrine_Record  <span class="argument">$table</span>,   <span class="argument">$nouveau</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Doctrine_Record</td>
+                                <td>$table </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$nouveau </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_executeDelete" name="method_executeDelete" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">executeDelete()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">executeDelete(\mmRequest  <span class="argument">$request</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_save" name="method_save" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">save()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">save(\mmRequest  <span class="argument">$request</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_postSave" name="method_postSave" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">postSave()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">postSave() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_afficheFormulaire" name="method_afficheFormulaire" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">afficheFormulaire()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">afficheFormulaire() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_execute" name="method_execute" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">execute()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">execute(string  <span class="argument">$action</span>, array  <span class="argument">$request</span>) : boolean</pre>
+                <p><em>Execute l&#039;action $action et affiche le resultat</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$action </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_renderHtml" name="method_renderHtml" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">renderHtml()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">renderHtml(  <span class="argument">$html</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$html </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_preExecute" name="method_preExecute" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">preExecute()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">preExecute(\mmRequest  <span class="argument">$request</span>) </pre>
+                <p><em>Code toujours executer avant une action</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_postExecute" name="method_postExecute" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">postExecute()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">postExecute(\mmRequest  <span class="argument">$request</span>) </pre>
+                <p><em>Code toujours executer apres une action</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_redirect" name="method_redirect" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">redirect()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">redirect(\type  <span class="argument">$url</span>, \type  <span class="argument">$protegeUrl = true</span>) </pre>
+                <p><em>do a http redirection</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\type</td>
+                                <td>$url </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\type</td>
+                                <td>$protegeUrl </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___set" name="method___set" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__set()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__set(  <span class="argument">$name</span>,   <span class="argument">$value</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___get" name="method___get" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__get()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__get(  <span class="argument">$name</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___isset" name="method___isset" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__isset()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__isset(  <span class="argument">$name</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___unset" name="method___unset" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__unset()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__unset(  <span class="argument">$name</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_enregistrer" name="method_enregistrer" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">enregistrer()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">enregistrer(\mmRequest  <span class="argument">$request</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/mmRequest.html">\mmRequest</a></td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_genereChaineIndex" name="method_genereChaineIndex" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">genereChaineIndex()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">genereChaineIndex(\Doctrine_Record  <span class="argument">$enregistrement</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Doctrine_Record</td>
+                                <td>$enregistrement </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_afficheFormulaireDepuisBase" name="method_afficheFormulaireDepuisBase" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">afficheFormulaireDepuisBase()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">afficheFormulaireDepuisBase() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_afficheFormulaireStandard" name="method_afficheFormulaireStandard" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">afficheFormulaireStandard()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">afficheFormulaireStandard() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_initEcranTable" name="method_initEcranTable" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">initEcranTable()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">initEcranTable() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProgCRUD.html"><div class="path-wrapper">\mmProgCRUD</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setLayout" name="method_setLayout" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">setLayout()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setLayout(string  <span class="argument">$nomLayout = false</span>) : string</pre>
+                <p><em>Definie le layout a utiliser, par defaut &#039;layout&#039;. SI mis a null ou false, la sortie se ferra sans layout. Retourne le nopm de l&#039;ancien layout</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$nomLayout </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>ancien nom du layout</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLayout" name="method_getLayout" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">getLayout()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLayout() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_detectMobile" name="method_detectMobile" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">detectMobile()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">detectMobile(\type  <span class="argument">$mode = true</span>) </pre>
+                <p><em>This method enable mobile/tablet auto selection. If set to true (default) render will use phone_MODULENAME#ACTION instead of view_MODULENAME#ACTION if the client
+is a phone or a tablet.</em></p>
+                <!--
+TODO : set template [phone|tablet]_MODULENAME#ACTION
+if one of the template is missing the closest template will be used:<br>
+<table>
+<tr><td colspan="2">Not yet fully implemented<br>for now there is no auto selection, all go to phone_*</td></tr>
+<tr><td>MISSING</td><td>USED</td></tr>
+<tr><td>phone</td><td>tablet</td></tr>
+<tr><td>tablet</td><td>phone</td></tr>
+<tr><td>view</td><td>tablet</td></tr>
+</table>
+-->
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\type</td>
+                                <td>$mode </td>
+                                <td><p>enabled(true) or disabled(false)</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setTemplate" name="method_setTemplate" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">setTemplate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setTemplate(string  <span class="argument">$templateName = false</span>) : string</pre>
+                <p><em>Set the template for module/action. Templates are located in the PROJECT_ROOT/templates/views. By default name format is &#039;view_&#039;.module[#action].php&lt;br&gt;
+if #action is ommited this template become the template for all actions. Otherwise the template is used for the particular module/action&lt;br&gt;</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$templateName </td>
+                                <td><p>If ommited or false disable the use of templating.<br>if the string is formated '#action_name' 'action_name' template will be used.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>the full name of the previous template name (without extension)</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getTemplate" name="method_getTemplate" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">getTemplate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getTemplate() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_addHeader" name="method_addHeader" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">addHeader()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">addHeader(  <span class="argument">$strHeader</span>,   <span class="argument">$replace = true</span>) </pre>
+                <p><em>add an header to the module</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$strHeader </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$replace </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_outputAsJson" name="method_outputAsJson" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">outputAsJson()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">outputAsJson() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_outputAsJsonp" name="method_outputAsJsonp" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">outputAsJsonp()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">outputAsJsonp() </pre>
+                <p><em></em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_outputAsHtml" name="method_outputAsHtml" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">outputAsHtml()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">outputAsHtml(  <span class="argument">$encoding = APP_DEFAULT_ENCODING</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$encoding </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/mmProg.html"><div class="path-wrapper">\mmProg</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">pEcranAppercu.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/mihimana/builtinModule/pEcranAppercu.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/mm.html">\mm</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on September 16th, 2015 at 09:34.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

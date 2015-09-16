@@ -1,0 +1,142 @@
+<?php
+/*------------------------------------------------------------------------------
+-------------------------------------
+Mihimana : the visual PHP framework.
+Copyright (C) 2012-2014  Bruno Maffre
+contact@bmp-studio.com
+-------------------------------------
+
+-------------------------------------
+@package : lib
+@module: builtinModule
+@file : pEcranPopup.php
+-------------------------------------
+
+This file is part of Mihimana.
+
+Mihimana is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Mihimana is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+------------------------------------------------------------------------------*/
+
+
+class pEcranPopup extends mmProgCRUD
+{
+  public function configure()
+  {
+//    $this->setLayout('popup');
+    $this->options['genereIndex'] = false;
+    $this->tableName = 'ChampsEcranUtilisateur';
+    parent::configure();
+  }
+  
+  public function initForm(Doctrine_Record $table, $nouveau)
+  {
+    $this->form = new mmForm($table);
+//    //On contruit le formulaire standard. On demande au papa
+    
+    $this->form->addWidget(new mmWidgetSelectTable($this->form['type_widget'], 'param_type_widget'));
+    $this->form->addwidget(new mmWidgetTextArea($this->form['option_type_widget']));
+    $this->form->addWidget(new mmWidgetButtonClose());
+    $this->form->addWidget(new mmWidgetButtonSubmit('enregistrer'));
+    $this->form->addWidget(new mmWidgetButtonGoPage('Nouveau', '?module=pEcranPopup&action=nouveau'));
+    $this->form['nom_ecran']->disable();
+    if ($nouveau)
+    {
+      $this->form->setAction(genereUrlProtege('?module='.MODULE_COURANT.'&action=creer'));
+    }
+    else
+    {
+      $this->form->setAction(genereUrlProtege('?module='.MODULE_COURANT.'&action=maj&c='.$this->nomChamp));
+    }
+  }
+  
+  public function executeNouveau(mmRequest $request) {
+    $nomEcran = $request->getParam('ecran', false);
+    if ( ! $nomEcran)
+    {
+      $nomEcran = User::get('__editionNomEcran__', false);
+      if ( ! $nomEcran)
+      {
+        throw new mmExceptionControl("Le nom d'ecran est inconnu");
+      }
+    }
+    $this->table = new ChampsEcranUtilisateur();
+    $this->table['nom_ecran'] = $nomEcran;
+    $this->nomChamp = $request->getParam('c', false);
+    if ($this->nomChamp != '')
+    {
+      //Si on fournis un nom de champ on remplis le champ avec la valeur fournie
+      $this->table['nom_champ'] = $this->nomChamp;
+    }
+    
+    $this->initForm($this->table, true);
+    $this->afficheFormulaire();
+  }
+
+  
+  public function executeEdit(mmRequest $request) {
+    $nomEcran = $request->getParam('ecran', false);
+    if ( ! $nomEcran)
+    {
+      $nomEcran = User::get('__editionNomEcran__', false);
+      if ( ! $nomEcran)
+      {
+        throw new mmExceptionControl("Le nom d'ecran est inconnu");
+      }
+    }
+    
+    $this->nomChamp = $request->getParam('c', false);
+    if ( ! $this->nomChamp)
+    {
+      $this->nomChamp = User::get('__editionNomChampEcran__', false);
+      {
+        throw new mmExceptionControl("Le nom de champ est inconnu");
+      }
+    }
+    $this->table = Doctrine_Core::getTable('ChampsEcranUtilisateur')->createQuery()->
+            where('nom_ecran = ? AND nom_champ = ?', array($nomEcran, $this->nomChamp))->
+            fetchOne();
+    if ( ! $this->table)
+    {
+      echo "<h1>Attention</h1>";
+      echo "Le champ est paramétré par ses attribut par defaut. Voulez vous creer des attribut specifique a cet écran?";
+      echo new mmWidgetButtonGoPage('Oui', '?module=pEcranPopup&action=nouveau&c='.$this->nomChamp);
+      echo new mmWidgetButtonClose('Non');
+    }
+    else
+    {
+      $this->initForm($this->table, false);
+      $this->afficheFormulaire();
+    }
+  }
+  
+  public function enregistrer(mmRequest $request) {
+    //On recupere les données du formulaires
+    $data = $request->getParam($this->form->getName(), false);
+    //On effectue l'assignation et la verification des données saisies
+    if ($this->form->setValues($data))
+     {
+      //Effectation OK on peux sauver
+      $enregistrement = $this->form->save();
+      User::flashSuccess('Enregistrement effectué');
+      $this->redirect('?module=pEcranPopup&action=editer&c='.$enregistrement['nom_champ']);
+    }
+    else {
+      User::flashError('Erreur lors de la saisie');
+      $this->afficheFormulaire();
+    }
+  }
+  
+}
+?>
+

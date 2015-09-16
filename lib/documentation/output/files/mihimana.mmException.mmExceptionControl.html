@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/mm.html">\mm</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">1771</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">32</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1262548564"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1262548564" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1425972729"></a>
+                                <a href="../namespaces/mm.html" style="margin-left: 30px; padding-left: 0">mm</a>
+            </div>
+            <div id="namespace-1425972729" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/mm.dispatcher.html" style="margin-left: 30px; padding-left: 0">dispatcher</a>
+            </div>
+            <div id="namespace-726579287" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-185001493"></a>
+                                <a href="../namespaces/mm.helpers.html" style="margin-left: 30px; padding-left: 0">helpers</a>
+            </div>
+            <div id="namespace-185001493" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/mm.helpers.form.html" style="margin-left: 30px; padding-left: 0">form</a>
+            </div>
+            <div id="namespace-108751722" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/mm.helpers.links.html" style="margin-left: 30px; padding-left: 0">links</a>
+            </div>
+            <div id="namespace-1688966890" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/__moduleName__.html">__moduleName__</a></li>
+                                                    <li class="class"><a href="../classes/CRUDModule.html">CRUDModule</a></li>
+                                                    <li class="class"><a href="../classes/main.html">main</a></li>
+                                                    <li class="class"><a href="../classes/mdCouchDb.html">mdCouchDb</a></li>
+                                                    <li class="class"><a href="../classes/mdWidgetTiersPopup.html">mdWidgetTiersPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmConfig.html">mmConfig</a></li>
+                                                    <li class="class"><a href="../classes/mmContext.html">mmContext</a></li>
+                                                    <li class="class"><a href="../classes/mmDoctrineRecordVide.html">mmDoctrineRecordVide</a></li>
+                                                    <li class="class"><a href="../classes/mmException.html">mmException</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionAuth.html">mmExceptionAuth</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionConfig.html">mmExceptionConfig</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionControl.html">mmExceptionControl</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionData.html">mmExceptionData</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionDev.html">mmExceptionDev</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionForm.html">mmExceptionForm</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionFormule.html">mmExceptionFormule</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionHttp.html">mmExceptionHttp</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionRessource.html">mmExceptionRessource</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionUser.html">mmExceptionUser</a></li>
+                                                    <li class="class"><a href="../classes/mmExceptionWidget.html">mmExceptionWidget</a></li>
+                                                    <li class="class"><a href="../classes/mmExpression.html">mmExpression</a></li>
+                                                    <li class="class"><a href="../classes/mmForm.html">mmForm</a></li>
+                                                    <li class="class"><a href="../classes/mmIndice.html">mmIndice</a></li>
+                                                    <li class="class"><a href="../classes/mmJSON.html">mmJSON</a></li>
+                                                    <li class="class"><a href="../classes/mmMailer.html">mmMailer</a></li>
+                                                    <li class="class"><a href="../classes/mmMenu.html">mmMenu</a></li>
+                                                    <li class="class"><a href="../classes/mmMessages.html">mmMessages</a></li>
+                                                    <li class="class"><a href="../classes/mmObject.html">mmObject</a></li>
+                                                    <li class="class"><a href="../classes/mmOptions.html">mmOptions</a></li>
+                                                    <li class="class"><a href="../classes/mmPdf.html">mmPdf</a></li>
+                                                    <li class="class"><a href="../classes/mmProg.html">mmProg</a></li>
+                                                    <li class="class"><a href="../classes/mmProgCRUD.html">mmProgCRUD</a></li>
+                                                    <li class="class"><a href="../classes/mmProgProcedural.html">mmProgProcedural</a></li>
+                                                    <li class="class"><a href="../classes/mmProgProceduralWebService.html">mmProgProceduralWebService</a></li>
+                                                    <li class="class"><a href="../classes/mmProgWebService.html">mmProgWebService</a></li>
+                                                    <li class="class"><a href="../classes/mmRequest.html">mmRequest</a></li>
+                                                    <li class="class"><a href="../classes/mmRouter.html">mmRouter</a></li>
+                                                    <li class="class"><a href="../classes/mmScreen.html">mmScreen</a></li>
+                                                    <li class="class"><a href="../classes/mmSequence.html">mmSequence</a></li>
+                                                    <li class="class"><a href="../classes/mmSession.html">mmSession</a></li>
+                                                    <li class="class"><a href="../classes/mmSQL.html">mmSQL</a></li>
+                                                    <li class="class"><a href="../classes/mmStack.html">mmStack</a></li>
+                                                    <li class="class"><a href="../classes/mmTaxes.html">mmTaxes</a></li>
+                                                    <li class="class"><a href="../classes/mmTemplate.html">mmTemplate</a></li>
+                                                    <li class="class"><a href="../classes/mmUser.html">mmUser</a></li>
+                                                    <li class="class"><a href="../classes/mmVarHolder.html">mmVarHolder</a></li>
+                                                    <li class="class"><a href="../classes/mmWidget.html">mmWidget</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetBlank.html">mmWidgetBlank</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButton.html">mmWidgetButton</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonAjaxPopup.html">mmWidgetButtonAjaxPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonClose.html">mmWidgetButtonClose</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonGoModule.html">mmWidgetButtonGoModule</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonGoPage.html">mmWidgetButtonGoPage</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonHtmlPopup.html">mmWidgetButtonHtmlPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonModuleAjaxPopup.html">mmWidgetButtonModuleAjaxPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonModuleHtmlPopup.html">mmWidgetButtonModuleHtmlPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonNext.html">mmWidgetButtonNext</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonPrec.html">mmWidgetButtonPrec</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonSeqNext.html">mmWidgetButtonSeqNext</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonSeqPrec.html">mmWidgetButtonSeqPrec</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetButtonSubmit.html">mmWidgetButtonSubmit</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetCKEditor.html">mmWidgetCKEditor</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetCodeMirror.html">mmWidgetCodeMirror</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetDate.html">mmWidgetDate</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetDayMonth.html">mmWidgetDayMonth</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetEmail.html">mmWidgetEmail</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetFile.html">mmWidgetFile</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetFloat.html">mmWidgetFloat</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetHidden.html">mmWidgetHidden</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetImg.html">mmWidgetImg</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetInputPopup.html">mmWidgetInputPopup</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetInteger.html">mmWidgetInteger</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetList.html">mmWidgetList</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetNumeric.html">mmWidgetNumeric</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetPassword.html">mmWidgetPassword</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetRecordCle.html">mmWidgetRecordCle</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetRecordList.html">mmWidgetRecordList</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetScreen.html">mmWidgetScreen</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetSelect.html">mmWidgetSelect</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetSelectFic.html">mmWidgetSelectFic</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetSelectTable.html">mmWidgetSelectTable</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetText.html">mmWidgetText</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTextArea.html">mmWidgetTextArea</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTextSearch.html">mmWidgetTextSearch</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTime.html">mmWidgetTime</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTimestamp.html">mmWidgetTimestamp</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetTinyMce.html">mmWidgetTinyMce</a></li>
+                                                    <li class="class"><a href="../classes/mmWidgetUrl.html">mmWidgetUrl</a></li>
+                                                    <li class="class"><a href="../classes/pEcran.html">pEcran</a></li>
+                                                    <li class="class"><a href="../classes/pEcranAppercu.html">pEcranAppercu</a></li>
+                                                    <li class="class"><a href="../classes/pEcranAssign.html">pEcranAssign</a></li>
+                                                    <li class="class"><a href="../classes/pEcranCopie.html">pEcranCopie</a></li>
+                                                    <li class="class"><a href="../classes/pEcranDec.html">pEcranDec</a></li>
+                                                    <li class="class"><a href="../classes/pEcranGenereCRUD.html">pEcranGenereCRUD</a></li>
+                                                    <li class="class"><a href="../classes/pEcranJS.html">pEcranJS</a></li>
+                                                    <li class="class"><a href="../classes/pEcranPopup.html">pEcranPopup</a></li>
+                                                    <li class="class"><a href="../classes/pEditerTable.html">pEditerTable</a></li>
+                                                    <li class="class"><a href="../classes/pGed.html">pGed</a></li>
+                                                    <li class="class"><a href="../classes/pGestionBase.html">pGestionBase</a></li>
+                                                    <li class="class"><a href="../classes/pInputPopup.html">pInputPopup</a></li>
+                                                    <li class="class"><a href="../classes/pJpegSQL.html">pJpegSQL</a></li>
+                                                    <li class="class"><a href="../classes/pLoginStd.html">pLoginStd</a></li>
+                                                    <li class="class"><a href="../classes/pModuleGenerator.html">pModuleGenerator</a></li>
+                                                    <li class="class"><a href="../classes/pPdfSQL.html">pPdfSQL</a></li>
+                                                    <li class="class"><a href="../classes/programmeType.html">programmeType</a></li>
+                                                    <li class="class"><a href="../classes/pSass.html">pSass</a></li>
+                                                    <li class="class"><a href="../classes/pSelectTablePopup.html">pSelectTablePopup</a></li>
+                                                    <li class="class"><a href="../classes/pStructure.html">pStructure</a></li>
+                                                    <li class="class"><a href="../classes/pStructurePopup.html">pStructurePopup</a></li>
+                                                    <li class="class"><a href="../classes/pTestFormule.html">pTestFormule</a></li>
+                                                    <li class="class"><a href="../classes/pUser.html">pUser</a></li>
+                                                    <li class="class"><a href="../classes/pWidgetAjax.html">pWidgetAjax</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content file">
+                    <nav>
+                                                                    </nav>
+
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small>mihimana/mmException</small>mmExceptionControl.php</h1>
+                    <p><em></em></p>
+                    
+
+                    
+                    
+                                        <h2>Classes</h2>
+                    <table class="table table-hover">
+                                            <tr>
+                            <td><a href="../classes/mmExceptionControl.html">mmExceptionControl</a></td>
+                            <td><em></em></td>
+                        </tr>
+                                        </table>
+                                    </div>
+
+                <aside class="span4 detailsbar">
+                    <dl>
+                                                    <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\Default</div></dd>
+                        
+                        
+                    </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                            </table>
+
+                </aside>
+            </div>
+
+            
+            
+        </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label"></h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/mihimana/mmException/mmExceptionControl.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/mm.html">\mm</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on September 16th, 2015 at 09:34.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
