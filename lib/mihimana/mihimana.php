@@ -28,18 +28,16 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------*/
 
-
-
+// Define default constants value if not defined in config.php or application index file
+if (!defined('APPLICATION')) {
+	Die("L'application n'a pas été définie");
+}
 session_name('sess_' . APPLICATION);
 session_start();
 //Lecture des constante
 require 'constantes.php';
 //Config reading
-require CONFIG_DIR . DIRECTORY_SEPARATOR .'config.php';
-// Define default constants value if not defined in config.php or application index file
-if (!defined('APPLICATION')) {
-    Die("L'application n'a pas été définie");
-}
+require CONFIG_DIR . DIRECTORY_SEPARATOR .CONFIG_FILE;
 // web specifique constantes
 if (!defined('MODULE_DEFAUT')) {
     define('MODULE_DEFAUT', 'main');
@@ -47,9 +45,9 @@ if (!defined('MODULE_DEFAUT')) {
 if (!defined('ACTION_DEFAUT')) {
     define('ACTION_DEFAUT', 'index');
 }
-//if (!defined('DEBUG')) {
-//    define('DEBUG', false);
-//}
+if (!defined('DEBUG')) {
+    define('DEBUG', false);
+}
 if (!defined('MODE_INSTALL')) {
     define('MODE_INSTALL', false);
 }
@@ -125,7 +123,7 @@ if ( ! array_key_exists('__classesCache__', $_SESSION)) {
     $_SESSION['__classesCache__'] = array();
 }
 //AutoLoad de mihimana
-spl_autoload_register('mdAutoload');
+spl_autoload_register('mmAutoload');
 
 /* * ************************************
  * FIN DU PARAMETRAGE
@@ -135,7 +133,7 @@ spl_autoload_register('mdAutoload');
 require_once 'dispatch.php';
 
 //Fonction de callback pour l'autoload des classes de mihimana
-function mdAutoload($className) {
+function mmAutoload($className) {
     //looking for class in cache
     if (array_key_exists($className, $_SESSION['__classesCache__'])) {
         require_once $_SESSION['__classesCache__'][$className];

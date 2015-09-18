@@ -79,10 +79,11 @@ if ( ! defined('CONFIG_DIR')) {
     define('CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
 }
 if ( ! defined('CONFIG_FILE')) {
-    define('CONFIG_FILE', CONFIG_DIR.DIRECTORY_SEPARATOR.'config.php');
+    define('CONFIG_FILE', 'config.php');
 }
 define('PLUGINS_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'plugins');
-define('MIGRATION_DIR', APPLICATION_DIR.'/lib/migration');
+//define('MIGRATION_DIR', APPLICATION_DIR.'/lib/migration');
+define('MIGRATION_DIR', LIB_DIR.DIRECTORY_SEPARATOR.'migration');
 define('TEMPLATES_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'templates');
 define('VIEWS_DIR', TEMPLATES_DIR.DIRECTORY_SEPARATOR.'views');
 define('PARTIALS_DIR', TEMPLATES_DIR.DIRECTORY_SEPARATOR.'partials');
