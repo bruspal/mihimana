@@ -33,9 +33,11 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 //
 // On inclus les eventuelles fonction utilisateurs
 //
-$fichierPlugins = APPLICATION_DIR . '/lib/expressionCustomFunction.php';
+$fichierPlugins = LIB_DIR . '/expressionCustomFunction.php';
 // En mettant les fonction utilisateur dans ce fichier ca étend le langage par des fonctions spécifique a un contexte particulier
-include $fichierPlugins;
+if (file_exists($fichierPlugins)) {
+	include $fichierPlugins;
+}
 
 class mmExpression extends mmVarHolder {
 
