@@ -81,7 +81,7 @@ class mmProgProcedural extends mmProg {
      * Entry point
      * @param mmRequest $request
      */
-    public function main(mmRequest $request) {
+    public function main($action, mmRequest $request) {
         
     }
 

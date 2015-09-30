@@ -77,9 +77,14 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
     // check for maintenance mode
     if (file_exists(APPLICATION_DIR.DIRECTORY_SEPARATOR.'maintenance')) {
         if (AJAX_RESPONSE) {
-            \mmJSON::sendForbidden('The application is actually in maintenance. Come back soon !');
+	        $content = file_get_contents(APPLICATION_DIR.DIRECTORY_SEPARATOR.'maintenance');
+	        if(empty($content)) {
+		        $content = 'The application is presently in mantenance. It won\'t be long.';
+	        }
+            \mmJSON::sendForbidden($content);
             die;
         }
+	    header('HTTP/1.0 403 Forbidden');
         if (file_exists(TEMPLATES_DIR.DIRECTORY_SEPARATOR.'maintenance.php')) {
             require_once TEMPLATES_DIR.DIRECTORY_SEPARATOR.'maintenance.php';
         } else {
@@ -207,7 +212,9 @@ try { //On protege contre les erreurs ce qui se trouve dans le try { }
             //creation en memoire du programme
             $dispatcher_programmePhp = new $module();
             //on execute l'action du programme avec les parametres fournis au script par l'url
-            $dispatcher_programmePhp->execute($action, $request);
+	        if (method_exists($dispatcher_programmePhp, 'execute')) {
+                $dispatcher_programmePhp->execute($action, $request);
+	        }
         } else {
             //on recupère le buffer PHP car le code contenu dans le module a deja été exécuté lors du require
             //on affiche ce buffer dans le template en faisant un require du layout

@@ -79,7 +79,7 @@ if ( ! defined('CONFIG_DIR')) {
     define('CONFIG_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'config');
 }
 if ( ! defined('CONFIG_FILE')) {
-    define('CONFIG_FILE', CONFIG_DIR.DIRECTORY_SEPARATOR.'config.php');
+    define('CONFIG_FILE', 'config.php');
 }
 define('PLUGINS_DIR', APPLICATION_DIR.DIRECTORY_SEPARATOR.'plugins');
 //define('MIGRATION_DIR', APPLICATION_DIR.'/lib/migration');

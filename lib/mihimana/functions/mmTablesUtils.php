@@ -30,9 +30,10 @@
   ------------------------------------------------------------------------------ */
 
 /**
- * This function return an array of key=>value from the parameters table
- * @param string $category
- * @param string $group
+ * This function return an array of key=>value from the parameters table.
+ *
+ * @param string $category table name coma separated
+ * @param string $group group name (optionnal)
  * @return array
  */
 function mmTableCategorie($category = false, $group = false) {

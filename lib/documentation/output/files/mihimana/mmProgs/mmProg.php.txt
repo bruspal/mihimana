@@ -34,24 +34,23 @@
  */
 class mmProg extends mmObject {
 
-    //
+	/**
+	 * @var string $layout Layout name (default 'layout.php')
+	 * @var string $templateModuleAction template name for associated to an action inside the module (default "view_" . MODULE_COURANT . "#" . ACTION_COURANTE . ".php")
+	 * @var string $templateModule global template name for the module (default "view_" . MODULE_COURANT . ".php")
+	 * @var bool $autoDetectMobile =false
+	 * @var $isMobile =false,
+	 * @var $isTablet = false,
+	 * @var $headers = array();
+	 */
     protected
-	    /**
-	     * @var string layout name
-	     */
         $layout,
-	    /**
-	     * @var string associated to controller + action
-	     */
         $templateModuleAction, //template associé a un module + action
         $templateModule, //template associé a un module
-        $parametresProgramme,
         $autoDetectMobile =false,
         $isMobile =false,
         $isTablet = false,
         $headers = array();
-    public
-            $variables;
 
     public function __construct() {
         $this->layout = 'layout.php';
