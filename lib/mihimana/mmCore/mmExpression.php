@@ -45,7 +45,7 @@ class mmExpression extends mmVarHolder {
             $interpreterVar,
             $expression = '',
             $operateurs = array('+', '-', '*', '/', '=', '^', '<', '>', '<=', '>=', '<>', 'ET', 'OU', 'NON'),
-            $priorite = array('+' => 2, '-' => 2, '*' => 3, '/' => 3, '^' => 3, '=' => 0, '<' => 0, '>' => 0, '<=' => 0, '>=' => 0, '<>' => 0, 'ET' => 1, 'OU' => 1, 'NON' => 1),
+            $priorite = array('*' => 3, '/' => 3, '^' => 3, '+' => 2, '-' => 2, '=' => 1, '<' => 1, '>' => 1, '<=' => 1, '>=' => 1, '<>' => 1, 'ET' => 0, 'OU' => 0, 'NON' => 0),
             $constantes = array(
                 'JOUR', //nombre de jours depuis le 01/01/1970
                 'MOIS', //nombre de mois depuis le 01/01/1970
@@ -766,7 +766,7 @@ class mmExpression extends mmVarHolder {
             return $enr[$colExpression];
         } else {
             //formule inexistante
-            throw new mmExceptionFormule("la formule $formule est introuvable");
+            throw new mmExceptionFormule("la formule $nomExpression est introuvable");
         }
     }
 
