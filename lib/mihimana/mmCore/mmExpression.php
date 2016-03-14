@@ -118,11 +118,7 @@ class mmExpression extends mmVarHolder {
             return array('void', 0);
         }
         //On transforme l'expression en tableau
-//    $expression = str_replace(';', "\n", $expression);
-//    $expression = str_replace("\r", '', $expression);
-//    $expression = explode("\n", $expression);
         $expression = str_replace(array("\n", '&nbsp;'), ' ', $expression);
-//    $expression = strip_tags($expression);
         $expression = str_replace("\r", '', $expression);
         $expression = explode(";", $expression);
         foreach ($expression as $ligneExp) {
@@ -239,11 +235,6 @@ class mmExpression extends mmVarHolder {
                 if ($this->interpreterVar) {
                     return $this->calcul($valeur);
                 } else {
-//          if ( ! is_numeric($valeur))
-//          {
-//            $valeur = '"'.addcslashes($valeur, '"\\').'"';
-//          }
-//          else
                     if (is_numeric($valeur) || is_bool($valeur)) {
                         $type = 'nbr';
                     }
@@ -388,7 +379,7 @@ class mmExpression extends mmVarHolder {
                         //on empile l'opérateur
                         //algorythme basé sur shunting-yard: http://en.wikipedia.org/wiki/Shunting-yard_algorithm
                         $opTop = $pileOperateur->top();
-                        while ($opTop !== null && $this->priorite[$opTop] > $this->priorite[$valeur]) {
+                        while ($opTop !== null && $this->priorite[$opTop] >= $this->priorite[$valeur]) {
                             $aEmpiler = $pileOperateur->pop();
                             $pile->push(array('op', $aEmpiler));
                             $opTop = $pileOperateur->top();
