@@ -118,7 +118,8 @@ class mmExpression extends mmVarHolder {
             return array('void', 0);
         }
         //On transforme l'expression en tableau
-        $expression = str_replace(array("\n", '&nbsp;'), ' ', $expression);
+        $expression = str_replace("\r\n", ';', $expression);
+        $expression = str_replace(["\n", '&nbsp;'], ' ', $expression);
         $expression = str_replace("\r", '', $expression);
         $expression = explode(";", $expression);
         foreach ($expression as $ligneExp) {
@@ -482,6 +483,10 @@ class mmExpression extends mmVarHolder {
                                     //Ni l'un ni l'autre ? c'est une erreur
                                     throw new mmExceptionFormule("$expression: fonction $nomFonction inconnue");
                                 }
+                            }
+                            //If user function doesn't return result, a void must be pushed to keep the stack consistancy.
+                            if (is_null($resultat)) {
+                                $resultat = ['void', 0];
                             }
                             $pile->push($resultat);
                             $attendOperateur = true;
